@@ -1,0 +1,61 @@
+import { FunctionComponent } from "react"
+import { example } from "../assets/images"
+import { RiMoneyDollarCircleFill } from "react-icons/ri"
+import { MdAttachMoney } from "react-icons/md"
+import { AiOutlineHeart } from "react-icons/ai"
+
+interface CardProps {
+  img?: string
+  title: string
+  description: string
+  price: number
+  rate: number
+  review: "Good" | "Bad" | "Average"
+}
+
+const Card: FunctionComponent<CardProps> = ({
+  img,
+  title,
+  description,
+  price,
+  rate,
+  review,
+}) => {
+  const fixLength = (s: string) => {
+    if (s.length > 35) {
+      return s.slice(0, 35) + "..."
+    }
+    return s
+  }
+  return (
+    <div className="card-container relative flex flex-col box-border w-[300px] h-[250px] bg-white rounded-[0.5rem] overflow-hidden border cursor-pointer hover:shadow-md">
+      <div className="card-image w-full h-[55%]">
+        <img src={example} className="w-full h-full object-cover" />
+      </div>
+      <div className="card-content p-4 flex-grow flex flex-col">
+        <h1 className="font-bold">{title}</h1>
+        <p>{fixLength(description)}</p>
+        <div className="flex gap-2 mt-auto">
+          <span className="text-primary">
+            <RiMoneyDollarCircleFill size={20} />
+          </span>
+          <span>{review}</span>
+          <span className="flex text-primary font-bold ml-auto">
+            <MdAttachMoney size={20} />
+            {price}
+          </span>
+        </div>
+      </div>
+      <div className="absolute top-0 left-0 w-full flex justify-between p-2">
+        <div className="w-[36px] aspect-square bg-primary text-white flex justify-center items-center rounded-lg font-bold">
+          <span>{rate}</span>
+        </div>
+        <div className="w-[36px] aspect-square flex justify-center items-center text-white bg-black/30 rounded-lg">
+          <AiOutlineHeart size={20} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Card
