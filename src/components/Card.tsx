@@ -1,10 +1,10 @@
 import { FunctionComponent } from "react"
-import { example } from "../assets/images"
-import { RiMoneyDollarCircleFill } from "react-icons/ri"
-import { MdAttachMoney } from "react-icons/md"
 import { AiOutlineHeart } from "react-icons/ai"
+import { MdAttachMoney } from "react-icons/md"
+import { RiMoneyDollarCircleFill } from "react-icons/ri"
+import { example } from "../assets/images"
 
-interface CardProps {
+export interface CardProps {
   img?: string
   title: string
   description: string
@@ -40,7 +40,7 @@ const Card: FunctionComponent<CardProps> = ({
             <RiMoneyDollarCircleFill size={20} />
           </span>
           <span>{review}</span>
-          <span className="flex text-primary font-bold ml-auto">
+          <span className="flex items-center text-primary font-bold ml-auto">
             <MdAttachMoney size={20} />
             {price}
           </span>
@@ -50,7 +50,7 @@ const Card: FunctionComponent<CardProps> = ({
         <div className="w-[36px] aspect-square bg-primary text-white flex justify-center items-center rounded-lg font-bold">
           <span>{rate}</span>
         </div>
-        <div className="w-[36px] aspect-square flex justify-center items-center text-white bg-black/30 rounded-lg">
+        <div className="w-[36px] aspect-square flex justify-center items-center text-white bg-black/30 rounded-lg hover:text-primary">
           <AiOutlineHeart size={20} />
         </div>
       </div>

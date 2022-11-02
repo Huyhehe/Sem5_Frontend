@@ -1,4 +1,5 @@
 import { FunctionComponent, useEffect } from "react"
+import NavBar from "../../components/NavBar"
 
 interface AuthLayoutProps {
   children: React.ReactNode
@@ -7,7 +8,9 @@ interface AuthLayoutProps {
 const AuthLayout: FunctionComponent<AuthLayoutProps> = ({ children }) => {
   return (
     <>
-      <div>auth layout</div>
+      <div>
+        <NavBar />
+      </div>
       {children}
     </>
   )

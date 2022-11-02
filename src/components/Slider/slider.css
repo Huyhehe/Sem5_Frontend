@@ -1,0 +1,10 @@
+.slick-dots-bottom {
+  bottom: -20px !important;
+}
+.slick-dots li {
+  background-color: #191724;
+  border-radius: 9999px;
+}
+.slick-dots li.slick-active button {
+  background-color: #db147f !important;
+}

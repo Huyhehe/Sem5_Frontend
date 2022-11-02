@@ -27,10 +27,11 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
   const unActiveClassName =
     "relative self-stretch flex items-center text-[1.5rem] font-bold cursor-pointer hover:text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:transform after:scale-x-0 hover:after:scale-x-100"
   return (
-    <div className="h-[5rem] flex gap-4 justify-center items-center">
+    <div className="h-[3rem] flex gap-4 justify-center items-center">
       {navItems.map((item, index) => {
         return (
           <NavLink
+            key={index}
             end
             className={({ isActive }: any) =>
               isActive ? activeClassName : unActiveClassName
