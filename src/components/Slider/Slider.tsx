@@ -1,6 +1,8 @@
-import { Carousel } from "antd"
-import { FunctionComponent, memo } from "react"
+import { Button, Carousel } from "antd"
+import { FunctionComponent, memo, useRef } from "react"
 import Card, { CardProps } from "../Card"
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai"
+import CircleButton from "../CircleButton"
 import "./slider.css"
 
 interface SliderProps {
@@ -8,6 +10,7 @@ interface SliderProps {
 }
 
 const Slider: FunctionComponent<SliderProps> = ({ children }) => {
+  const carouselRef = useRef<any>(null)
   const cardItems: Array<CardProps> = [
     {
       title: "Good recipe makes good day",
@@ -115,6 +118,13 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
       rate: 8.5,
       review: "Good",
     },
+    {
+      title: "Good recipe makes good day",
+      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
+      price: 100,
+      rate: 8.5,
+      review: "Good",
+    },
   ]
 
   const listToMatrix = (
@@ -137,9 +147,25 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
     return matrix
   }
 
+  const handleNext = () => {
+    carouselRef?.current?.next()
+    console.log(carouselRef.current)
+  }
+  const handlePrev = () => {
+    carouselRef?.current?.prev()
+  }
+
   return (
-    <div>
-      <Carousel dots={true}>
+    <div className="relative">
+      <Carousel
+        ref={carouselRef}
+        draggable
+        dots={true}
+        autoplay
+        autoplaySpeed={3000}
+        pauseOnHover
+        pauseOnDotsHover
+      >
         {listToMatrix(cardItems, 4).map((group, index) => {
           return (
             <div key={index} className="flex gap-[20px]">
@@ -159,6 +185,16 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
           )
         })}
       </Carousel>
+      <CircleButton
+        Icon={AiOutlineArrowLeft}
+        onClickFunc={handlePrev}
+        additionalClass="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2"
+      />
+      <CircleButton
+        Icon={AiOutlineArrowRight}
+        onClickFunc={handleNext}
+        additionalClass="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2"
+      />
     </div>
   )
 }

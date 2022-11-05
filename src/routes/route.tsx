@@ -1,5 +1,6 @@
-import { createBrowserRouter } from "react-router-dom"
+import { createBrowserRouter, Outlet } from "react-router-dom"
 import AuthLayout from "../layouts/AuthLayout"
+import UnAuthLayout from "../layouts/UnAuthLayout"
 import About from "../pages/About"
 import Home from "../pages/Home"
 export const router = createBrowserRouter([
@@ -21,7 +22,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <></>,
+    element: (
+      <UnAuthLayout>
+        <Outlet />
+      </UnAuthLayout>
+    ),
     children: [
       {
         path: "signIn",

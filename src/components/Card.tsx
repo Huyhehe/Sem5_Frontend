@@ -11,6 +11,7 @@ export interface CardProps {
   price: number
   rate: number
   review: "Good" | "Bad" | "Average"
+  onClickFunc?: () => void
 }
 
 const Card: FunctionComponent<CardProps> = ({
@@ -20,6 +21,7 @@ const Card: FunctionComponent<CardProps> = ({
   price,
   rate,
   review,
+  onClickFunc,
 }) => {
   const fixLength = (s: string) => {
     if (s.length > 35) {
@@ -28,7 +30,10 @@ const Card: FunctionComponent<CardProps> = ({
     return s
   }
   return (
-    <div className="card-container relative flex flex-col box-border w-[300px] h-[250px] bg-white rounded-[0.5rem] overflow-hidden border cursor-pointer hover:shadow-md">
+    <div
+      onClick={onClickFunc}
+      className="card-container relative flex flex-col box-border w-[300px] h-[250px] bg-white rounded-[0.5rem] overflow-hidden border cursor-pointer hover:shadow-md"
+    >
       <div className="card-image w-full h-[55%]">
         <img src={example} className="w-full h-full object-cover" />
       </div>
