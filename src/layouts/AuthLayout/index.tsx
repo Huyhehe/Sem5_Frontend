@@ -7,12 +7,12 @@ interface AuthLayoutProps {
 
 const AuthLayout: FunctionComponent<AuthLayoutProps> = ({ children }) => {
   return (
-    <>
-      <div>
+    <div className="authLayout flex flex-col items-center relative">
+      <div className="w-full sticky top-0 z-10 bg-white">
         <NavBar />
       </div>
-      {children}
-    </>
+      <div className="max-w-[1260px]">{children}</div>
+    </div>
   )
 }
 
