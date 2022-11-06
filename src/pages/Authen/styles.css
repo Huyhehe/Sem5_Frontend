@@ -1,0 +1,14 @@
+.ant-input-clear-icon {
+  display: flex;
+  align-items: center;
+}
+.ant-form-item-label label {
+  font-size: 1rem !important;
+  color: #857e7f !important;
+}
+.ant-form-item {
+  margin-bottom: 0.75rem !important;
+}
+.ant-btn {
+  background-color: black !important;
+}

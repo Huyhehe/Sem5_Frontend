@@ -1,10 +1,11 @@
 import { Button, Space } from "antd"
 import { FunctionComponent } from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 
 interface NavBarProps {}
 
 const NavBar: FunctionComponent<NavBarProps> = () => {
+  const navigator = useNavigate()
   const navItems = [
     {
       title: "Home",
@@ -53,10 +54,16 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
       </div>
       <div className="log-button-container">
         <Space align="center">
-          <Button className="h-[2.5rem] rounded-lg text-white bg-blue-500 border-none hover:bg-blue-500/70">
+          <Button
+            className="h-[2.5rem] rounded-lg text-white bg-blue-500 border-none hover:bg-blue-500/70"
+            onClick={() => navigator("/login/signIn")}
+          >
             Sign in
           </Button>
-          <Button className="h-[2.5rem] rounded-lg text-white bg-primary border-none hover:bg-primary/70">
+          <Button
+            className="h-[2.5rem] rounded-lg text-white bg-primary border-none hover:bg-primary/70"
+            onClick={() => navigator("/login/signUp")}
+          >
             Sign up for free!
           </Button>
         </Space>
