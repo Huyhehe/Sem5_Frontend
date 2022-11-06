@@ -2,6 +2,9 @@ import { createBrowserRouter, Outlet } from "react-router-dom"
 import AuthLayout from "../layouts/AuthLayout"
 import UnAuthLayout from "../layouts/UnAuthLayout"
 import About from "../pages/About"
+import AuthenPage from "../pages/Authen"
+import SignInPage from "../pages/Authen/SignIn"
+import SignUpPage from "../pages/Authen/SignUp"
 import Home from "../pages/Home"
 export const router = createBrowserRouter([
   {
@@ -24,13 +27,17 @@ export const router = createBrowserRouter([
     path: "/login",
     element: (
       <UnAuthLayout>
-        <Outlet />
+        <AuthenPage />
       </UnAuthLayout>
     ),
     children: [
       {
         path: "signIn",
-        element: <div>Sign In</div>,
+        element: <SignInPage />,
+      },
+      {
+        path: "signUp",
+        element: <SignUpPage />,
       },
     ],
   },
