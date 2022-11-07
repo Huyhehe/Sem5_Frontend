@@ -9,6 +9,9 @@ module.exports = {
         love: "#eb6f92",
         fade: "#857e7f",
       },
+      screens: {
+        mobile: "480px",
+      },
     },
   },
   plugins: [],

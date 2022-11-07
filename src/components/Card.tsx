@@ -23,23 +23,17 @@ const Card: FunctionComponent<CardProps> = ({
   review,
   onClickFunc,
 }) => {
-  const fixLength = (s: string) => {
-    if (s.length > 35) {
-      return s.slice(0, 35) + "..."
-    }
-    return s
-  }
   return (
     <div
       onClick={onClickFunc}
-      className="card-container relative flex flex-col box-border w-[300px] aspect-[30/25] bg-white rounded-[0.5rem] overflow-hidden border cursor-pointer hover:shadow-md"
+      className="card-container relative flex flex-col box-border md:w-[250px] xl:w-[300px] aspect-[250px] bg-white rounded-[0.5rem] overflow-hidden border cursor-pointer hover:shadow-md"
     >
       <div className="card-image w-full h-[55%]">
         <img src={example} className="w-full h-full object-cover" />
       </div>
       <div className="card-content p-4 flex-grow flex flex-col">
         <h1 className="font-bold">{title}</h1>
-        <p>{fixLength(description)}</p>
+        <p className="truncate">{description}</p>
         <div className="flex gap-2 mt-auto">
           <span className="text-primary">
             <RiMoneyDollarCircleFill size={20} />

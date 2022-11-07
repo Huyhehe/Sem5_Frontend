@@ -165,6 +165,26 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
         pauseOnHover
         slidesToShow={4}
         arrows={false}
+        responsive={[
+          {
+            breakpoint: 1280,
+            settings: {
+              slidesToShow: 3,
+            },
+          },
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 2,
+            },
+          },
+          {
+            breakpoint: 680,
+            settings: {
+              slidesToShow: 1,
+            },
+          },
+        ]}
       >
         {cardItems.map((item, index) => {
           return (
