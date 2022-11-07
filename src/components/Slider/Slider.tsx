@@ -156,7 +156,7 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative z-[-1]">
       <Carousel
         ref={carouselRef}
         draggable
@@ -187,7 +187,7 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
       <CircleButton
         Icon={AiOutlineArrowRight}
         onClickFunc={handleNext}
-        additionalClass="absolute top-1/2 right-0 -translate-y-1/2 translate-x-[calc(50%_-_15px)]"
+        additionalClass="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2"
       />
     </div>
   )

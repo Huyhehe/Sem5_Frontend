@@ -31,7 +31,10 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
 
   return (
     <div className="h-[3.5rem] px-[10%] flex justify-center gap-[20rem] items-center border-b">
-      <div className="logo-container text-[1.5rem]">
+      <div
+        className="logo-container text-[1.5rem] cursor-pointer"
+        onClick={() => navigator("/")}
+      >
         <h1 className="text-blue-500">
           TRAVEL<strong className="text-primary">CARE</strong>
         </h1>
