@@ -30,6 +30,14 @@ const Search: FunctionComponent<SearchProps> = () => {
       title: "Nha Trang Hotel",
       address: "Nha Trang, Viet Nam",
     },
+    {
+      title: "Nha Trang Hotel",
+      address: "Nha Trang, Viet Nam",
+    },
+    {
+      title: "Nha Trang Hotel",
+      address: "Nha Trang, Viet Nam",
+    },
   ]
 
   const handleOnKeyUp = (e: any) => {
@@ -45,7 +53,7 @@ const Search: FunctionComponent<SearchProps> = () => {
     setIsFocusing(false)
   }
   return (
-    <div className="search-container relative">
+    <div className="search-container relative z-10">
       <div
         tabIndex={0}
         onBlur={handleBlur}

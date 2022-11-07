@@ -155,8 +155,12 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
     carouselRef?.current?.prev()
   }
 
+  const handleCardClick = (id: number) => {
+    console.log(id)
+  }
+
   return (
-    <div className="relative z-[-1]">
+    <div className="relative z-[0]">
       <Carousel
         ref={carouselRef}
         draggable
@@ -195,6 +199,7 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
               price={item.price}
               rate={item.rate}
               review={item.review}
+              onClickFunc={() => handleCardClick(index)}
             />
           )
         })}
