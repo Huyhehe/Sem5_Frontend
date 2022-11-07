@@ -11,7 +11,7 @@ const AuthLayout: FunctionComponent<AuthLayoutProps> = ({ children }) => {
       <div className="w-full sticky top-0 z-10 bg-white">
         <NavBar />
       </div>
-      <div className="max-w-[1260px]">{children}</div>
+      <div className="max-w-[1260px] mt-[2rem]">{children}</div>
     </div>
   )
 }

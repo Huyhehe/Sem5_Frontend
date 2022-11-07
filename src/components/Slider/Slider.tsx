@@ -1,7 +1,7 @@
-import { Button, Carousel } from "antd"
+import { Carousel } from "antd"
 import { FunctionComponent, memo, useRef } from "react"
-import Card, { CardProps } from "../Card"
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai"
+import Card, { CardProps } from "../Card"
 import CircleButton from "../CircleButton"
 import "./slider.css"
 
@@ -160,28 +160,22 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
       <Carousel
         ref={carouselRef}
         draggable
-        dots={true}
+        dots={false}
         autoplay
-        autoplaySpeed={3000}
         pauseOnHover
-        pauseOnDotsHover
+        slidesToShow={4}
+        arrows={false}
       >
-        {listToMatrix(cardItems, 4).map((group, index) => {
+        {cardItems.map((item, index) => {
           return (
-            <div key={index} className="flex gap-[20px]">
-              {group.map((item, index) => {
-                return (
-                  <Card
-                    key={index}
-                    title={item.title}
-                    description={item.description}
-                    price={item.price}
-                    rate={item.rate}
-                    review={item.review}
-                  />
-                )
-              })}
-            </div>
+            <Card
+              key={index}
+              title={item.title}
+              description={item.description}
+              price={item.price}
+              rate={item.rate}
+              review={item.review}
+            />
           )
         })}
       </Carousel>
@@ -193,7 +187,7 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
       <CircleButton
         Icon={AiOutlineArrowRight}
         onClickFunc={handleNext}
-        additionalClass="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2"
+        additionalClass="absolute top-1/2 right-0 -translate-y-1/2 translate-x-[calc(50%_-_15px)]"
       />
     </div>
   )

@@ -8,3 +8,11 @@
 .slick-dots li.slick-active button {
   background-color: #db147f !important;
 }
+/* 
+.slick-track {
+  display: flex !important;
+  gap: 15px;
+}
+.slick-slide {
+  width: 300px !important;
+} */

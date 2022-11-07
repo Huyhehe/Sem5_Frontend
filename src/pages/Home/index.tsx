@@ -4,8 +4,7 @@ interface HomeProps {}
 
 const Home: FunctionComponent<HomeProps> = () => {
   return (
-    <div>
-      <div>Home</div>
+    <div className="homePage-container">
       <Slider />
     </div>
   )
