@@ -28,6 +28,10 @@ const Search: FunctionComponent<SearchProps> = () => {
       title: "Nha Trang Hotel",
       address: "Nha Trang, Viet Nam",
     },
+    {
+      title: "Little Hoi An",
+      address: "Nha Trang, Viet Nam",
+    },
   ]
   const formContainerRef = useRef<HTMLDivElement>(null)
   const dropDownRef = useRef<HTMLDivElement>(null)
@@ -43,7 +47,8 @@ const Search: FunctionComponent<SearchProps> = () => {
 
   const filterSearchResult = (searchData: string) => {
     return dummySearchResult.filter((item) => {
-      return item.title.toLowerCase().includes(searchData.toLowerCase())
+      const dataToSearch = item.address + item.title
+      return dataToSearch.toLowerCase().includes(searchData.toLowerCase())
     })
   }
 
@@ -67,7 +72,7 @@ const Search: FunctionComponent<SearchProps> = () => {
     setIsFocusing(false)
   }
   const handleOnSubmit = () => {
-    console.log("submit")
+    console.log(inputValue)
   }
   return (
     <div className="search-container relative z-10">
@@ -99,9 +104,7 @@ const Search: FunctionComponent<SearchProps> = () => {
             <div className="display-container-header flex items-center px-4 py-2">
               <FiMapPin className="mr-2" size={20} />
               <span className="text-[1.25rem]">
-                {inputValue
-                  ? `result for '${inputValue}'`
-                  : "Search by location"}
+                {inputValue ? `result for '${inputValue}'` : "Search anything"}
               </span>
             </div>
             {searchResult.map((item, index) => {
