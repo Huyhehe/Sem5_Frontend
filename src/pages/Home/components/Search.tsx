@@ -7,16 +7,6 @@ import { FiMapPin } from "react-icons/fi"
 interface SearchProps {}
 
 const Search: FunctionComponent<SearchProps> = () => {
-  const formContainerRef = useRef<HTMLDivElement>(null)
-  const dropDownRef = useRef<HTMLDivElement>(null)
-  const [isFocusing, setIsFocusing] = useState(false)
-  let inputTimeout: any
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      setIsFocusing(false)
-    }
-  })
-
   const dummySearchResult = [
     {
       title: "Hoi An Hotel",
@@ -39,11 +29,35 @@ const Search: FunctionComponent<SearchProps> = () => {
       address: "Nha Trang, Viet Nam",
     },
   ]
+  const formContainerRef = useRef<HTMLDivElement>(null)
+  const dropDownRef = useRef<HTMLDivElement>(null)
+  const [isFocusing, setIsFocusing] = useState(false)
+  const [inputValue, setInputValue] = useState("")
+  const [searchResult, setSearchResult] = useState(dummySearchResult)
+  let inputTimeout: any
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      setIsFocusing(false)
+    }
+  })
+
+  const filterSearchResult = (searchData: string) => {
+    return dummySearchResult.filter((item) => {
+      return item.title.toLowerCase().includes(searchData.toLowerCase())
+    })
+  }
 
   const handleOnKeyUp = (e: any) => {
     if (inputTimeout) clearTimeout(inputTimeout)
+    if (e.target.value === "") {
+      setInputValue(e.target.value)
+      setInputValue(e.target.value)
+      setSearchResult(filterSearchResult(e.target.value))
+      return
+    }
     inputTimeout = setTimeout(() => {
-      console.log(e.target.value ? e.target.value : "empty")
+      setInputValue(e.target.value)
+      setSearchResult(filterSearchResult(e.target.value))
     }, 1000)
   }
   const handleFocus = (e: any) => {
@@ -51,6 +65,9 @@ const Search: FunctionComponent<SearchProps> = () => {
   }
   const handleBlur = (e: any) => {
     setIsFocusing(false)
+  }
+  const handleOnSubmit = () => {
+    console.log("submit")
   }
   return (
     <div className="search-container relative z-10">
@@ -61,7 +78,7 @@ const Search: FunctionComponent<SearchProps> = () => {
         ref={formContainerRef}
         className={`search-box absolute w-[70%] bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg py-2 rounded-full`}
       >
-        <Form>
+        <Form onFinish={handleOnSubmit}>
           <Form.Item className="mb-0 px-2">
             <Input
               name="searchData"
@@ -81,9 +98,13 @@ const Search: FunctionComponent<SearchProps> = () => {
           >
             <div className="display-container-header flex items-center px-4 py-2">
               <FiMapPin className="mr-2" size={20} />
-              <span className="text-[1.25rem]">Search by location</span>
+              <span className="text-[1.25rem]">
+                {inputValue
+                  ? `result for '${inputValue}'`
+                  : "Search by location"}
+              </span>
             </div>
-            {dummySearchResult.map((item, index) => {
+            {searchResult.map((item, index) => {
               return (
                 <div
                   key={index}

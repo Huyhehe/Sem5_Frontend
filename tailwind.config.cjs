@@ -8,6 +8,7 @@ module.exports = {
         primary: "#db147f",
         love: "#eb6f92",
         fade: "#857e7f",
+        coral: "#e1999f",
       },
       screens: {
         mobile: "480px",
