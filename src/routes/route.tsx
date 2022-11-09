@@ -6,12 +6,21 @@ import AuthenPage from "../pages/Authen"
 import SignInPage from "../pages/Authen/SignIn"
 import SignUpPage from "../pages/Authen/SignUp"
 import Home from "../pages/Home"
+import Search from "../pages/Search"
 export const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <AuthLayout>
         <Home />
+      </AuthLayout>
+    ),
+  },
+  {
+    path: "/search",
+    element: (
+      <AuthLayout>
+        <Search />
       </AuthLayout>
     ),
   },

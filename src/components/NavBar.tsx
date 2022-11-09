@@ -12,16 +12,16 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
       link: "/",
     },
     {
-      title: "About",
-      link: "/about",
-    },
-    {
-      title: "Contact",
-      link: "/contact",
-    },
-    {
       title: "Search",
       link: "/search",
+    },
+    {
+      title: "Review",
+      link: "/review",
+    },
+    {
+      title: "About",
+      link: "/about",
     },
   ]
   const activeClassName =
@@ -30,7 +30,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
     "relative self-stretch flex items-center text-[1.5rem] font-bold cursor-pointer hover:text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:transform after:scale-x-0 hover:after:scale-x-100"
 
   return (
-    <div className="w-[100%] h-[3.5rem] px-[5%] flex justify-between items-center">
+    <div className="w-[1260px] h-[3.5rem] flex justify-between items-center">
       <div
         className="logo-container text-[1.5rem] cursor-pointer"
         onClick={() => navigator("/")}

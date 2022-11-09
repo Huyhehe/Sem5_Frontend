@@ -9,6 +9,7 @@ module.exports = {
         love: "#eb6f92",
         fade: "#857e7f",
         coral: "#e1999f",
+        gold: "#f6c177",
       },
       screens: {
         mobile: "480px",

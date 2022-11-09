@@ -26,7 +26,7 @@ const Card: FunctionComponent<CardProps> = ({
   return (
     <div
       onClick={onClickFunc}
-      className="card-container relative flex flex-col box-border md:w-[250px] xl:w-[300px] aspect-[250px] bg-white rounded-[0.5rem] overflow-hidden border cursor-pointer hover:shadow-md"
+      className="card-container relative flex flex-col box-border md:w-[250px] xl:w-[300px] h-[250px] bg-white rounded-[0.5rem] overflow-hidden border cursor-pointer hover:shadow-md"
     >
       <div className="card-image w-full h-[55%]">
         <img src={example} className="w-full h-full object-cover" />
