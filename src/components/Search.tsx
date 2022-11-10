@@ -37,13 +37,22 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
   ]
   const formContainerRef = useRef<HTMLDivElement>(null)
   const dropDownRef = useRef<HTMLDivElement>(null)
-  const [isFocusing, setIsFocusing] = useState(false)
-  const [inputValue, setInputValue] = useState("")
+  const [isFocusing, setIsFocusing] = useState<Boolean>(false)
+  const [inputValue, setInputValue] = useState<String>("")
   const [searchResult, setSearchResult] = useState(dummySearchResult)
   const navigator = useNavigate()
   let inputTimeout: any
+
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
+      setIsFocusing(false)
+    }
+  })
+  document.addEventListener("click", (e) => {
+    if (
+      formContainerRef.current &&
+      !formContainerRef.current.contains(e.target as Node)
+    ) {
       setIsFocusing(false)
     }
   })
@@ -68,6 +77,7 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
       setSearchResult(filterSearchResult(e.target.value))
     }, 1000)
   }
+
   const handleOnKeyDown = (e: any) => {
     if (e.key === "Enter") {
       setInputValue(e.target.value)
@@ -76,23 +86,23 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
   const handleFocus = (e: any) => {
     setIsFocusing(true)
   }
-  const handleBlur = (e: any) => {
-    setIsFocusing(false)
-  }
+
   const handleOnSubmit = () => {
     if (inputValue === "") return
     const params = {
-      data: inputValue,
+      data: inputValue as string,
     }
     navigator({
       pathname: "/search",
       search: `?${createSearchParams(params)}`,
     })
   }
+
   const handleResultItemClick = (item: any) => {
     const params = {
       data: item.title,
     }
+    setIsFocusing(false)
     navigator({
       pathname: "/search",
       search: `?${createSearchParams(params)}`,
@@ -101,11 +111,8 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
 
   return (
     <div
-      tabIndex={0}
-      onBlur={handleBlur}
-      onFocus={handleFocus}
       ref={formContainerRef}
-      className={`search-box absolute w-[70%] bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg py-2 rounded-full`}
+      className={`search-box absolute w-[70%] bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg py-2 rounded-full z-10`}
     >
       <Form onFinish={handleOnSubmit}>
         <Form.Item className="mb-0 px-2">
@@ -119,6 +126,7 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
             onChange={handleOnKeyUp}
             onKeyDown={handleOnKeyDown}
             defaultValue={defaultValue}
+            onFocus={handleFocus}
           ></Input>
         </Form.Item>
       </Form>
