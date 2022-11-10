@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react"
-import { useSearchParams } from "react-router-dom"
+import { Outlet, useParams, useSearchParams } from "react-router-dom"
 import Search from "../../components/Search"
 import Card from "./components/Card"
 import "./styles.css"
@@ -9,7 +9,9 @@ interface SearchPageProps {}
 
 const SearchPage: FunctionComponent<SearchPageProps> = () => {
   const [queryString] = useSearchParams()
-  console.log(queryString.get("data"))
+  const { id } = useParams()
+  console.log(queryString ? "true" : "false")
+  console.log(id)
 
   const dummySearchResult: Item[] = [
     {
@@ -43,16 +45,20 @@ const SearchPage: FunctionComponent<SearchPageProps> = () => {
       <div className="search-container h-[10rem] relative z-10">
         <Search defaultValue={queryString.get("data") || ""} />
       </div>
-      <div className="search-result-container flex flex-col rounded-lg overflow-hidden">
-        {dummySearchResult.map((item, index) => (
-          <div
-            key={index}
-            className="search-result-item hover:bg-gray-200 cursor-pointer border-b last:border-0"
-          >
-            <Card item={item} />
-          </div>
-        ))}
-      </div>
+      {!id ? (
+        <div className="search-result-container flex flex-col rounded-lg overflow-hidden">
+          {dummySearchResult.map((item, index) => (
+            <div
+              key={index}
+              className="search-result-item hover:bg-gray-200 cursor-pointer border-b last:border-0"
+            >
+              <Card item={item} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <Outlet />
+      )}
     </div>
   )
 }

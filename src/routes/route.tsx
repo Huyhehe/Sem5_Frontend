@@ -7,6 +7,7 @@ import SignInPage from "../pages/Authen/SignIn"
 import SignUpPage from "../pages/Authen/SignUp"
 import Home from "../pages/Home"
 import Search from "../pages/Search"
+import SearchResult from "../pages/Search/SearchResult"
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -23,6 +24,12 @@ export const router = createBrowserRouter([
         <Search />
       </AuthLayout>
     ),
+    children: [
+      {
+        path: ":id",
+        element: <SearchResult />,
+      },
+    ],
   },
   {
     path: "/about",
