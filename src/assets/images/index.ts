@@ -1,2 +1,5 @@
 export { default as example } from "./features/exampleImg.jpg"
 export { default as searchBg } from "./features/search-bg.webp"
+export { default as cover } from "./features/cover.png"
+export { default as coverX2 } from "./features/coverX2.png"
+export { default as coverX3 } from "./features/coverX3.png"

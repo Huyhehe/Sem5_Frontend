@@ -66,7 +66,7 @@ const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
           <Button
             block
             htmlType="submit"
-            className="bg-primary text-white rounded-md text-[1.25rem] py-[0.5rem] hover:bg-primary/70 outline-none h-full"
+            className="bg-primary text-white rounded-md text-[1.25rem] py-[0.5rem] hover:bg-primary/70 border-none h-full"
           >
             Sign up
           </Button>

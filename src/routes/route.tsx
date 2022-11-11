@@ -3,8 +3,10 @@ import AuthLayout from "../layouts/AuthLayout"
 import UnAuthLayout from "../layouts/UnAuthLayout"
 import About from "../pages/About"
 import AuthenPage from "../pages/Authen"
+import ForgotPassword from "../pages/Authen/pages/ForgotPassword"
 import SignInPage from "../pages/Authen/pages/SignIn"
 import SignUpPage from "../pages/Authen/pages/SignUp"
+import Verify from "../pages/Authen/pages/Verify"
 import Home from "../pages/Home"
 import Search from "../pages/Search"
 import SearchResult from "../pages/Search/pages/SearchResultById"
@@ -54,6 +56,14 @@ export const router = createBrowserRouter([
       {
         path: "signUp",
         element: <SignUpPage />,
+      },
+      {
+        path: "forgotPassword",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "verify",
+        element: <Verify />,
       },
     ],
   },
