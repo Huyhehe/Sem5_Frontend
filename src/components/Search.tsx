@@ -92,6 +92,7 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
     const params = {
       data: inputValue as string,
     }
+    setIsFocusing(false)
     navigator({
       pathname: "/search",
       search: `?${createSearchParams(params)}`,

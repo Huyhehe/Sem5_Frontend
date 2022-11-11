@@ -4,14 +4,13 @@ import Search from "../../components/Search"
 import Card from "./components/Card"
 import "./styles.css"
 import { Item } from "./components/Card"
+import SearchResult from "./pages/SearchResult"
 
 interface SearchPageProps {}
 
 const SearchPage: FunctionComponent<SearchPageProps> = () => {
   const [queryString] = useSearchParams()
   const { id } = useParams()
-  console.log(queryString ? "true" : "false")
-  console.log(id)
 
   const dummySearchResult: Item[] = [
     {
@@ -40,25 +39,17 @@ const SearchPage: FunctionComponent<SearchPageProps> = () => {
       review: "Average",
     },
   ]
+  const searchResult = dummySearchResult.filter(
+    (item) =>
+      item.title.toLowerCase().includes(queryString.get("data") as string) ||
+      item.address.toLowerCase().includes(queryString.get("data") as string)
+  )
   return (
     <div className="search-page w-[1260px]">
       <div className="search-container h-[10rem] relative z-10">
         <Search defaultValue={queryString.get("data") || ""} />
       </div>
-      {!id ? (
-        <div className="search-result-container flex flex-col rounded-lg overflow-hidden">
-          {dummySearchResult.map((item, index) => (
-            <div
-              key={index}
-              className="search-result-item hover:bg-gray-200 cursor-pointer border-b last:border-0"
-            >
-              <Card item={item} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <Outlet />
-      )}
+      {!id ? <SearchResult searchResult={searchResult} /> : <Outlet />}
     </div>
   )
 }

@@ -7,7 +7,7 @@ import SignInPage from "../pages/Authen/SignIn"
 import SignUpPage from "../pages/Authen/SignUp"
 import Home from "../pages/Home"
 import Search from "../pages/Search"
-import SearchResult from "../pages/Search/SearchResult"
+import SearchResult from "../pages/Search/pages/SearchResultById"
 export const router = createBrowserRouter([
   {
     path: "/",
