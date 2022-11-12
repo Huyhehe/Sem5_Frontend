@@ -134,7 +134,7 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
       {isFocusing && (
         <div
           ref={dropDownRef}
-          className="display-container absolute max-h-[20rem] top-full translate-y-[0.5rem] left-0 w-full flex flex-col bg-white rounded-xl py-2 overflow-auto"
+          className="display-container absolute max-h-[20rem] top-full translate-y-[0.5rem] left-0 w-full flex flex-col bg-white rounded-xl py-2 overflow-auto shadow-md"
         >
           <div className="display-container-header flex items-center px-4 py-2">
             <FiMapPin className="mr-2" size={20} />

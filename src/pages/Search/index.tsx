@@ -41,8 +41,12 @@ const SearchPage: FunctionComponent<SearchPageProps> = () => {
   ]
   const searchResult = dummySearchResult.filter(
     (item) =>
-      item.title.toLowerCase().includes(queryString.get("data") as string) ||
-      item.address.toLowerCase().includes(queryString.get("data") as string)
+      item.title
+        .toLowerCase()
+        .includes(queryString.get("data")?.toLowerCase() as string) ||
+      item.address
+        .toLowerCase()
+        .includes(queryString.get("data")?.toLowerCase() as string)
   )
   return (
     <div className="search-page w-[1260px]">

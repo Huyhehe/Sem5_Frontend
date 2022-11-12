@@ -34,7 +34,7 @@ const CodeField: FunctionComponent<CodeFieldProps> = () => {
     formRef?.current?.resetFields()
     const input = document.getElementById(`input0`) as HTMLInputElement
     input.focus()
-  }t
+  }
   return (
     <div className="code-input-field">
       <Form
