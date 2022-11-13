@@ -1,55 +1,38 @@
-import { FunctionComponent } from "react"
+import { FunctionComponent, useEffect, useState } from "react"
 import { Outlet, useParams, useSearchParams } from "react-router-dom"
 import Search from "../../components/Search"
-import Card from "./components/Card"
-import "./styles.css"
-import { Item } from "./components/Card"
+import { Review } from "../../interfaces/Review"
+import { getAllReview } from "../../utils/http"
 import SearchResult from "./pages/SearchResult"
+import "./styles.css"
 
 interface SearchPageProps {}
 
 const SearchPage: FunctionComponent<SearchPageProps> = () => {
   const [queryString] = useSearchParams()
   const { id } = useParams()
+  const [searchResult, setSearchResult] = useState<Review[]>([])
 
-  const dummySearchResult: Item[] = [
-    {
-      title: "Hoi An Hotel",
-      address: "Hoi An, Quang Nam, Viet Nam",
-      description:
-        "Hoi An Hotel is a 5-star hotel located in Hoi An, Quang Nam, Viet Nam",
-      price: 100,
-      rate: 4.5,
-      review: "Good",
-    },
-    {
-      title: "Muong Thanh Hotel",
-      address: "Da Nang, Viet Nam",
-      description: "Muong Thanh Hotel is a 5-star hotel located in Da Nang",
-      price: 200,
-      rate: 4.5,
-      review: "Bad",
-    },
-    {
-      title: "Nha Trang Hotel",
-      address: "Nha Trang, Viet Nam",
-      description: "Nha Trang Hotel is a 5-star hotel located in Nha Trang",
-      price: 300,
-      rate: 4.5,
-      review: "Average",
-    },
-  ]
-  const searchResult = dummySearchResult.filter(
-    (item) =>
-      item.title
-        .toLowerCase()
-        .includes(queryString.get("data")?.toLowerCase() as string) ||
-      item.address
-        .toLowerCase()
-        .includes(queryString.get("data")?.toLowerCase() as string)
-  )
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getAllReview()
+      setSearchResult(
+        response.filter(
+          (item: Review) =>
+            item.title
+              .toLowerCase()
+              .includes(queryString.get("data")?.toLowerCase() as string) ||
+            item.address
+              .toLowerCase()
+              .includes(queryString.get("data")?.toLowerCase() as string)
+        )
+      )
+      console.log(response)
+    }
+    fetchData()
+  }, [queryString])
   return (
-    <div className="search-page w-[1260px]">
+    <div className="search-page w-[1260px] pb-4">
       <div className="search-container h-[10rem] relative z-10">
         <Search defaultValue={queryString.get("data") || ""} />
       </div>

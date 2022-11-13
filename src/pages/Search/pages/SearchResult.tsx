@@ -1,24 +1,33 @@
 import { FunctionComponent } from "react"
-import { Item } from "../components/Card"
-import Card from "../components/Card"
+import SearchCard from "../components/SearchCard"
 import { Empty } from "antd"
+import { Review } from "../../../interfaces/Review"
+import { useNavigate } from "react-router-dom"
 
 interface SearchResultProps {
-  searchResult: Item[]
+  searchResult: Review[]
 }
 
 const SearchResult: FunctionComponent<SearchResultProps> = ({
   searchResult,
 }) => {
+  const navigator = useNavigate()
+  const handleOnCardClick = (id: number) => {
+    navigator(`/search/${id}`)
+  }
+
   return (
     <>
       <div className="search-result-container flex flex-col rounded-lg overflow-hidden">
         {searchResult.map((item, index) => (
           <div
-            key={index}
+            key={item.id}
             className="search-result-item hover:bg-gray-200 cursor-pointer border-b last:border-0"
           >
-            <Card item={item} />
+            <SearchCard
+              item={item}
+              onClickFunc={() => handleOnCardClick(item.id)}
+            />
           </div>
         ))}
       </div>

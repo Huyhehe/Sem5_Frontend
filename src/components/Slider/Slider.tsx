@@ -1,9 +1,11 @@
 import { Carousel } from "antd"
 import { FunctionComponent, memo, useRef } from "react"
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai"
-import Card, { CardProps } from "../Card"
+import { Item } from "../../interfaces/Review"
+import Card from "../Card"
 import CircleButton from "../CircleButton"
 import "./slider.css"
+import { dummyAPI as cardItems } from "../../data/dummyAPI"
 
 interface SliderProps {
   children?: React.ReactNode
@@ -11,145 +13,9 @@ interface SliderProps {
 
 const Slider: FunctionComponent<SliderProps> = ({ children }) => {
   const carouselRef = useRef<any>(null)
-  const cardItems: Array<CardProps> = [
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-    {
-      title: "Good recipe makes good day",
-      description: "aksjdlasjdklajsdkljasasdasdasdasldkj",
-      price: 100,
-      rate: 8.5,
-      review: "Good",
-    },
-  ]
-
-  const listToMatrix = (
-    list: Array<CardProps>,
-    elementsPerSubArray: number
-  ) => {
-    let matrix: Array<Array<CardProps>> = [],
-      i,
-      k
-
-    for (i = 0, k = -1; i < list.length; i++) {
-      if (i % elementsPerSubArray === 0) {
-        k++
-        matrix[k] = []
-      }
-
-      matrix[k].push(list[i])
-    }
-
-    return matrix
-  }
 
   const handleNext = () => {
     carouselRef?.current?.next()
-    console.log(carouselRef.current)
   }
   const handlePrev = () => {
     carouselRef?.current?.prev()

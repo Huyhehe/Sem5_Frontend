@@ -1,12 +1,23 @@
-import { FunctionComponent } from "react"
+import { FunctionComponent, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { Review } from "../../../interfaces/Review"
+import { getReviewById } from "../../../utils/http"
 
 interface SearchResultByIdProps {}
 
 const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
   const { id } = useParams()
-  console.log(id)
-  return <div>Search result page {id}</div>
+  const [review, setReview] = useState<Review | null>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getReviewById(Number(id))
+      setReview(response)
+    }
+    fetchData()
+  }, [])
+
+  return <div>Search result page {review?.title}</div>
 }
 
 export default SearchResultById

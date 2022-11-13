@@ -38,7 +38,7 @@ const ForgotPassword: FunctionComponent<ForgotPasswordProps> = () => {
           <Input
             placeholder="Ex: huyhehe@gmail.com"
             allowClear
-            className="rounded-md hover:border-primary focus-within:border-primary outline-primary"
+            className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
             type="email"
           />
         </Form.Item>

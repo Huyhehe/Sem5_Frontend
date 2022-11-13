@@ -4,7 +4,7 @@ import { MdAttachMoney } from "react-icons/md"
 import { RiMoneyDollarCircleFill } from "react-icons/ri"
 import { example } from "../assets/images"
 
-export interface CardProps {
+interface CardProps {
   img?: string
   title: string
   description: string

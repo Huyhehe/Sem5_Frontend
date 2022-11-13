@@ -1,24 +1,19 @@
 import { FunctionComponent } from "react"
 import { AiFillStar } from "react-icons/ai"
 import { RiMoneyDollarCircleFill } from "react-icons/ri"
-
-export interface Item {
-  img?: string
-  title: string
-  address: string
-  description: string
-  price: number
-  rate: number
-  review: "Good" | "Bad" | "Average"
-}
+import { Item } from "../../../interfaces/Review"
 
 interface SearchCardProps {
   item: Item
+  onClickFunc?: () => void
 }
 
-const SearchCard: FunctionComponent<SearchCardProps> = ({ item }) => {
+const SearchCard: FunctionComponent<SearchCardProps> = ({
+  item,
+  onClickFunc,
+}) => {
   return (
-    <div className="h-[12.5rem] flex gap-[1rem] p-[1rem]">
+    <div className="h-[12.5rem] flex gap-[1rem] p-[1rem]" onClick={onClickFunc}>
       <div className="search-card-img h-full aspect-square bg-coral">
         <img src="" alt="" />
       </div>

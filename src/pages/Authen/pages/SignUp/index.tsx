@@ -31,7 +31,7 @@ const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
           <Input
             placeholder="Ex: Huyhehe"
             allowClear
-            className="rounded-md hover:border-primary focus-within:border-primary outline-primary"
+            className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
           />
         </Form.Item>
         <Form.Item
@@ -50,7 +50,7 @@ const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
           <Input.Password
             placeholder="Password"
             allowClear
-            className="rounded-md hover:border-primary focus-within:border-primary outline-primary"
+            className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
           />
         </Form.Item>
         <div className="option-container flex gap-[0.5rem] justify-end">

@@ -30,7 +30,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
           <Input
             placeholder="Ex: Huyhehe"
             allowClear
-            className="rounded-md hover:border-primary focus-within:border-primary outline-primary"
+            className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
           />
         </Form.Item>
         <Form.Item
@@ -49,7 +49,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
           <Input.Password
             placeholder="Password"
             allowClear
-            className="rounded-md hover:border-primary focus-within:border-primary outline-primary"
+            className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
           />
         </Form.Item>
         <div className="option-container flex gap-[0.5rem] justify-end">
@@ -65,7 +65,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
           <Button
             block
             htmlType="submit"
-            className="bg-primary text-white rounded-md text-[1.25rem] py-[0.5rem] hover:bg-primary/70 outline-none h-full"
+            className="bg-primary text-white rounded-md text-[1.25rem] py-[0.5rem] hover:bg-primary/70 outline-none h-full border-none"
           >
             Sign in
           </Button>
