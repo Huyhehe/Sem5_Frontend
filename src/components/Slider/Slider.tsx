@@ -1,11 +1,11 @@
 import { Carousel } from "antd"
-import { FunctionComponent, memo, useRef } from "react"
+import { FunctionComponent, memo, useEffect, useRef, useState } from "react"
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai"
-import { Item } from "../../interfaces/Review"
+import { Review } from "../../interfaces/Review"
 import Card from "../Card"
 import CircleButton from "../CircleButton"
 import "./slider.css"
-import { dummyAPI as cardItems } from "../../data/dummyAPI"
+import { getAllReview } from "../../utils/http"
 
 interface SliderProps {
   children?: React.ReactNode
@@ -13,6 +13,7 @@ interface SliderProps {
 
 const Slider: FunctionComponent<SliderProps> = ({ children }) => {
   const carouselRef = useRef<any>(null)
+  const [cardItems, setCardItems] = useState<Review[]>([])
 
   const handleNext = () => {
     carouselRef?.current?.next()
@@ -20,10 +21,21 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
   const handlePrev = () => {
     carouselRef?.current?.prev()
   }
-
   const handleCardClick = (id: number) => {
     console.log(id)
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getAllReview()
+        setCardItems(response)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchData()
+  }, [])
 
   return (
     <div className="relative z-[0]">

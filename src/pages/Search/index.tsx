@@ -27,7 +27,6 @@ const SearchPage: FunctionComponent<SearchPageProps> = () => {
               .includes(queryString.get("data")?.toLowerCase() as string)
         )
       )
-      console.log(response)
     }
     fetchData()
   }, [queryString])
