@@ -5,6 +5,6 @@ export interface Review {
   description: string
   price: number
   rate: number
-  review: "Good" | "Bad" | "Average"
+  review?: any
   image?: string
 }

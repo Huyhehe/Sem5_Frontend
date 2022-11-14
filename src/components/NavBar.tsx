@@ -58,13 +58,13 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
       <div className="log-button-container">
         <Space align="center">
           <Button
-            className="h-[2.5rem] rounded-lg text-white bg-blue-500 border-none hover:bg-blue-500/70"
+            className="h-[2.5rem] rounded-full text-white bg-blue-500 border-none hover:bg-blue-500/70"
             onClick={() => navigator("/login/signIn")}
           >
             Sign in
           </Button>
           <Button
-            className="h-[2.5rem] rounded-lg text-white bg-primary border-none hover:bg-primary/70"
+            className="h-[2.5rem] rounded-full text-white bg-primary border-none hover:bg-primary/70"
             onClick={() => navigator("/login/signUp")}
           >
             Sign up for free!

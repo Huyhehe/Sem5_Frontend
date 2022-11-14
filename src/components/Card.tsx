@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react"
 import { AiOutlineHeart } from "react-icons/ai"
-import { MdAttachMoney } from "react-icons/md"
 import { RiMoneyDollarCircleFill } from "react-icons/ri"
 import { example } from "../assets/images"
+import { getRatingString, toDouble } from "../utils/reusable"
 
 interface CardProps {
   img?: string
@@ -10,7 +10,6 @@ interface CardProps {
   description: string
   price: number
   rate: number
-  review: "Good" | "Bad" | "Average"
   onClickFunc?: () => void
 }
 
@@ -20,7 +19,6 @@ const Card: FunctionComponent<CardProps> = ({
   description,
   price,
   rate,
-  review,
   onClickFunc,
 }) => {
   return (
@@ -35,19 +33,26 @@ const Card: FunctionComponent<CardProps> = ({
         <h1 className="font-bold">{title}</h1>
         <p className="truncate">{description}</p>
         <div className="flex gap-2 mt-auto">
-          <span className="text-primary">
-            <RiMoneyDollarCircleFill size={20} />
+          <span
+            className={`${
+              getRatingString(rate) === "Good"
+                ? "text-green-500"
+                : getRatingString(rate) === "Bad"
+                ? "text-red-500"
+                : "text-yellow-500"
+            } font-medium`}
+          >
+            {getRatingString(rate)}
           </span>
-          <span>{review}</span>
           <span className="flex items-center text-primary font-bold ml-auto">
-            <MdAttachMoney size={20} />
+            <RiMoneyDollarCircleFill size={20} />
             {price}
           </span>
         </div>
       </div>
       <div className="absolute top-0 left-0 w-full flex justify-between p-2">
         <div className="w-[36px] aspect-square bg-primary text-white flex justify-center items-center rounded-lg font-bold">
-          <span>{rate}</span>
+          <span>{toDouble(rate)}</span>
         </div>
         <div className="w-[36px] aspect-square flex justify-center items-center text-white bg-black/30 rounded-lg hover:text-primary">
           <AiOutlineHeart size={20} />

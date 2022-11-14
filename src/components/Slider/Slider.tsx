@@ -1,11 +1,12 @@
 import { Carousel } from "antd"
 import { FunctionComponent, memo, useEffect, useRef, useState } from "react"
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai"
+import { useNavigate } from "react-router-dom"
 import { Review } from "../../interfaces/Review"
+import { getAllReview } from "../../utils/http"
 import Card from "../Card"
 import CircleButton from "../CircleButton"
 import "./slider.css"
-import { getAllReview } from "../../utils/http"
 
 interface SliderProps {
   children?: React.ReactNode
@@ -14,6 +15,7 @@ interface SliderProps {
 const Slider: FunctionComponent<SliderProps> = ({ children }) => {
   const carouselRef = useRef<any>(null)
   const [cardItems, setCardItems] = useState<Review[]>([])
+  const navigator = useNavigate()
 
   const handleNext = () => {
     carouselRef?.current?.next()
@@ -22,7 +24,7 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
     carouselRef?.current?.prev()
   }
   const handleCardClick = (id: number) => {
-    console.log(id)
+    navigator(`/search/${id}`)
   }
 
   useEffect(() => {
@@ -71,13 +73,12 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
         {cardItems.map((item, index) => {
           return (
             <Card
-              key={index}
+              key={item.id}
               title={item.title}
               description={item.description}
               price={item.price}
               rate={item.rate}
-              review={item.review}
-              onClickFunc={() => handleCardClick(index)}
+              onClickFunc={() => handleCardClick(item.id)}
             />
           )
         })}

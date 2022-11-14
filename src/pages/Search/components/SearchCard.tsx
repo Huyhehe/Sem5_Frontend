@@ -1,10 +1,11 @@
+import { getRatingString } from "@/utils/reusable"
 import { FunctionComponent } from "react"
 import { AiFillStar } from "react-icons/ai"
 import { RiMoneyDollarCircleFill } from "react-icons/ri"
-import { Item } from "../../../interfaces/Review"
+import { Review } from "@/interfaces/Review"
 
 interface SearchCardProps {
-  item: Item
+  item: Review
   onClickFunc?: () => void
 }
 
@@ -35,14 +36,14 @@ const SearchCard: FunctionComponent<SearchCardProps> = ({
             <span
               className={
                 "text-sm font-bold " +
-                (item.review === "Good"
+                (getRatingString(item.rate) === "Good"
                   ? "text-green-500"
-                  : item.review === "Average"
-                  ? "text-gold"
-                  : "text-primary")
+                  : getRatingString(item.rate) === "Bad"
+                  ? "text-red-500"
+                  : "text-yellow-500")
               }
             >
-              {item.review}
+              {getRatingString(item.rate)}
             </span>
           </div>
         </div>
