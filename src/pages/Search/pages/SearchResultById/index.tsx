@@ -10,12 +10,14 @@ import { AiOutlineHeart } from "react-icons/ai"
 import "./styles/styles.css"
 import { Carousel, Image } from "antd"
 import { example } from "@/assets/images"
+import CustomSlide from "@/components/CustomSlide"
 
 interface SearchResultByIdProps {}
 
 const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
   const { id } = useParams()
   const [review, setReview] = useState<Review | null>(null)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +31,7 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
     <div className="searchResult-container">
       <div className="content-container">
         <div className="content-header">
-          <h1 className="text-[2.5rem] font-bold">{review?.title}</h1>
+          <h1 className="text-[2.5rem] font-bold self-end">{review?.title}</h1>
           <div className="header-icons flex items-center">
             <div className="p-2 border-[2px] text-love border-love rounded-full hover:text-white hover:border-white hover:bg-love cursor-pointer">
               <AiOutlineHeart size={30} />
@@ -65,9 +67,29 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
             </div>
           </div>
           <div className="main-images">
-            <Carousel autoplay>
-              <Image src={example} width={500} />
-            </Carousel>
+            <CustomSlide size={860}>
+              <div className="w-[860px] aspect-[16/9] flex justify-center">
+                <img
+                  src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp"
+                  className="w-full object-cover"
+                />
+              </div>
+              <div className="w-[860px] aspect-[16/9] flex justify-center">
+                <img src={example} className="w-full object-cover" />
+              </div>
+              <div className="w-[860px] aspect-[16/9] flex justify-center">
+                <Image
+                  src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp"
+                  className="object-cover"
+                />
+              </div>
+              <div className="w-[860px] flex justify-center">
+                <Image
+                  src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp"
+                  width={250}
+                />
+              </div>
+            </CustomSlide>
           </div>
         </div>
       </div>

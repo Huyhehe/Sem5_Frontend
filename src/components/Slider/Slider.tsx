@@ -70,7 +70,7 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
           },
         ]}
       >
-        {cardItems.map((item, index) => {
+        {cardItems.map((item) => {
           return (
             <Card
               key={item.id}
