@@ -6,31 +6,39 @@ export const getAllReview = async () => {
   try {
     const res = await axios.get(`${API_URL}/reviews`)
     return res.data
-  } catch (error) {
-    return error
+  } catch (error: any) {
+    throw new Error(error)
   }
 }
 export const getReviewById = async (id: number) => {
   try {
     const res = await axios.get(`${API_URL}/reviews/${id}`)
     return res.data
-  } catch (error) {
-    return error
+  } catch (error: any) {
+    throw new Error(error)
   }
 }
-export const loginAPI = async (user: any) => {
+export const signinAPI = async (user: any) => {
   try {
     const res = await axios.post(`${API_URL}/auth/login`, user)
     return res.data
-  } catch (error) {
-    return error
+  } catch (error: any) {
+    throw new Error(error)
   }
 }
 export const forgotPasswordAPI = async (email: string) => {
   try {
     const res = await axios.post(`${API_URL}/auth/forgot-password`, email)
     return res.data
-  } catch (error) {
-    return error
+  } catch (error: any) {
+    throw new Error(error)
+  }
+}
+export const registerAPI = async (user: any) => {
+  try {
+    const res = await axios.post(`${API_URL}/auth/register`, user)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error)
   }
 }
