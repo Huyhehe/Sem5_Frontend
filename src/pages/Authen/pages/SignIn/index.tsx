@@ -1,12 +1,18 @@
 import { Button, Form, Input } from "antd"
 import { FunctionComponent } from "react"
 import { Link } from "react-router-dom"
+import { loginAPI } from "@/utils/http"
 
 interface SignInPageProps {}
 
 const SignInPage: FunctionComponent<SignInPageProps> = () => {
-  const handleSubmit = (e: any) => {
-    console.log(e)
+  const handleSubmit = async (e: any) => {
+    try {
+      const user = await loginAPI(e)
+      console.log(user)
+    } catch (error) {
+      console.log(error)
+    }
   }
   return (
     <div className="signInPage-container mt-[2rem]">
