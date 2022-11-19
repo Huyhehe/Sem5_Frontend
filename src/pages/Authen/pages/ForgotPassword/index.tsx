@@ -1,20 +1,26 @@
+import { forgotPasswordAPI } from "@/utils/http"
+import { setEmailFromLocal } from "@/utils/localStorage"
+import { Button, Form, Input } from "antd"
 import { FunctionComponent } from "react"
-import { Input, Form, Button } from "antd"
-import { Link, useNavigate, useOutletContext } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 interface ForgotPasswordProps {}
-type ContextType = {
-  email: string | null
-  setEmail: React.Dispatch<React.SetStateAction<string | null>>
-}
 
 const ForgotPassword: FunctionComponent<ForgotPasswordProps> = () => {
-  const { email, setEmail } = useOutletContext<ContextType>()
   const navigator = useNavigate()
-  const handleSubmit = (e: any) => {
-    console.log(e)
-    navigator("/login/verify")
-    setEmail(e.email)
+  const handleSubmit = async (e: any) => {
+    try {
+      const res = await forgotPasswordAPI(e.email)
+      // After API done
+      // if (res.user) {
+      //   setEmailFromLocal(e.email)
+      //   navigator("/login/verify")
+      // }
+      setEmailFromLocal(e.email)
+      navigator("/login/verify")
+    } catch (error) {
+      console.log(error)
+    }
   }
   return (
     <div className="signInPage-container mt-[2rem]">

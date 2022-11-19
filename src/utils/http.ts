@@ -18,3 +18,19 @@ export const getReviewById = async (id: number) => {
     return error
   }
 }
+export const loginAPI = async (user: any) => {
+  try {
+    const res = await axios.post(`${API_URL}/auth/login`, user)
+    return res.data
+  } catch (error) {
+    return error
+  }
+}
+export const forgotPasswordAPI = async (email: string) => {
+  try {
+    const res = await axios.post(`${API_URL}/auth/forgot-password`, email)
+    return res.data
+  } catch (error) {
+    return error
+  }
+}

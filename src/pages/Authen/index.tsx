@@ -21,7 +21,7 @@ const AuthenPage: FunctionComponent<AuthenPageProps> = () => {
           </h1>
         </div>
         <div className="main-form">
-          <Outlet context={{ email, setEmail }} />
+          <Outlet />
         </div>
       </div>
       <div className="authen-extraContent flex-grow-[3] flex justify-end">
