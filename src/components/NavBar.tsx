@@ -1,11 +1,14 @@
 import { Button, Space } from "antd"
-import { FunctionComponent } from "react"
+import { FunctionComponent, useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
+import { AiOutlineMenu } from "react-icons/ai"
+import ResizedNavlinks from "./ResizedNavlinks"
 
 interface NavBarProps {}
 
 const NavBar: FunctionComponent<NavBarProps> = () => {
   const navigator = useNavigate()
+  const [isMobile, setIsMobile] = useState<boolean>(false)
   const navItems = [
     {
       title: "Home",
@@ -30,7 +33,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
     "relative self-stretch flex items-center text-[1.5rem] font-bold cursor-pointer hover:text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:transform after:scale-x-0 hover:after:scale-x-100"
 
   return (
-    <div className="w-[1260px] h-[3.5rem] flex justify-between items-center">
+    <div className="w-[1260px] h-[3.5rem] px-4 xl:px-0 flex justify-between items-center bg-white">
       <div
         className="logo-container text-[1.5rem] cursor-pointer"
         onClick={() => navigator("/")}
@@ -39,7 +42,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
           TRAVEL<strong className="text-primary">CARE</strong>
         </h1>
       </div>
-      <div className="links-container h-full flex gap-4 justify-center">
+      <div className="links-container h-full hidden sm:flex gap-4 justify-center">
         {navItems.map((item, index) => {
           return (
             <NavLink
@@ -55,7 +58,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
           )
         })}
       </div>
-      <div className="log-button-container">
+      <div className="log-button-container hidden md:flex">
         <Space align="center">
           <Button
             className="h-[2.5rem] rounded-full text-white bg-blue-500 border-none hover:bg-blue-500/70"
@@ -70,6 +73,20 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
             Sign up for free!
           </Button>
         </Space>
+      </div>
+      <div
+        className="flex md:hidden cursor-pointer"
+        onClick={() => setIsMobile((prev) => !prev)}
+      >
+        <AiOutlineMenu size={30} />
+      </div>
+
+      <div
+        className={`absolute bg-white w-full top-full left-0 h-screen transition-all -z-10 ${
+          isMobile ? "open" : "close"
+        }`}
+      >
+        <ResizedNavlinks navItems={navItems} navigator={navigator} />
       </div>
     </div>
   )
