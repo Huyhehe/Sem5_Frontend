@@ -82,7 +82,7 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
       </div>
 
       <div
-        className={`absolute bg-white w-full top-full left-0 h-screen transition-all -z-10 ${
+        className={`absolute md:hidden bg-white w-full top-full left-0 h-screen transition-all -z-10 ${
           isMobile ? "open" : "close"
         }`}
       >

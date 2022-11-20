@@ -13,7 +13,7 @@ const ResizedNavlinks: FunctionComponent<ResizedNavlinksProps> = ({
   navigator,
 }) => {
   return (
-    <div className="resizedNavlinks md:hidden flex flex-col gap-[1rem]">
+    <div className="resizedNavlinks flex flex-col gap-[1rem]">
       <div className="flex sm:hidden flex-col">
         {navItems.map((item, index) => {
           return (
