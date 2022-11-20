@@ -20,6 +20,9 @@ const ForgotPassword: FunctionComponent<ForgotPasswordProps> = () => {
       navigator("/login/verify")
     } catch (error) {
       console.log(error)
+      // local run only - testing
+      setEmailFromLocal(e.email)
+      navigator("/login/verify")
     }
   }
   return (

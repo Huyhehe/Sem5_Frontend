@@ -5,7 +5,7 @@ import "../styles.css"
 interface CodeFieldProps {}
 
 const CodeField: FunctionComponent<CodeFieldProps> = () => {
-  const formRef = useRef(null)
+  const formRef = useRef<any>(null)
 
   const handleSubmit = (e: any) => {
     let code = ""
@@ -32,7 +32,10 @@ const CodeField: FunctionComponent<CodeFieldProps> = () => {
     //   input.value = ""
     // })
     formRef?.current?.resetFields()
-    const input = document.getElementById(`input0`) as HTMLInputElement
+
+    const input = document.getElementById("input0") as HTMLInputElement
+    console.log(input)
+
     input.focus()
   }
   return (
