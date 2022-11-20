@@ -44,3 +44,8 @@
 .ant-image {
   @apply w-full;
 }
+
+/* .ant-image-preview-img-wrapper {
+  @apply top-1/2 left-1/2;
+  transform: translate(-50%, -50%) !important;
+} */

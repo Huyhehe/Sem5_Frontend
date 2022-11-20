@@ -13,8 +13,42 @@ interface SliderProps {
 }
 
 const Slider: FunctionComponent<SliderProps> = ({ children }) => {
+  const dataOnError = [
+    {
+      id: 0,
+      title: "???",
+      address: "???, ???",
+      description: "????????",
+      price: 0,
+      rate: 0,
+    },
+    {
+      id: 0,
+      title: "???",
+      address: "???, ???",
+      description: "????????",
+      price: 0,
+      rate: 0,
+    },
+    {
+      id: 0,
+      title: "???",
+      address: "???, ???",
+      description: "????????",
+      price: 0,
+      rate: 0,
+    },
+    {
+      id: 0,
+      title: "???",
+      address: "???, ???",
+      description: "????????",
+      price: 0,
+      rate: 0,
+    },
+  ]
   const carouselRef = useRef<any>(null)
-  const [cardItems, setCardItems] = useState<Review[]>([])
+  const [cardItems, setCardItems] = useState<Review[] | null>(null)
   const navigator = useNavigate()
 
   const handleNext = () => {
@@ -31,9 +65,11 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
     const fetchData = async () => {
       try {
         const response = await getAllReview()
+        console.log(response)
         setCardItems(response)
       } catch (error) {
         console.log(error)
+        setCardItems(dataOnError)
       }
     }
     fetchData()
@@ -70,10 +106,10 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
           },
         ]}
       >
-        {cardItems.map((item) => {
+        {cardItems?.map((item, index) => {
           return (
             <Card
-              key={item.id}
+              key={index}
               title={item.title}
               description={item.description}
               price={item.price}

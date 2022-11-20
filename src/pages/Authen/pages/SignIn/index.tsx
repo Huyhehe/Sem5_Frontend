@@ -1,14 +1,14 @@
 import { Button, Form, Input } from "antd"
 import { FunctionComponent } from "react"
 import { Link } from "react-router-dom"
-import { loginAPI } from "@/utils/http"
+import { signinAPI } from "@/utils/http"
 
 interface SignInPageProps {}
 
 const SignInPage: FunctionComponent<SignInPageProps> = () => {
   const handleSubmit = async (e: any) => {
     try {
-      const user = await loginAPI(e)
+      const user = await signinAPI(e)
       console.log(user)
     } catch (error) {
       console.log(error)

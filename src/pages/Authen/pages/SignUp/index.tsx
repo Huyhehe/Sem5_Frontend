@@ -1,12 +1,30 @@
+import { registerAPI } from "@/utils/http"
+import { setEmailFromLocal } from "@/utils/localStorage"
 import { Input, Form, Button } from "antd"
 import { FunctionComponent } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 interface SignUpPageProps {}
 
 const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
-  const handleSubmit = (e: any) => {
-    console.log(e)
+  const navigator = useNavigate()
+
+  const handleSubmit = async (newUser: any) => {
+    if (newUser.password === newUser.confirmPassword) {
+      console.log(newUser)
+      try {
+        const flag = await registerAPI(newUser)
+        // After done API
+        // if (flag) {
+        //   setEmailFromLocal(newUser.email)
+        //   navigator("/login/verify")
+        // }
+        setEmailFromLocal(newUser.email)
+        navigator("/login/verify")
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 
   return (
@@ -15,6 +33,26 @@ const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
         Sign Up
       </h1>
       <Form onFinish={handleSubmit} size="large">
+        <Form.Item
+          name={"email"}
+          label="Email"
+          required
+          colon={false}
+          labelCol={{ span: 24 }}
+          rules={[
+            {
+              required: true,
+              message: "Please fill this field",
+            },
+          ]}
+        >
+          <Input
+            type="email"
+            placeholder="Ex: Huyhehe@gmail.com"
+            allowClear
+            className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
+          />
+        </Form.Item>
         <Form.Item
           name={"username"}
           label="Username"
@@ -49,6 +87,25 @@ const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
         >
           <Input.Password
             placeholder="Password"
+            allowClear
+            className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
+          />
+        </Form.Item>
+        <Form.Item
+          name={"confirmPassword"}
+          label="Confirm Password"
+          required
+          colon={false}
+          labelCol={{ span: 24 }}
+          rules={[
+            {
+              required: true,
+              message: "Please fill this field",
+            },
+          ]}
+        >
+          <Input.Password
+            placeholder="Confirm Password"
             allowClear
             className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
           />

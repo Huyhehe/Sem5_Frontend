@@ -1,16 +1,15 @@
-import { FunctionComponent, useEffect, useState } from "react"
-import { AiFillStar } from "react-icons/ai"
-import { BsDot } from "react-icons/bs"
-import { HiOutlineChevronDown } from "react-icons/hi"
-import { useParams } from "react-router-dom"
+import { example } from "@/assets/images"
+import CustomSlide from "@/components/CustomSlide"
 import { Review } from "@/interfaces/Review"
 import { getReviewById } from "@/utils/http"
 import { toDouble } from "@/utils/reusable"
-import { AiOutlineHeart } from "react-icons/ai"
+import { Image } from "antd"
+import { FunctionComponent, useEffect, useState } from "react"
+import { AiFillStar, AiOutlineHeart } from "react-icons/ai"
+import { BsDot } from "react-icons/bs"
+import { HiOutlineChevronDown } from "react-icons/hi"
+import { useParams } from "react-router-dom"
 import "./styles/styles.css"
-import { Carousel, Image } from "antd"
-import { example } from "@/assets/images"
-import CustomSlide from "@/components/CustomSlide"
 
 interface SearchResultByIdProps {}
 
@@ -54,12 +53,7 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
           <div className="main-about">
             <h1 className="text-[1.5rem] font-bold mb-4">About</h1>
             <div className="about-paragraph">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Expedita reiciendis, voluptatibus, nisi tempore ab placeat enim
-                culpa quidem consectetur ea assumenda ex animi exercitationem
-                labore sapiente ut dolore fugiat consequatur!
-              </p>
+              <p>{review?.description}</p>
               <div className="paragraph-more">
                 <span>Read more</span>
                 <HiOutlineChevronDown />
@@ -75,7 +69,7 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
                 />
               </div>
               <div className="w-[860px] aspect-[16/9] flex justify-center">
-                <img src={example} className="w-full object-cover" />
+                <img src={example} className="max-w-full object-cover" />
               </div>
               <div className="w-[860px] aspect-[16/9] flex justify-center">
                 <Image
