@@ -76,7 +76,7 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
   }, [])
 
   return (
-    <div className="relative z-[0]">
+    <div className="relative z-[0] max-w-full">
       <Carousel
         ref={carouselRef}
         draggable

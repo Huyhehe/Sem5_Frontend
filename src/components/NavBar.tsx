@@ -82,11 +82,15 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
       </div>
 
       <div
-        className={`absolute md:hidden bg-white w-full top-full left-0 h-screen transition-all -z-10 ${
+        className={`absolute md:hidden bg-white w-full top-full left-0 h-screen transition-all -z-10 box-border ${
           isMobile ? "open" : "close"
         }`}
       >
-        <ResizedNavlinks navItems={navItems} navigator={navigator} />
+        <ResizedNavlinks
+          navItems={navItems}
+          navigator={navigator}
+          setIsMobile={setIsMobile}
+        />
       </div>
     </div>
   )

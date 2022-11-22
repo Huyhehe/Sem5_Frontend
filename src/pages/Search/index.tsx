@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from "react"
 import { Outlet, useParams, useSearchParams } from "react-router-dom"
-import Search from "../../components/Search"
+import Search from "../../components/Search/Search"
 import { Review } from "../../interfaces/Review"
 import { getAllReview } from "../../utils/http"
 import SearchResult from "./pages/SearchResult"
@@ -31,7 +31,7 @@ const SearchPage: FunctionComponent<SearchPageProps> = () => {
     fetchData()
   }, [queryString])
   return (
-    <div className="search-page w-[1260px] pb-4">
+    <div className="search-page w-full xl:w-[80%] pb-4">
       <div className="search-container h-[10rem] relative z-10">
         <Search defaultValue={queryString.get("data") || ""} />
       </div>

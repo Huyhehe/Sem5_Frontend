@@ -11,7 +11,7 @@ const AuthLayout: FunctionComponent<AuthLayoutProps> = ({ children }) => {
       <div className="w-full flex justify-center sticky top-0 z-50 bg-white border-b">
         <NavBar />
       </div>
-      <div className="xl:max-w-[1260px] md:max-w-[768px] sm:max-w-[480px] mobile:max-w-[200px] mt-[2rem]">
+      <div className="xl:max-w-[1260px] w-[80%] mobile:w-full tablet:w-full mt-[2rem] flex justify-center">
         {children}
       </div>
     </div>

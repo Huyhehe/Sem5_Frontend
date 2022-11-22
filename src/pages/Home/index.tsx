@@ -1,13 +1,13 @@
 import { FunctionComponent } from "react"
 import Slider from "../../components/Slider/Slider"
-import Search from "../../components/Search"
+import Search from "../../components/Search/Search"
 import { searchBg } from "../../assets/images"
 
 interface HomeProps {}
 
 const Home: FunctionComponent<HomeProps> = () => {
   return (
-    <div className="homePage-container flex flex-col gap-[5rem]">
+    <div className="homePage-container flex flex-col gap-[5rem] w-full">
       <div className="search-container relative z-10">
         <Search />
         <img src={searchBg} alt="search-background" />

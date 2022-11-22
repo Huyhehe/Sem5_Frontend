@@ -12,7 +12,8 @@ module.exports = {
         gold: "#f6c177",
       },
       screens: {
-        mobile: "480px",
+        mobile: { max: "480px" },
+        tablet: { max: "767px", min: "481px" },
       },
     },
   },

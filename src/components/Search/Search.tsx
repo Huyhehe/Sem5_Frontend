@@ -1,8 +1,9 @@
 import { Form, Input } from "antd"
-import { FunctionComponent, useRef, useState } from "react"
+import { FunctionComponent, useEffect, useRef, useState } from "react"
 import { BiSearch } from "react-icons/bi"
 import { FiMapPin } from "react-icons/fi"
 import { createSearchParams, useNavigate } from "react-router-dom"
+import "./styles.css"
 
 interface SearchProps {
   defaultValue?: string
@@ -37,11 +38,18 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
   ]
   const formContainerRef = useRef<HTMLDivElement>(null)
   const dropDownRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<any>(null)
   const [isFocusing, setIsFocusing] = useState<Boolean>(false)
   const [inputValue, setInputValue] = useState<String>("")
   const [searchResult, setSearchResult] = useState(dummySearchResult)
   const navigator = useNavigate()
   let inputTimeout: any
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.input.value = defaultValue || ""
+    }
+  }, [defaultValue])
 
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
@@ -113,11 +121,12 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
   return (
     <div
       ref={formContainerRef}
-      className={`search-box absolute w-[70%] bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg py-2 rounded-full z-10`}
+      className="search-box absolute w-[70%] bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg py-2 rounded-full z-10"
     >
       <Form onFinish={handleOnSubmit}>
         <Form.Item className="mb-0 px-2">
           <Input
+            ref={inputRef}
             name="searchData"
             prefix={<BiSearch className="mr-2" />}
             className="text-[1.5rem] outline-none rounded-full"
@@ -126,17 +135,13 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
             bordered={false}
             onChange={handleOnKeyUp}
             onKeyDown={handleOnKeyDown}
-            defaultValue={defaultValue}
             onFocus={handleFocus}
           ></Input>
         </Form.Item>
       </Form>
       {isFocusing && (
-        <div
-          ref={dropDownRef}
-          className="display-container absolute max-h-[20rem] top-full translate-y-[0.5rem] left-0 w-full flex flex-col bg-white rounded-xl py-2 overflow-auto shadow-md"
-        >
-          <div className="display-container-header flex items-center px-4 py-2">
+        <div ref={dropDownRef} className="dropdown-container">
+          <div className="dropdown-container-header flex items-center px-4 py-2">
             <FiMapPin className="mr-2" size={20} />
             <span className="text-[1.25rem]">
               {inputValue ? `result for '${inputValue}'` : "Search anything"}
@@ -147,7 +152,7 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
               <div
                 onClick={() => handleResultItemClick(item)}
                 key={index}
-                className="display-container-item relative flex items-center px-4 py-2 cursor-pointer after:absolute after:w-[calc(100%_-_2rem)] last:after:w-0 after:h-[1px] after:bg-gray-200 after:bottom-0 after:left-1/2 after:-translate-x-1/2 hover:after:w-0 hover:bg-gray-200"
+                className="dropdown-container-item"
               >
                 <FiMapPin className="mr-2" size={20} />
                 <div className="flex flex-col gap-1">

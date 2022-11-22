@@ -1,16 +1,18 @@
 import { Button, Space } from "antd"
-import { FunctionComponent } from "react"
+import { Dispatch, FunctionComponent } from "react"
 import { NavLink } from "react-router-dom"
 import "./styles.css"
 
 interface ResizedNavlinksProps {
   navItems: Array<{ title: string; link: string }>
   navigator: any
+  setIsMobile: Dispatch<boolean>
 }
 
 const ResizedNavlinks: FunctionComponent<ResizedNavlinksProps> = ({
   navItems,
   navigator,
+  setIsMobile,
 }) => {
   return (
     <div className="resizedNavlinks flex flex-col gap-[1rem]">
@@ -24,6 +26,7 @@ const ResizedNavlinks: FunctionComponent<ResizedNavlinksProps> = ({
                 isActive ? "activeLink link" : "unActiveLink link"
               }
               to={item.link}
+              onClick={() => setIsMobile(false)}
             >
               {item.title}
             </NavLink>

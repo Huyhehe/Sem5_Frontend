@@ -12,5 +12,4 @@
 .activeLink {
   @apply text-primary bg-primary/10 hover:pl-0;
 }
-.unactiveLink {
-}
+
