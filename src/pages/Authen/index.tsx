@@ -10,7 +10,7 @@ const AuthenPage: FunctionComponent<AuthenPageProps> = () => {
   const [email, setEmail] = useState<string | null>(null)
 
   return (
-    <div className="authen-container flex 2xl:py-[2rem] py-[1rem] px-[7rem]">
+    <div className="authen-container flex 2xl:py-[2rem] py-[1rem] px-[1rem] sm:px-[7rem]">
       <div className="authen-main flex flex-col flex-grow gap-[2rem]">
         <div
           onClick={() => navigator("/")}
@@ -24,7 +24,7 @@ const AuthenPage: FunctionComponent<AuthenPageProps> = () => {
           <Outlet />
         </div>
       </div>
-      <div className="authen-extraContent flex-grow-[3] flex justify-end">
+      <div className="authen-extraContent max-w-[60%] hidden xl:flex justify-end">
         <img src={coverX2} />
       </div>
     </div>
