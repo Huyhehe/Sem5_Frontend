@@ -18,7 +18,10 @@ export const getReviewById = async (id: number) => {
     throw new Error(error)
   }
 }
-export const signinAPI = async (user: any) => {
+export const signinAPI = async (user: {
+  username: string
+  password: string
+}) => {
   try {
     const res = await axios.post(`${API_URL}/auth/login`, user)
     return res.data
