@@ -1,10 +1,10 @@
-import axios from "axios"
+import axiosInstance from "@/config/axiosConfig"
 
 const API_URL = import.meta.env.VITE_API
 
 export const getAllReview = async () => {
   try {
-    const res = await axios.get(`${API_URL}/reviews`)
+    const res = await axiosInstance.get(`${API_URL}/reviews`)
     return res.data
   } catch (error: any) {
     throw new Error(error)
@@ -12,7 +12,7 @@ export const getAllReview = async () => {
 }
 export const getReviewById = async (id: number) => {
   try {
-    const res = await axios.get(`${API_URL}/reviews/${id}`)
+    const res = await axiosInstance.get(`${API_URL}/reviews/${id}`)
     return res.data
   } catch (error: any) {
     throw new Error(error)
@@ -23,7 +23,7 @@ export const signinAPI = async (user: {
   password: string
 }) => {
   try {
-    const res = await axios.post(`${API_URL}/auth/login`, user)
+    const res = await axiosInstance.post(`${API_URL}/auth/login`, user)
     return res.data
   } catch (error: any) {
     throw new Error(error)
@@ -31,7 +31,10 @@ export const signinAPI = async (user: {
 }
 export const forgotPasswordAPI = async (email: string) => {
   try {
-    const res = await axios.post(`${API_URL}/auth/forgot-password`, email)
+    const res = await axiosInstance.post(
+      `${API_URL}/auth/forgot-password`,
+      email
+    )
     return res.data
   } catch (error: any) {
     throw new Error(error)
@@ -39,7 +42,7 @@ export const forgotPasswordAPI = async (email: string) => {
 }
 export const registerAPI = async (user: any) => {
   try {
-    const res = await axios.post(`${API_URL}/auth/register`, user)
+    const res = await axiosInstance.post(`${API_URL}/auth/register`, user)
     return res.data
   } catch (error: any) {
     throw new Error(error)
