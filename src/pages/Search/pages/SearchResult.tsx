@@ -11,6 +11,8 @@ interface SearchResultProps {
 const SearchResult: FunctionComponent<SearchResultProps> = ({
   searchResult,
 }) => {
+  document.title = "TravelCare | Search"
+
   const navigator = useNavigate()
   const handleOnCardClick = (id: number) => {
     navigator(`/search/${id}`)

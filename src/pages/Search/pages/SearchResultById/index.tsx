@@ -20,8 +20,13 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getReviewById(Number(id))
-      setReview(response)
+      try {
+        const response = await getReviewById(Number(id))
+        setReview(response)
+        document.title = response.title
+      } catch (error) {
+        console.log(error)
+      }
     }
     fetchData()
   }, [])

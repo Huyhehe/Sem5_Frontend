@@ -1,4 +1,5 @@
-import { FunctionComponent, useEffect, useState } from "react"
+import { AppContext } from "@/App"
+import { FunctionComponent, useContext, useEffect, useState } from "react"
 import { Outlet, useParams, useSearchParams } from "react-router-dom"
 import Search from "../../components/Search/Search"
 import { Review } from "../../interfaces/Review"
@@ -12,21 +13,30 @@ const SearchPage: FunctionComponent<SearchPageProps> = () => {
   const [queryString] = useSearchParams()
   const { id } = useParams()
   const [searchResult, setSearchResult] = useState<Review[]>([])
+  const { setLoading } = useContext<any>(AppContext)
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getAllReview()
-      setSearchResult(
-        response.filter(
-          (item: Review) =>
-            item.title
-              .toLowerCase()
-              .includes(queryString.get("data")?.toLowerCase() as string) ||
-            item.address
-              .toLowerCase()
-              .includes(queryString.get("data")?.toLowerCase() as string)
-        )
-      )
+      try {
+        const response = await getAllReview()
+        if (!id) setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+          setSearchResult(
+            response.filter(
+              (item: Review) =>
+                item.title
+                  .toLowerCase()
+                  .includes(queryString.get("data")?.toLowerCase() as string) ||
+                item.address
+                  .toLowerCase()
+                  .includes(queryString.get("data")?.toLowerCase() as string)
+            )
+          )
+        }, 2000)
+      } catch (error) {
+        console.log(error)
+      }
     }
     fetchData()
   }, [queryString])
