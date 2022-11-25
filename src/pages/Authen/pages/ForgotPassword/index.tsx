@@ -1,5 +1,5 @@
 import { forgotPasswordAPI } from "@/utils/http"
-import { setEmailFromLocal } from "@/utils/localStorage"
+import { setEmailToLocal } from "@/utils/localStorage"
 import { Button, Form, Input } from "antd"
 import { FunctionComponent } from "react"
 import { Link, useNavigate } from "react-router-dom"
@@ -13,15 +13,15 @@ const ForgotPassword: FunctionComponent<ForgotPasswordProps> = () => {
       const res = await forgotPasswordAPI(e.email)
       // After API done
       // if (res.user) {
-      //   setEmailFromLocal(e.email)
+      //   setEmailToLocal(e.email)
       //   navigator("/login/verify")
       // }
-      setEmailFromLocal(e.email)
+      setEmailToLocal(e.email)
       navigator("/login/verify")
     } catch (error) {
       console.log(error)
       // local run only - testing
-      setEmailFromLocal(e.email)
+      setEmailToLocal(e.email)
       navigator("/login/verify")
     }
   }

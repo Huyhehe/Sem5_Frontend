@@ -1,5 +1,5 @@
 import { registerAPI } from "@/utils/http"
-import { setEmailFromLocal } from "@/utils/localStorage"
+import { setEmailToLocal } from "@/utils/localStorage"
 import { Input, Form, Button } from "antd"
 import { FunctionComponent } from "react"
 import { Link, useNavigate } from "react-router-dom"
@@ -16,10 +16,10 @@ const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
         const flag = await registerAPI(newUser)
         // After done API
         // if (flag) {
-        //   setEmailFromLocal(newUser.email)
+        //   setEmailToLocal(newUser.email)
         //   navigator("/login/verify")
         // }
-        setEmailFromLocal(newUser.email)
+        setEmailToLocal(newUser.email)
         navigator("/login/verify")
       } catch (error) {
         console.log(error)
