@@ -3,8 +3,8 @@ import Slider from "../../components/Slider/Slider"
 import Search from "../../components/Search/Search"
 import { searchBg } from "../../assets/images"
 import CustomSlide from "@/components/CustomSlide"
-import { getAllReview } from "@/utils/http"
-import { Review } from "@/interfaces/Review"
+import { getAllLocationReviews } from "@/utils/http"
+import LocationReview from "@/interfaces/LocationReview"
 import Card from "@/components/Card"
 import { useNavigate } from "react-router-dom"
 
@@ -45,12 +45,12 @@ const Home: FunctionComponent<HomeProps> = () => {
       rate: 0,
     },
   ]
-  const [cardItems, setCardItems] = useState<Review[] | null>(null)
+  const [cardItems, setCardItems] = useState<LocationReview[] | null>(null)
   const navigator = useNavigate()
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getAllReview()
+        const response = await getAllLocationReviews()
         console.log(response)
         setCardItems(response)
       } catch (error) {

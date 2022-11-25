@@ -2,7 +2,7 @@ import axiosInstance from "@/config/axiosConfig"
 
 const API_URL = import.meta.env.VITE_API
 
-export const getAllReview = async () => {
+export const getAllLocationReviews = async () => {
   try {
     const res = await axiosInstance.get(`${API_URL}/reviews`)
     return res.data
@@ -10,7 +10,7 @@ export const getAllReview = async () => {
     throw new Error(error)
   }
 }
-export const getReviewById = async (id: number) => {
+export const getLocationReviewById = async (id: number) => {
   try {
     const res = await axiosInstance.get(`${API_URL}/reviews/${id}`)
     return res.data

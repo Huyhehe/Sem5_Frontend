@@ -2,8 +2,8 @@ import { Carousel } from "antd"
 import { FunctionComponent, memo, useEffect, useRef, useState } from "react"
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai"
 import { useNavigate } from "react-router-dom"
-import { Review } from "../../interfaces/Review"
-import { getAllReview } from "../../utils/http"
+import { Review } from "../../interfaces/LocationReview"
+import { getAllLocationReviews } from "../../utils/http"
 import Card from "../Card"
 import CircleButton from "../CircleButton"
 import "./slider.css"
@@ -64,7 +64,7 @@ const Slider: FunctionComponent<SliderProps> = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getAllReview()
+        const response = await getAllLocationReviews()
         console.log(response)
         setCardItems(response)
       } catch (error) {

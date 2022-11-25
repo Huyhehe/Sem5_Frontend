@@ -2,10 +2,10 @@ import { getRatingString } from "@/utils/reusable"
 import { FunctionComponent } from "react"
 import { AiFillStar } from "react-icons/ai"
 import { RiMoneyDollarCircleFill } from "react-icons/ri"
-import { Review } from "@/interfaces/Review"
+import LocationReview from "@/interfaces/LocationReview"
 
 interface SearchCardProps {
-  item: Review
+  item: LocationReview
   onClickFunc?: () => void
 }
 

@@ -9,7 +9,7 @@ import SignUpPage from "../pages/Authen/pages/SignUp"
 import Verify from "../pages/Authen/pages/Verify"
 import Home from "../pages/Home"
 import Search from "../pages/Search"
-import SearchResult from "../pages/Search/pages/SearchResultById"
+import SearchResult from "../pages/Search/pages/LocationSearchResultById"
 export const router = createBrowserRouter([
   {
     path: "/",

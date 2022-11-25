@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react"
 import SearchCard from "../components/SearchCard"
 import { Empty } from "antd"
-import { Review } from "../../../interfaces/Review"
+import { Review } from "../../../interfaces/LocationReview"
 import { useNavigate } from "react-router-dom"
 
 interface SearchResultProps {
