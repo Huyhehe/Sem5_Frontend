@@ -1,4 +1,5 @@
 import axiosInstance from "@/config/axiosConfig"
+import axios from "axios"
 
 const API_URL = import.meta.env.VITE_API
 
@@ -23,7 +24,7 @@ export const signinAPI = async (user: {
   password: string
 }) => {
   try {
-    const res = await axiosInstance.post(`${API_URL}/auth/login`, user)
+    const res = await axios.post(`${API_URL}/auth/login`, user)
     return res.data
   } catch (error: any) {
     throw new Error(error)
@@ -31,10 +32,7 @@ export const signinAPI = async (user: {
 }
 export const forgotPasswordAPI = async (email: string) => {
   try {
-    const res = await axiosInstance.post(
-      `${API_URL}/auth/forgot-password`,
-      email
-    )
+    const res = await axios.post(`${API_URL}/auth/forgot-password`, email)
     return res.data
   } catch (error: any) {
     throw new Error(error)
@@ -42,7 +40,7 @@ export const forgotPasswordAPI = async (email: string) => {
 }
 export const registerAPI = async (user: any) => {
   try {
-    const res = await axiosInstance.post(`${API_URL}/auth/register`, user)
+    const res = await axios.post(`${API_URL}/auth/register`, user)
     return res.data
   } catch (error: any) {
     throw new Error(error)
