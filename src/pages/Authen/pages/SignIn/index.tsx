@@ -1,17 +1,26 @@
 import { Button, Form, Input } from "antd"
-import { FunctionComponent } from "react"
+import { FunctionComponent, useContext } from "react"
 import { Link } from "react-router-dom"
 import { signinAPI } from "@/utils/http"
+import { setAccessTokenToLocal, setUserToLocal } from "@/utils/localStorage"
+import { AppContext } from "@/App"
 
 interface SignInPageProps {}
 
 const SignInPage: FunctionComponent<SignInPageProps> = () => {
+  const { openNotification } = useContext(AppContext)
   const handleSubmit = async (e: any) => {
     try {
       const user = await signinAPI(e)
+      setUserToLocal(user)
+      setAccessTokenToLocal(user.accessToken)
       console.log(user)
     } catch (error) {
       console.log(error)
+      openNotification("error", {
+        message: "Error",
+        description: "Something went wrong",
+      })
     }
   }
   return (
