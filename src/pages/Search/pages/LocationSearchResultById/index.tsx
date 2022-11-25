@@ -101,7 +101,7 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
         <div>
           <Tabs size="large">
             <Tabs.TabPane tab="Reviews" key="tab1">
-              <UserReviewContainer userReview={locationReview?.userReviews} />
+              <UserReviewContainer userReviews={locationReview?.userReviews} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Q&A" key="tab2">
               <div>Q&A feature is in development progress</div>

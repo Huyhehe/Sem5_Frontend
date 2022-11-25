@@ -1,54 +1,72 @@
-import LocationReview from "@/interfaces/LocationReview"
 import UserReview from "@/interfaces/UserReview"
 import { Input } from "antd"
-import { FunctionComponent, useState } from "react"
+import { FunctionComponent, useMemo, useState } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import UserReviewArticle from "./UserReviewArticle"
 
 interface UserReviewContainerProps {
-  userReview: UserReview
+  userReviews: UserReview[]
 }
 
-const UserReviewContainer: FunctionComponent<UserReviewContainerProps> = ({
-  userReview,
-}) => {
-  const fallbackData = {
-    userReviews: [
-      {
+const fallbackData = {
+  userReviews: [
+    {
+      id: 1,
+      title: "Review 1",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
+      rate: 4.5,
+      user: {
         id: 1,
-        title: "Review 1",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
-        rate: 4.5,
-        user: {
-          id: 1,
-          name: "User 1",
-          email: "test1@gmail.com",
-          avatar: "https://i.pravatar.cc/50?img=1",
-          address: "Ho Chi Minh City, Vietnam",
-        },
-        timeWritten: "08-01-2021",
-        likes: 0,
+        name: "User 1",
+        email: "test1@gmail.com",
+        avatar: "https://i.pravatar.cc/50?img=1",
+        address: "Ho Chi Minh City, Vietnam",
       },
-      {
+      timeWritten: "08-01-2021",
+      likes: 0,
+    },
+    {
+      id: 2,
+      title: "Review 2",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
+      rate: 2.5,
+      user: {
         id: 2,
-        title: "Review 2",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
-        rate: 2.5,
-        user: {
-          id: 2,
-          name: "User 2",
-          email: "test2@gmail.com",
-          avatar: "https://i.pravatar.cc/50?img=3",
-          address: "Hanoi City, Vietnam",
-        },
-        timeWritten: "08-01-2021",
-        likes: 0,
+        name: "User 2",
+        email: "test2@gmail.com",
+        avatar: "https://i.pravatar.cc/50?img=3",
+        address: "Hanoi City, Vietnam",
       },
-    ],
+      timeWritten: "08-01-2021",
+      likes: 0,
+    },
+  ],
+}
+const UserReviewContainer: FunctionComponent<UserReviewContainerProps> = ({
+  userReviews = fallbackData.userReviews,
+}) => {
+  let searchTimeout: any
+
+  const [searchQueryString, setSearchQueryString] = useState("")
+  const [filteredUserReviews, setFilteredUserReviews] =
+    useState<UserReview[]>(userReviews)
+
+  const handleOnChangeSearchInput = (e: any) => {
+    const { value } = e.target
+    clearTimeout(searchTimeout)
+    searchTimeout = setTimeout(() => {
+      const filteredUserReviewsRes = userReviews.filter(
+        (userReview) =>
+          userReview.title.toLowerCase().includes(value.toLowerCase()) ||
+          userReview.description.toLowerCase().includes(value.toLowerCase()) ||
+          userReview.user.name.toLowerCase().includes(value.toLowerCase())
+      )
+      setFilteredUserReviews(filteredUserReviewsRes)
+      setSearchQueryString(value)
+    }, 500)
   }
-  const [userReviews, setUserReviews] = useState(fallbackData.userReviews)
   return (
     <div className="review-container">
       <div className="flex flex-col items-center">
@@ -64,16 +82,17 @@ const UserReviewContainer: FunctionComponent<UserReviewContainerProps> = ({
               />
             }
             allowClear
-            onChange={() => {
-              console.log("ended")
-            }}
+            onChange={handleOnChangeSearchInput}
           />
         </div>
         <div className="review-content-box w-full">
-          {userReviews.map((review, index) => {
+          {filteredUserReviews.map((review, index) => {
             return (
               <div key={index} className="py-8 border-b">
-                <UserReviewArticle userReview={review} />
+                <UserReviewArticle
+                  userReview={review}
+                  searchQueryString={searchQueryString}
+                />
               </div>
             )
           })}

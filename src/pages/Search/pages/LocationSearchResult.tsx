@@ -1,11 +1,12 @@
 import { FunctionComponent } from "react"
 import SearchCard from "../components/SearchCard"
 import { Empty } from "antd"
-import { Review } from "../../../interfaces/LocationReview"
+
 import { useNavigate } from "react-router-dom"
+import LocationReview from "@/interfaces/LocationReview"
 
 interface SearchResultProps {
-  searchResult: Review[]
+  searchResult: LocationReview[]
 }
 
 const SearchResult: FunctionComponent<SearchResultProps> = ({

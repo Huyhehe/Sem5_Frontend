@@ -6,11 +6,31 @@ import { SlOptionsVertical } from "react-icons/sl"
 
 interface UserReviewArticleProps {
   userReview: UserReview
+  searchQueryString: string
 }
 
 const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
   userReview,
+  searchQueryString,
 }) => {
+  const highLightText = (text: string, searchQueryString: string) => {
+    const regex = new RegExp(searchQueryString, "gi")
+    const parts = text.split(regex)
+    const matches = text.match(regex)
+    const result = []
+    for (let i = 0; i < parts.length; i++) {
+      result.push(parts[i])
+      if (matches && i < matches.length) {
+        result.push(
+          <span className="bg-yellow-400" key={i}>
+            {matches[i]}
+          </span>
+        )
+      }
+    }
+    return result
+  }
+
   return (
     <div className="UserReviewArticle flex flex-col gap-4">
       <header className="flex justify-between">
@@ -21,7 +41,7 @@ const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
           />
           <div className="flex flex-col">
             <span className="text-[1rem] font-bold">
-              {userReview.user.name}
+              {highLightText(userReview.user.name, searchQueryString)}
             </span>
             <span className="text-[0.8rem] text-gray-500">
               {userReview.user.address}
@@ -42,8 +62,10 @@ const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
       </header>
       <main className="flex flex-col">
         <RatePoint point={userReview.rate} />
-        <span className="text-[1rem] font-bold">{userReview.title}</span>
-        <p>{userReview.description}</p>
+        <span className="text-[1rem] font-bold">
+          {highLightText(userReview.title, searchQueryString)}
+        </span>
+        <p>{highLightText(userReview.description, searchQueryString)}</p>
       </main>
       <footer>
         <span className="text-[0.75rem] text-gray-500">
