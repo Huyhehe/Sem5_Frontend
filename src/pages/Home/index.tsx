@@ -1,5 +1,4 @@
 import { FunctionComponent, useEffect, useState } from "react"
-import Slider from "../../components/Slider/Slider"
 import Search from "../../components/Search/Search"
 import { searchBg } from "../../assets/images"
 import CustomSlide from "@/components/CustomSlide"
@@ -69,7 +68,6 @@ const Home: FunctionComponent<HomeProps> = () => {
         <Search />
         <img src={searchBg} alt="search-background" />
       </div>
-      {/* <Slider /> */}
       <CustomSlide
         size={300}
         className="h-fit gap-4"
