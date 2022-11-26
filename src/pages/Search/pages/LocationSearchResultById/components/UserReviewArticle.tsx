@@ -1,8 +1,12 @@
+import { AppContext } from "@/App"
 import RatePoint from "@/components/common/RatePoint"
+import useUser from "@/hooks/useUser"
 import UserReview from "@/interfaces/UserReview"
-import { FunctionComponent } from "react"
-import { BiLike } from "react-icons/bi"
+import { notification } from "antd"
+import { FunctionComponent, useContext, useState } from "react"
+import { AiFillLike, AiOutlineLike } from "react-icons/ai"
 import { SlOptionsVertical } from "react-icons/sl"
+import { useNavigate } from "react-router-dom"
 
 interface UserReviewArticleProps {
   userReview: UserReview
@@ -13,6 +17,12 @@ const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
   userReview,
   searchQueryString,
 }) => {
+  const user = useUser()
+  const { openNotification } = useContext(AppContext)
+  const navigator = useNavigate()
+
+  const [isLiked, setIsLiked] = useState(false) // add logic default isLiked if user liked this review
+
   const highLightText = (text: string, searchQueryString: string) => {
     const regex = new RegExp(searchQueryString, "gi")
     const parts = text.split(regex)
@@ -29,6 +39,29 @@ const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
       }
     }
     return result
+  }
+  const handleLikeClick = () => {
+    if (!user?.accessToken) {
+      openNotification("warning", {
+        message: "Warning",
+        description: (
+          <div className="flex flex-col">
+            <span>You need to sign in to like this review</span>
+            <span
+              className="font-bold underline cursor-pointer"
+              onClick={() => {
+                navigator("/login/signIn")
+                notification.destroy()
+              }}
+            >
+              Sign in
+            </span>
+          </div>
+        ),
+      })
+    } else {
+      setIsLiked(!isLiked)
+    }
   }
 
   return (
@@ -49,10 +82,17 @@ const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
           </div>
         </div>
         <div className="tool-box flex items-center">
-          <div className="like-box flex items-center gap-1 p-1 cursor-pointer rounded-full hover:bg-gray-200">
-            <BiLike size={25} />
+          <div
+            className="like-box flex items-center gap-1 p-1 cursor-pointer rounded-full hover:bg-gray-200"
+            onClick={handleLikeClick}
+          >
+            {isLiked ? (
+              <AiFillLike size={25} className="text-primary" />
+            ) : (
+              <AiOutlineLike size={25} />
+            )}
             <span className="text-[0.8rem] text-gray-500">
-              {userReview.likes}
+              {isLiked ? userReview.likes + 1 : userReview.likes}
             </span>
           </div>
           <div className="p-1 cursor-pointer rounded-full hover:bg-gray-200">

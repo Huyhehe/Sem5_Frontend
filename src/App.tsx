@@ -16,13 +16,20 @@ function App() {
   })
   const openNotification = (
     type: "success" | "error" | "info" | "warning",
-    { message, description }: { message: string; description: string }
+    { message, description }: { message: any; description: any }
   ) => {
     notification[type]({
       message: `Notification ${message}`,
       description: description,
       style: {
-        backgroundColor: type === "success" ? "#f1ffea" : "#feeced",
+        backgroundColor:
+          type === "success"
+            ? "#f1ffea"
+            : type === "error"
+            ? "#feeced"
+            : type === "warning"
+            ? "#fff7e6"
+            : "#e6f7ff",
       },
     })
   }

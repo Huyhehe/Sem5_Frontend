@@ -1,8 +1,11 @@
 const useUser = () => {
-  const { username, accessToken } = JSON.parse(
-    localStorage.getItem("user") || "null"
-  )
-  return { username, accessToken }
+  if (localStorage.getItem("user") !== null) {
+    const { username, accessToken } = JSON.parse(
+      localStorage.getItem("user") as string
+    )
+    return { username, accessToken }
+  }
+  return null
 }
 
 export default useUser
