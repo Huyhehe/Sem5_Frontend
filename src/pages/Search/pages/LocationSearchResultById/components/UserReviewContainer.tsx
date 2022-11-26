@@ -54,7 +54,7 @@ const UserReviewContainer: FunctionComponent<UserReviewContainerProps> = ({
     useState<UserReview[]>(userReviews)
 
   const handleOnChangeSearchInput = (e: any) => {
-    const { value } = e.target
+    const value = e.target.value.trim()
     clearTimeout(searchTimeout)
     searchTimeout = setTimeout(() => {
       const filteredUserReviewsRes = userReviews.filter(
