@@ -1,5 +1,11 @@
 import { Form, Input } from "antd"
-import { FunctionComponent, useEffect, useRef, useState } from "react"
+import {
+  FunctionComponent,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react"
 import { BiSearch } from "react-icons/bi"
 import { FiMapPin } from "react-icons/fi"
 import { createSearchParams, useNavigate } from "react-router-dom"
@@ -40,16 +46,16 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
   const dropDownRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<any>(null)
   const [isFocusing, setIsFocusing] = useState<Boolean>(false)
-  const [inputValue, setInputValue] = useState<String>("")
+  const [inputValue, setInputValue] = useState(defaultValue || "")
   const [searchResult, setSearchResult] = useState(dummySearchResult)
   const navigator = useNavigate()
   let inputTimeout: any
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.input.value = defaultValue || ""
-    }
-  }, [defaultValue])
+  // useEffect(() => {
+  //   if (inputRef.current) {
+  //     inputRef.current.input.value = defaultValue || ""
+  //   }
+  // }, [defaultValue])
 
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
@@ -66,31 +72,15 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
   })
 
   const filterSearchResult = (searchData: string) => {
+    if (searchData === "") {
+      return dummySearchResult
+    }
     return dummySearchResult.filter((item) => {
       const dataToSearch = item.address + item.title
       return dataToSearch.toLowerCase().includes(searchData.toLowerCase())
     })
   }
 
-  const handleOnKeyUp = (e: any) => {
-    if (inputTimeout) clearTimeout(inputTimeout)
-
-    if (e.target.value === "") {
-      setInputValue(e.target.value)
-      setSearchResult(filterSearchResult(e.target.value))
-      return
-    }
-    inputTimeout = setTimeout(() => {
-      setInputValue(e.target.value)
-      setSearchResult(filterSearchResult(e.target.value))
-    }, 1000)
-  }
-
-  const handleOnKeyDown = (e: any) => {
-    if (e.key === "Enter") {
-      setInputValue(e.target.value)
-    }
-  }
   const handleFocus = (e: any) => {
     setIsFocusing(true)
   }
@@ -117,6 +107,16 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
       search: `?${createSearchParams(params)}`,
     })
   }
+  useLayoutEffect(() => {
+    clearTimeout(inputTimeout)
+    if (inputValue === "") {
+      setSearchResult(filterSearchResult(inputValue))
+    } else {
+      inputTimeout = setTimeout(() => {
+        setSearchResult(filterSearchResult(inputValue))
+      }, 1000)
+    }
+  }, [inputValue])
 
   return (
     <div
@@ -127,14 +127,15 @@ const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
         <Form.Item className="mb-0 px-2">
           <Input
             ref={inputRef}
+            value={inputValue}
             name="searchData"
             prefix={<BiSearch className="mr-2" />}
             className="text-[1.5rem] outline-none rounded-full"
             placeholder="Search something..."
             allowClear
             bordered={false}
-            onChange={handleOnKeyUp}
-            onKeyDown={handleOnKeyDown}
+            onChange={(e) => setInputValue(e.target.value)}
+            // onKeyDown={handleOnKeyDown}
             onFocus={handleFocus}
           ></Input>
         </Form.Item>
