@@ -46,3 +46,10 @@ export const registerAPI = async (user: any) => {
     throw new Error(error)
   }
 }
+// export const verifyAPI = async (code: string) => {
+//   try {
+//     const response =
+//   } catch (error: any) {
+//     throw new Error(error)
+//   }
+// }

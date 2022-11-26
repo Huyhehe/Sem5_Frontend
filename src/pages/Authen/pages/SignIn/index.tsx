@@ -1,6 +1,6 @@
 import { Button, Form, Input } from "antd"
 import { FunctionComponent, useContext } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { signinAPI } from "@/utils/http"
 import { setAccessTokenToLocal, setUserToLocal } from "@/utils/localStorage"
 import { AppContext } from "@/App"
@@ -8,18 +8,25 @@ import { AppContext } from "@/App"
 interface SignInPageProps {}
 
 const SignInPage: FunctionComponent<SignInPageProps> = () => {
-  const { openNotification } = useContext(AppContext)
+  const { openNotification, currentRoute, setCurrentRoute } =
+    useContext(AppContext)
+  const navigator = useNavigate()
   const handleSubmit = async (e: any) => {
     try {
       const user = await signinAPI(e)
       setUserToLocal(user)
       setAccessTokenToLocal(user.accessToken)
-      console.log(user)
-    } catch (error) {
-      console.log(error)
+      if (currentRoute) {
+        setCurrentRoute(null)
+        navigator(currentRoute)
+      } else {
+        navigator("/")
+      }
+    } catch (error: any) {
+      console.log(error.message)
       openNotification("error", {
         message: "Error",
-        description: "Something went wrong",
+        description: `Something went wrong, it might be ${error.message}`,
       })
     }
   }

@@ -35,7 +35,7 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
   }, [])
 
   return (
-    <div className="location-search-result-by-Id pb-8">
+    <div className="location-search-result-by-Id pb-8 px-8 md:px-0">
       <div className="content-container">
         <div className="content-header">
           <h1 className="text-[2.5rem] font-bold self-end">

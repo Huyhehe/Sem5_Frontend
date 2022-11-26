@@ -1,6 +1,6 @@
 const useUser = () => {
   const { username, accessToken } = JSON.parse(
-    localStorage.getItem("user") || "{}"
+    localStorage.getItem("user") || "null"
   )
   return { username, accessToken }
 }

@@ -9,6 +9,7 @@ export const AppContext = createContext<any>({})
 
 function App() {
   const [loading, setLoading] = useState(false)
+  const [currentRoute, setCurrentRoute] = useState<string | null>(null)
   const [api, contextHolder] = notification.useNotification()
   notification.config({
     placement: "bottomLeft" as NotificationPlacement,
@@ -26,7 +27,15 @@ function App() {
     })
   }
   return (
-    <AppContext.Provider value={{ loading, setLoading, openNotification }}>
+    <AppContext.Provider
+      value={{
+        loading,
+        setLoading,
+        openNotification,
+        currentRoute,
+        setCurrentRoute,
+      }}
+    >
       {contextHolder}
       <div className="relative min-h-screen">
         <Routing />

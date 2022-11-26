@@ -1,12 +1,14 @@
+import { AppContext } from "@/App"
 import { forgotPasswordAPI } from "@/utils/http"
 import { setEmailToLocal } from "@/utils/localStorage"
 import { Button, Form, Input } from "antd"
-import { FunctionComponent } from "react"
+import { FunctionComponent, useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
 interface ForgotPasswordProps {}
 
 const ForgotPassword: FunctionComponent<ForgotPasswordProps> = () => {
+  const { openNotification } = useContext(AppContext)
   const navigator = useNavigate()
   const handleSubmit = async (e: any) => {
     try {
@@ -18,11 +20,15 @@ const ForgotPassword: FunctionComponent<ForgotPasswordProps> = () => {
       // }
       setEmailToLocal(e.email)
       navigator("/login/verify")
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
       // local run only - testing
-      setEmailToLocal(e.email)
-      navigator("/login/verify")
+      // setEmailToLocal(e.email)
+      // navigator("/login/verify")
+      openNotification("error", {
+        message: "Error",
+        description: `Something went wrong, it might be ${error.message}`,
+      })
     }
   }
   return (
