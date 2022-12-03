@@ -1,3 +1,4 @@
+import { VerifySending } from "@/pages/Authen/pages/Verify/pages/VerifySending"
 import { createBrowserRouter, Outlet } from "react-router-dom"
 import AuthLayout from "../layouts/AuthLayout"
 import UnAuthLayout from "../layouts/UnAuthLayout"
@@ -63,7 +64,22 @@ export const router = createBrowserRouter([
       },
       {
         path: "verify",
-        element: <Verify />,
+        element: <Outlet />,
+        children: [
+          {
+            index: true,
+            element: <Verify />,
+          },
+          {
+            path: ":param1",
+            children: [
+              {
+                path: ":param2",
+                element: <VerifySending />,
+              },
+            ],
+          },
+        ],
       },
     ],
   },

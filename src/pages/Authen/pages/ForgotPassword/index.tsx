@@ -16,15 +16,11 @@ const ForgotPassword: FunctionComponent<ForgotPasswordProps> = () => {
       // After API done
       // if (res.user) {
       //   setEmailToLocal(e.email)
-      //   navigator("/login/verify")
+      //   navigator(`/login/verify/${res.param1}/${res.param2}`)
       // }
       setEmailToLocal(e.email)
       navigator("/login/verify")
     } catch (error: any) {
-      console.log(error)
-      // local run only - testing
-      // setEmailToLocal(e.email)
-      // navigator("/login/verify")
       openNotification("error", {
         message: "Error",
         description: `Something went wrong, it might be ${error.message}`,
