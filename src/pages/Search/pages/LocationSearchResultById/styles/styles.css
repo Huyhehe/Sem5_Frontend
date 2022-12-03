@@ -39,13 +39,14 @@
 /* REVIEW CONTAINER */
 .review-container {
 }
+.contribute-button {
+  @apply flex items-center justify-center gap-1;
+  @apply w-[fit-content] py-[0.5rem] px-[1rem] rounded-full;
+  @apply border-[2px] border-black text-[#333] font-[600];
+  @apply hover:bg-black hover:text-white;
+}
 
 /* OVERIDE ANT */
 .ant-image {
   @apply w-full;
 }
-
-/* .ant-image-preview-img-wrapper {
-  @apply top-1/2 left-1/2;
-  transform: translate(-50%, -50%) !important;
-} */

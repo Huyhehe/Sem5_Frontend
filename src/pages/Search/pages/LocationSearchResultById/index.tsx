@@ -1,25 +1,29 @@
+import { AppContext } from "@/App"
 import { example } from "@/assets/images"
 import CustomSlide from "@/components/CustomSlide"
+import useUser from "@/hooks/useUser"
 import LocationReview from "@/interfaces/LocationReview"
 import { getLocationReviewById } from "@/utils/http"
 import { toDouble } from "@/utils/reusable"
-import { Image, Tabs } from "antd"
-import { FunctionComponent, useEffect, useState } from "react"
+import { Image, notification, Tabs } from "antd"
+import { FunctionComponent, useContext, useEffect, useState } from "react"
 import { AiFillStar, AiOutlineHeart } from "react-icons/ai"
 import { BsDot } from "react-icons/bs"
 import { HiOutlineChevronDown } from "react-icons/hi"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import UserReviewContainer from "./components/UserReviewContainer"
 import "./styles/styles.css"
 
 interface SearchResultByIdProps {}
 
 const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
+  const user = useUser()
   const { id } = useParams()
   const [locationReview, setLocationReview] = useState<LocationReview | null>(
     null
   )
-  const [visible, setVisible] = useState(false)
+  const { openNotification } = useContext(AppContext)
+  const navigator = useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,8 +38,40 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
     fetchData()
   }, [])
 
+  const checkUserIsValid = (
+    user: any,
+    helperText: string = "Something has to be checked again"
+  ) => {
+    if (!user?.accessToken) {
+      openNotification("warning", {
+        message: "Warning",
+        description: (
+          <div className="flex flex-col">
+            <span>{helperText}</span>
+            <span
+              className="font-bold underline cursor-pointer"
+              onClick={() => {
+                navigator("/login/signIn")
+                notification.destroy()
+              }}
+            >
+              Sign in
+            </span>
+          </div>
+        ),
+      })
+      return false
+    }
+    return true
+  }
+  const handleReviewButtonClick = () => {
+    if (checkUserIsValid(user, "You need to sign in to review this location")) {
+      navigator(`/review/${id}`)
+    }
+  }
+
   return (
-    <div className="location-search-result-by-Id pb-8 px-8 md:px-0">
+    <div className="location-search-result-by-Id pb-8 px-8 md:px-0 flex flex-col gap-8">
       <div className="content-container">
         <div className="content-header">
           <h1 className="text-[2.5rem] font-bold self-end">
@@ -98,6 +134,20 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
         </div>
       </div>
       <div className="review-container">
+        <div className="review-contribute flex flex-col gap-4">
+          <div className="contribute-header">
+            <h1 className="text-[1.5rem] font-bold">Contribute</h1>
+          </div>
+          <div className="contribute-buttons flex gap-4">
+            <button
+              className="contribute-button"
+              onClick={handleReviewButtonClick}
+            >
+              Write a review
+            </button>
+            <button className="contribute-button">Upload a photo</button>
+          </div>
+        </div>
         <div>
           <Tabs size="large">
             <Tabs.TabPane tab="Reviews" key="tab1">
