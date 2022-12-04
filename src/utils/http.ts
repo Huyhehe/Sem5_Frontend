@@ -19,12 +19,20 @@ export const getLocationReviewById = async (id: number) => {
     throw new Error(error)
   }
 }
-export const signinAPI = async (user: {
+export const signInAPI = async (user: {
   username: string
   password: string
 }) => {
   try {
     const res = await axios.post(`${API_URL}/auth/login`, user)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error)
+  }
+}
+export const signOutAPI = async () => {
+  try {
+    const res = await axiosInstance.post(`${API_URL}/auth/logout`)
     return res.data
   } catch (error: any) {
     throw new Error(error)

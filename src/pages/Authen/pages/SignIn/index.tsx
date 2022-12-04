@@ -1,7 +1,7 @@
 import { Button, Form, Input } from "antd"
 import { FunctionComponent, useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { signinAPI } from "@/utils/http"
+import { signInAPI } from "@/utils/http"
 import { setAccessTokenToLocal, setUserToLocal } from "@/utils/localStorage"
 import { AppContext } from "@/App"
 
@@ -13,7 +13,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
   const navigator = useNavigate()
   const handleSubmit = async (e: any) => {
     try {
-      const user = await signinAPI(e)
+      const user = await signInAPI(e)
       setUserToLocal(user)
       setAccessTokenToLocal(user.accessToken)
       if (currentRoute) {

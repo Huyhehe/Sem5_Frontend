@@ -15,3 +15,8 @@ export const setAccessTokenToLocal = (accessToken: string) => {
 export const setUserToLocal = (user: User) => {
   localStorage.setItem("user", JSON.stringify(user))
 }
+
+export const signOutUser = () => {
+  localStorage.removeItem("user")
+  localStorage.removeItem("accessToken")
+}

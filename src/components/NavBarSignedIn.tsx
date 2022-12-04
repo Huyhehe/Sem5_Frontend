@@ -1,6 +1,9 @@
+import { AppContext } from "@/App"
+import { signOutAPI } from "@/utils/http"
+import { signOutUser } from "@/utils/localStorage"
 import type { MenuProps } from "antd"
 import { Dropdown } from "antd"
-import { FunctionComponent, useState } from "react"
+import { FunctionComponent, useContext, useState } from "react"
 import { AiOutlineMenu, AiOutlineProfile, AiOutlineUser } from "react-icons/ai"
 import { FiLogOut } from "react-icons/fi"
 import { NavLink, useNavigate } from "react-router-dom"
@@ -31,6 +34,20 @@ const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
       link: "/about",
     },
   ]
+  const { setLoading } = useContext(AppContext)
+  const handleSignOut = async () => {
+    setLoading(true)
+    try {
+      await signOutAPI
+      signOutUser()
+      setLoading(false)
+      navigator("/login/signIn")
+    } catch (error) {
+      signOutUser()
+      setLoading(false)
+      navigator("/login/signIn")
+    }
+  }
 
   const items: MenuProps["items"] = [
     {
@@ -54,7 +71,7 @@ const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
     {
       key: "3",
       label: (
-        <div className="flex gap-1 items-center">
+        <div className="flex gap-1 items-center" onClick={handleSignOut}>
           <FiLogOut size={20} />
           <span>Sign out</span>
         </div>
@@ -97,7 +114,7 @@ const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
           menu={{ items }}
           placement="bottomLeft"
           arrow
-          className="cursor-pointer"
+          className="cursor-pointer w-[10rem]"
         >
           <div className="flex gap-2 items-center">
             <AiOutlineUser size={20} />
@@ -121,6 +138,7 @@ const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
           navItems={navItems}
           navigator={navigator}
           setIsMobile={setIsMobile}
+          user={user}
         />
       </div>
     </div>

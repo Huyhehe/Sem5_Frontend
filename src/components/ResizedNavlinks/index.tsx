@@ -7,12 +7,14 @@ interface ResizedNavlinksProps {
   navItems: Array<{ title: string; link: string }>
   navigator: any
   setIsMobile: Dispatch<boolean>
+  user?: any
 }
 
 const ResizedNavlinks: FunctionComponent<ResizedNavlinksProps> = ({
   navItems,
   navigator,
   setIsMobile,
+  user = undefined,
 }) => {
   return (
     <div className="resizedNavlinks flex flex-col gap-[1rem]">
@@ -34,20 +36,26 @@ const ResizedNavlinks: FunctionComponent<ResizedNavlinksProps> = ({
         })}
       </div>
       <div className="py-[1rem]">
-        <Space direction="vertical" align="end" className="w-full">
-          <Button
-            className="h-[2.5rem] rounded-full text-white bg-blue-500 border-none hover:bg-blue-500/70"
-            onClick={() => navigator("/login/signIn")}
-          >
-            Sign in
-          </Button>
-          <Button
-            className="h-[2.5rem] rounded-full text-white bg-primary border-none hover:bg-primary/70"
-            onClick={() => navigator("/login/signUp")}
-          >
-            Sign up for free!
-          </Button>
-        </Space>
+        {user ? (
+          <div className="flex flex-col">
+            <div></div>
+          </div>
+        ) : (
+          <Space direction="vertical" align="end" className="w-full">
+            <Button
+              className="h-[2.5rem] rounded-full text-white bg-blue-500 border-none hover:bg-blue-500/70"
+              onClick={() => navigator("/login/signIn")}
+            >
+              Sign in
+            </Button>
+            <Button
+              className="h-[2.5rem] rounded-full text-white bg-primary border-none hover:bg-primary/70"
+              onClick={() => navigator("/login/signUp")}
+            >
+              Sign up for free!
+            </Button>
+          </Space>
+        )}
       </div>
     </div>
   )
