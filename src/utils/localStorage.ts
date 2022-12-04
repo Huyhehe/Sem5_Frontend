@@ -12,6 +12,10 @@ export const setAccessTokenToLocal = (accessToken: string) => {
   localStorage.setItem("accessToken", JSON.stringify(accessToken))
 }
 
+export const getAccessTokenFromLocal = () => {
+  return JSON.parse(localStorage?.getItem("accessToken") || "null")
+}
+
 export const setUserToLocal = (user: User) => {
   localStorage.setItem("user", JSON.stringify(user))
 }

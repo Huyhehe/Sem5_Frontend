@@ -4,13 +4,14 @@ import CustomSlide from "@/components/CustomSlide"
 import useUser from "@/hooks/useUser"
 import LocationReview from "@/interfaces/LocationReview"
 import { getLocationReviewById } from "@/utils/http"
+import { getAccessTokenFromLocal } from "@/utils/localStorage"
 import { toDouble } from "@/utils/reusable"
 import { Image, notification, Tabs } from "antd"
 import { FunctionComponent, useContext, useEffect, useState } from "react"
 import { AiFillStar, AiOutlineHeart } from "react-icons/ai"
 import { BsDot } from "react-icons/bs"
 import { HiOutlineChevronDown } from "react-icons/hi"
-import { useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import UserReviewContainer from "./components/UserReviewContainer"
 import "./styles/styles.css"
 
@@ -22,8 +23,9 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
   const [locationReview, setLocationReview] = useState<LocationReview | null>(
     null
   )
-  const { openNotification } = useContext(AppContext)
+  const { openNotification, setCurrentRoute } = useContext(AppContext)
   const navigator = useNavigate()
+  const currentLocation = useLocation()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,10 +41,11 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
   }, [])
 
   const checkUserIsValid = (
-    user: any,
     helperText: string = "Something has to be checked again"
   ) => {
-    if (!user?.accessToken) {
+    const accessToken = getAccessTokenFromLocal()
+    setCurrentRoute(currentLocation.pathname)
+    if (!accessToken) {
       openNotification("warning", {
         message: "Warning",
         description: (
@@ -65,7 +68,7 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
     return true
   }
   const handleReviewButtonClick = () => {
-    if (checkUserIsValid(user, "You need to sign in to review this location")) {
+    if (checkUserIsValid("You need to sign in to review this location")) {
       navigator(`/review/${id}`)
     }
   }

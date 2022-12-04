@@ -19,12 +19,9 @@ export const getLocationReviewById = async (id: number) => {
     throw new Error(error)
   }
 }
-export const signInAPI = async (user: {
-  username: string
-  password: string
-}) => {
+export const signInAPI = async (user: { email: string; password: string }) => {
   try {
-    const res = await axios.post(`${API_URL}/auth/login`, user)
+    const res = await axios.post(`${API_URL}/auth/login/`, user)
     return res.data
   } catch (error: any) {
     throw new Error(error)

@@ -11,12 +11,12 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
   const { openNotification, currentRoute, setCurrentRoute, setLoading } =
     useContext(AppContext)
   const navigator = useNavigate()
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (signInData: any) => {
     setLoading(true)
     try {
-      const user = await signInAPI(e)
+      const { token, ...user } = await signInAPI(signInData)
       setUserToLocal(user)
-      setAccessTokenToLocal(user.accessToken)
+      setAccessTokenToLocal(token)
       setLoading(false)
       if (currentRoute) {
         setCurrentRoute(null)
@@ -40,8 +40,8 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
       </h1>
       <Form onFinish={handleSubmit} size="large">
         <Form.Item
-          name={"username"}
-          label="Username"
+          name={"email"}
+          label="Email"
           required
           colon={false}
           labelCol={{ span: 24 }}
@@ -53,7 +53,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
           ]}
         >
           <Input
-            placeholder="Ex: Huyhehe"
+            placeholder="Ex: Huyhehe@gmail.com"
             allowClear
             className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
           />

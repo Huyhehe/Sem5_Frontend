@@ -1,12 +1,12 @@
 import { AppContext } from "@/App"
 import RatePoint from "@/components/common/RatePoint"
-import useUser from "@/hooks/useUser"
 import UserReview from "@/interfaces/UserReview"
+import { getAccessTokenFromLocal } from "@/utils/localStorage"
 import { notification } from "antd"
 import { FunctionComponent, useContext, useState } from "react"
 import { AiFillLike, AiOutlineLike } from "react-icons/ai"
 import { SlOptionsVertical } from "react-icons/sl"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 interface UserReviewArticleProps {
   userReview: UserReview
@@ -17,9 +17,9 @@ const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
   userReview,
   searchQueryString,
 }) => {
-  const user = useUser()
-  const { openNotification } = useContext(AppContext)
+  const { openNotification, setCurrentRoute } = useContext(AppContext)
   const navigator = useNavigate()
+  const currentLocation = useLocation()
 
   const [isLiked, setIsLiked] = useState(false) // add logic default isLiked if user liked this review
 
@@ -41,7 +41,9 @@ const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
     return result
   }
   const handleLikeClick = () => {
-    if (!user?.accessToken) {
+    const accessToken = getAccessTokenFromLocal()
+    setCurrentRoute(currentLocation.pathname)
+    if (!accessToken) {
       openNotification("warning", {
         message: "Warning",
         description: (
