@@ -1,15 +1,18 @@
+import { AppContext } from "@/App"
 import { registerAPI } from "@/utils/http"
 import { setEmailToLocal } from "@/utils/localStorage"
 import { Input, Form, Button } from "antd"
-import { FunctionComponent } from "react"
+import { FunctionComponent, useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
 interface SignUpPageProps {}
 
 const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
   const navigator = useNavigate()
+  const { setLoading, openNotification } = useContext(AppContext)
 
   const handleSubmit = async (newUser: any) => {
+    setLoading(true)
     if (newUser.password === newUser.confirmPassword) {
       console.log(newUser)
       try {
@@ -20,9 +23,15 @@ const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
         //   navigator("/login/verify")
         // }
         setEmailToLocal(newUser.email)
+        setLoading(false)
         navigator("/login/verify")
-      } catch (error) {
+      } catch (error: any) {
+        setLoading(false)
         console.log(error)
+        openNotification("error", {
+          message: "Error",
+          description: `Something went wrong, it might be ${error.message}`,
+        })
       }
     }
   }

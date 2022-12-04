@@ -8,9 +8,10 @@ import { Link, useNavigate } from "react-router-dom"
 interface ForgotPasswordProps {}
 
 const ForgotPassword: FunctionComponent<ForgotPasswordProps> = () => {
-  const { openNotification } = useContext(AppContext)
+  const { openNotification, setLoading } = useContext(AppContext)
   const navigator = useNavigate()
   const handleSubmit = async (e: any) => {
+    setLoading(true)
     try {
       const res = await forgotPasswordAPI(e.email)
       // After API done
@@ -19,8 +20,10 @@ const ForgotPassword: FunctionComponent<ForgotPasswordProps> = () => {
       //   navigator(`/login/verify/${res.param1}/${res.param2}`)
       // }
       setEmailToLocal(e.email)
+      setLoading(false)
       navigator("/login/verify")
     } catch (error: any) {
+      setLoading(false)
       openNotification("error", {
         message: "Error",
         description: `Something went wrong, it might be ${error.message}`,

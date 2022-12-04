@@ -8,14 +8,16 @@ import { AppContext } from "@/App"
 interface SignInPageProps {}
 
 const SignInPage: FunctionComponent<SignInPageProps> = () => {
-  const { openNotification, currentRoute, setCurrentRoute } =
+  const { openNotification, currentRoute, setCurrentRoute, setLoading } =
     useContext(AppContext)
   const navigator = useNavigate()
   const handleSubmit = async (e: any) => {
+    setLoading(true)
     try {
       const user = await signInAPI(e)
       setUserToLocal(user)
       setAccessTokenToLocal(user.accessToken)
+      setLoading(false)
       if (currentRoute) {
         setCurrentRoute(null)
         navigator(currentRoute)
@@ -24,6 +26,7 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
       }
     } catch (error: any) {
       console.log(error.message)
+      setLoading(false)
       openNotification("error", {
         message: "Error",
         description: `Something went wrong, it might be ${error.message}`,
