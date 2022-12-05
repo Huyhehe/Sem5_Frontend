@@ -5,20 +5,22 @@ import "./styles.css"
 
 interface ResizedNavlinksProps {
   navItems: Array<{ title: string; link: string }>
+  userItems?: any
   navigator: any
-  setIsMobile: Dispatch<boolean>
+  setIsHiddenNavbarOpen: Dispatch<boolean>
   user?: any
 }
 
 const ResizedNavlinks: FunctionComponent<ResizedNavlinksProps> = ({
   navItems,
+  userItems = [],
   navigator,
-  setIsMobile,
+  setIsHiddenNavbarOpen,
   user = undefined,
 }) => {
   return (
     <div className="resizedNavlinks flex flex-col gap-[1rem]">
-      <div className="flex sm:hidden flex-col">
+      <div className="flex sm:hidden pb-[1rem] flex-col border-b">
         {navItems.map((item, index) => {
           return (
             <NavLink
@@ -28,17 +30,27 @@ const ResizedNavlinks: FunctionComponent<ResizedNavlinksProps> = ({
                 isActive ? "activeLink link" : "unActiveLink link"
               }
               to={item.link}
-              onClick={() => setIsMobile(false)}
+              onClick={() => setIsHiddenNavbarOpen(false)}
             >
               {item.title}
             </NavLink>
           )
         })}
       </div>
-      <div className="py-[1rem]">
+      <div className="">
         {user ? (
           <div className="flex flex-col">
-            <div></div>
+            {userItems.map((item: any, index: number) => {
+              return (
+                <div
+                  key={index}
+                  className="link cursor-pointer"
+                  onClick={item.onClick}
+                >
+                  {item.title}
+                </div>
+              )
+            })}
           </div>
         ) : (
           <Space direction="vertical" align="end" className="w-full">

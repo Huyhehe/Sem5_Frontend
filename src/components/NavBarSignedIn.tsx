@@ -1,12 +1,11 @@
 import { AppContext } from "@/App"
 import { signOutAPI } from "@/utils/http"
 import { signOutUser } from "@/utils/localStorage"
-import type { MenuProps } from "antd"
-import { Dropdown } from "antd"
 import { FunctionComponent, useContext, useState } from "react"
-import { AiOutlineMenu, AiOutlineProfile, AiOutlineUser } from "react-icons/ai"
+import { AiOutlineMenu, AiOutlineProfile } from "react-icons/ai"
 import { FiLogOut } from "react-icons/fi"
 import { NavLink, useNavigate } from "react-router-dom"
+import CustomDropDown from "./common/CustomDropDown"
 import ResizedNavlinks from "./ResizedNavlinks"
 
 interface NavBarProps {
@@ -15,7 +14,7 @@ interface NavBarProps {
 
 const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
   const navigator = useNavigate()
-  const [isMobile, setIsMobile] = useState<boolean>(false)
+  const [isHiddenNavbarOpen, setIsHiddenNavbarOpen] = useState<boolean>(false)
   const navItems = [
     {
       title: "Home",
@@ -49,33 +48,15 @@ const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
     }
   }
 
-  const items: MenuProps["items"] = [
+  const userItems = [
     {
-      key: "1",
-      label: (
-        <div className="flex gap-1 items-center">
-          <AiOutlineProfile size={20} />
-          <span>Profile</span>
-        </div>
-      ),
+      title: "Profile",
+      icon: <AiOutlineProfile size={20} />,
     },
     {
-      key: "2",
-      label: (
-        <div className="flex gap-1 items-center">
-          <AiOutlineProfile size={20} />
-          <span>Profile</span>
-        </div>
-      ),
-    },
-    {
-      key: "3",
-      label: (
-        <div className="flex gap-1 items-center" onClick={handleSignOut}>
-          <FiLogOut size={20} />
-          <span>Sign out</span>
-        </div>
-      ),
+      title: "Sign out",
+      icon: <FiLogOut size={20} />,
+      onClick: handleSignOut,
     },
   ]
   const activeClassName =
@@ -110,34 +91,25 @@ const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
         })}
       </div>
       <div className="user-dropdown hidden md:flex">
-        <Dropdown
-          menu={{ items }}
-          placement="bottomLeft"
-          arrow
-          className="cursor-pointer w-[10rem]"
-        >
-          <div className="flex gap-2 items-center">
-            <AiOutlineUser size={20} />
-            <span className="text-[1rem] font-medium">{user.username}</span>
-          </div>
-        </Dropdown>
+        <CustomDropDown mainDisplay={user.username} userItems={userItems} />
       </div>
       <div
         className="flex md:hidden cursor-pointer"
-        onClick={() => setIsMobile((prev) => !prev)}
+        onClick={() => setIsHiddenNavbarOpen((prev) => !prev)}
       >
         <AiOutlineMenu size={30} />
       </div>
 
       <div
         className={`absolute md:hidden bg-white w-full top-full left-0 h-screen transition-all -z-10 box-border ${
-          isMobile ? "open" : "close"
+          isHiddenNavbarOpen ? "open" : "close"
         }`}
       >
         <ResizedNavlinks
           navItems={navItems}
+          userItems={userItems}
           navigator={navigator}
-          setIsMobile={setIsMobile}
+          setIsHiddenNavbarOpen={setIsHiddenNavbarOpen}
           user={user}
         />
       </div>

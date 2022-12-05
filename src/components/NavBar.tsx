@@ -8,7 +8,7 @@ interface NavBarProps {}
 
 const NavBar: FunctionComponent<NavBarProps> = () => {
   const navigator = useNavigate()
-  const [isMobile, setIsMobile] = useState<boolean>(false)
+  const [isHiddenNavbarOpen, setIsHiddenNavbarOpen] = useState<boolean>(false)
   const navItems = [
     {
       title: "Home",
@@ -76,20 +76,20 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
       </div>
       <div
         className="flex md:hidden cursor-pointer"
-        onClick={() => setIsMobile((prev) => !prev)}
+        onClick={() => setIsHiddenNavbarOpen((prev) => !prev)}
       >
         <AiOutlineMenu size={30} />
       </div>
 
       <div
         className={`absolute md:hidden bg-white w-full top-full left-0 h-screen transition-all -z-10 box-border ${
-          isMobile ? "open" : "close"
+          isHiddenNavbarOpen ? "open" : "close"
         }`}
       >
         <ResizedNavlinks
           navItems={navItems}
           navigator={navigator}
-          setIsMobile={setIsMobile}
+          setIsHiddenNavbarOpen={setIsHiddenNavbarOpen}
         />
       </div>
     </div>
