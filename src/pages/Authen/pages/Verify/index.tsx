@@ -1,5 +1,5 @@
 import { getEmailFromLocal } from "@/utils/localStorage"
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 import CodeField from "./components/CodeField"
 
 interface VerifyProps {}

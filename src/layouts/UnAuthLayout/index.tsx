@@ -15,7 +15,7 @@ const UnAuthLayout: FunctionComponent<UnAuthLayoutProps> = ({ children }) => {
     }
   }, [])
 
-  return <div className="unAuth-layout py-[2rem]">{children}</div>
+  return <div className="unAuth-layout py-[1.5rem]">{children}</div>
 }
 
 export default UnAuthLayout

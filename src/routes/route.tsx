@@ -1,4 +1,6 @@
+import VerifyEmailSending from "@/pages/Authen/pages/Verify/pages/VerifyEmailSending"
 import { VerifySending } from "@/pages/Authen/pages/Verify/pages/VerifySending"
+import Profile from "@/pages/Profile"
 import { createBrowserRouter, Outlet } from "react-router-dom"
 import AuthLayout from "../layouts/AuthLayout"
 import UnAuthLayout from "../layouts/UnAuthLayout"
@@ -64,14 +66,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "verify",
+        element: <Verify />,
+      },
+      {
+        path: "email-verify",
         element: <Outlet />,
         children: [
           {
-            index: true,
-            element: <Verify />,
+            path: "",
+            element: <div>This page doesn't exist</div>,
           },
           {
             path: ":param1",
+            element: <VerifyEmailSending />,
             children: [
               {
                 path: ":param2",
@@ -82,5 +89,13 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "/profile",
+    element: (
+      <AuthLayout>
+        <Profile />
+      </AuthLayout>
+    ),
   },
 ])

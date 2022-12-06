@@ -8,7 +8,7 @@ export const getAllLocationReviews = async () => {
     const res = await axiosInstance.get(`${API_URL}/reviews`)
     return res.data
   } catch (error: any) {
-    throw new Error(error)
+    throw new Error(error.response.data.error)
   }
 }
 export const getLocationReviewById = async (id: number) => {
@@ -16,7 +16,7 @@ export const getLocationReviewById = async (id: number) => {
     const res = await axiosInstance.get(`${API_URL}/reviews/${id}`)
     return res.data
   } catch (error: any) {
-    throw new Error(error)
+    throw new Error(error.response.data.error)
   }
 }
 export const signInAPI = async (user: { email: string; password: string }) => {
@@ -24,7 +24,7 @@ export const signInAPI = async (user: { email: string; password: string }) => {
     const res = await axios.post(`${API_URL}/auth/login/`, user)
     return res.data
   } catch (error: any) {
-    throw new Error(error)
+    throw new Error(error.response.data.error)
   }
 }
 export const signOutAPI = async () => {
@@ -32,7 +32,7 @@ export const signOutAPI = async () => {
     const res = await axiosInstance.post(`${API_URL}/auth/logout`)
     return res.data
   } catch (error: any) {
-    throw new Error(error)
+    throw new Error(error.response.data.error)
   }
 }
 export const forgotPasswordAPI = async (email: string) => {
@@ -40,17 +40,26 @@ export const forgotPasswordAPI = async (email: string) => {
     const res = await axios.post(`${API_URL}/auth/forgot-password`, email)
     return res.data
   } catch (error: any) {
-    throw new Error(error)
+    throw new Error(error.response.data.error)
   }
 }
 export const registerAPI = async (user: any) => {
   try {
-    const res = await axios.post(`${API_URL}/auth/register`, user)
+    const res = await axios.post(`${API_URL}/auth/register/`, user)
     return res.data
   } catch (error: any) {
-    throw new Error(error)
+    throw new Error(error.response.data.error)
   }
 }
+export const verifyEmailAPI = async (token: string) => {
+  try {
+    const res = await axios.get(`${API_URL}/auth/email-verify/${token}`)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.error)
+  }
+}
+
 // export const verifyAPI = async (code: string) => {
 //   try {
 //     const response =

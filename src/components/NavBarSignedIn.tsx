@@ -47,11 +47,15 @@ const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
       navigator("/login/signIn")
     }
   }
+  const handleProfileClick = () => {
+    navigator("/profile")
+  }
 
   const userItems = [
     {
       title: "Profile",
       icon: <AiOutlineProfile size={20} />,
+      onClick: handleProfileClick,
     },
     {
       title: "Sign out",
