@@ -14,9 +14,9 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
   const handleSubmit = async (signInData: any) => {
     setLoading(true)
     try {
-      const { token, ...user } = await signInAPI(signInData)
+      const { access_token, ...user } = await signInAPI(signInData)
       setUserToLocal(user)
-      setAccessTokenToLocal(token)
+      setAccessTokenToLocal(access_token)
       setLoading(false)
       if (currentRoute) {
         setCurrentRoute(null)

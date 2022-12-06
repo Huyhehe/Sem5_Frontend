@@ -20,7 +20,7 @@ const VerifyEmailSending: FunctionComponent<VerifyEmailSendingProps> = () => {
       } catch (error: any) {
         openNotification("error", {
           message: "Error",
-          description: error.message,
+          description: `Something went wrong, it might be ${error.message}`,
         })
       }
     }

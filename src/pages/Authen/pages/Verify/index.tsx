@@ -12,7 +12,6 @@ const Verify: FunctionComponent<VerifyProps> = () => {
       <h1 className="text-[1rem]">
         An email was sent to <strong>{email}</strong>
       </h1>
-      <CodeField />
     </div>
   )
 }
