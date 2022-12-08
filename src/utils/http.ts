@@ -89,3 +89,23 @@ export const getUserAPI = async (id: string) => {
     throw new Error(error.response.data.messages[0].message)
   }
 }
+
+// ADDRESS
+export const getFullAddressAPI = async ({
+  country,
+  province,
+  district,
+}: {
+  country: string
+  province: string
+  district: string
+}) => {
+  try {
+    const res = await axiosInstance.get(
+      `/address/get-list-address/${country}/${province}/${district}/`
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.messages[0].message)
+  }
+}

@@ -12,6 +12,9 @@ export const toDouble = (value: number) => {
   return value.toFixed(1)
 }
 
-export const getFirstCharaterOfName = (firstName: string, lastName: string) => {
+export const getFirstCharacterOfName = (
+  firstName: string = "",
+  lastName: string = ""
+) => {
   return firstName.charAt(0) + lastName.charAt(0)
 }

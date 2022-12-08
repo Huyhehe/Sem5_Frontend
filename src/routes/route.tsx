@@ -1,6 +1,7 @@
 import VerifyEmailSending from "@/pages/Authen/pages/Verify/pages/VerifyEmailSending"
 import { VerifySending } from "@/pages/Authen/pages/Verify/pages/VerifySending"
 import Profile from "@/pages/Profile"
+import ActivityFeed from "@/pages/Profile/pages/activity-feed"
 import { createBrowserRouter, Outlet } from "react-router-dom"
 import AuthLayout from "../layouts/AuthLayout"
 import UnAuthLayout from "../layouts/UnAuthLayout"
@@ -97,5 +98,27 @@ export const router = createBrowserRouter([
         <Profile />
       </AuthLayout>
     ),
+    children: [
+      {
+        index: true,
+        element: <ActivityFeed />,
+      },
+      {
+        path: "my-reviews",
+        element: <div>My reviews</div>,
+      },
+      {
+        path: "bookmarks",
+        element: <div>Bookmarks</div>,
+      },
+      {
+        path: "followers",
+        element: <div>Followers</div>,
+      },
+      {
+        path: "following",
+        element: <div>Following</div>,
+      },
+    ],
   },
 ])

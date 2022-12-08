@@ -1,0 +1,16 @@
+.profile-picture {
+  @apply w-32 aspect-square rounded-full flex justify-center items-center;
+  @apply text-white text-6xl font-medium;
+  @apply bg-gray-400;
+}
+
+.profile-link {
+  @apply relative;
+  @apply text-lg text-gray-400 pb-4;
+  @apply hover:text-black;
+}
+
+.profile-link-active {
+  @apply text-black font-medium;
+  @apply after:absolute after:bottom-0 after:left-0 after:w-full after:h-1 after:bg-black;
+}

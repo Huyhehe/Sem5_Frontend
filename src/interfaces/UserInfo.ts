@@ -1,9 +1,7 @@
 export default interface UserInfo {
-  account: {
-    id: string
-    username: string
-    email: string
-  }
+  id: string
+  username: string
+  email: string
   first_name: string
   last_name: string
   phone_number: string
@@ -14,4 +12,6 @@ export default interface UserInfo {
     street_address: string
   }
   profile_picture: string
+  created_at?: string
+  about?: string
 }

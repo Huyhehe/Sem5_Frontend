@@ -25,7 +25,7 @@ const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
         province: "",
         district: "",
         street_address: "",
-        redirect_link: "http://localhost:3000/login/email-verify",
+        redirect_link: "127.0.0.1:5173/login/email-verify",
       }
 
       const res = await registerAPI(user)
