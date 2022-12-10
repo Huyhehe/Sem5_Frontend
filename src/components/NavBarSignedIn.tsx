@@ -15,6 +15,7 @@ interface NavBarProps {
 const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
   const navigator = useNavigate()
   const [isHiddenNavbarOpen, setIsHiddenNavbarOpen] = useState<boolean>(false)
+  const { setCurrentRoute } = useContext(AppContext)
   const navItems = [
     {
       title: "Home",
@@ -36,6 +37,7 @@ const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
   const { setLoading } = useContext(AppContext)
   const handleSignOut = async () => {
     setLoading(true)
+    setCurrentRoute("/")
     try {
       await signOutAPI
       signOutUser()

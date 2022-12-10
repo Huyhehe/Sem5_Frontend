@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from "react"
+import { FunctionComponent, useContext, useEffect, useState } from "react"
 import Search from "../../components/Search/Search"
 import { searchBg } from "../../assets/images"
 import CustomSlide from "@/components/CustomSlide"
@@ -6,6 +6,7 @@ import { getAllLocationReviews } from "@/utils/http"
 import LocationReview from "@/interfaces/LocationReview"
 import Card from "@/components/Card"
 import { useNavigate } from "react-router-dom"
+import { AppContext } from "@/App"
 
 interface HomeProps {}
 
@@ -44,9 +45,11 @@ const Home: FunctionComponent<HomeProps> = () => {
       rate: 0,
     },
   ]
+  const { setCurrentRoute } = useContext(AppContext)
   const [cardItems, setCardItems] = useState<LocationReview[] | null>(null)
   const navigator = useNavigate()
   useEffect(() => {
+    setCurrentRoute(window.location.pathname)
     const fetchData = async () => {
       try {
         const response = await getAllLocationReviews()

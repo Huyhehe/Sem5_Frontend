@@ -2,6 +2,7 @@
   @apply w-32 aspect-square rounded-full flex justify-center items-center;
   @apply text-white text-6xl font-medium;
   @apply bg-gray-400;
+  @apply select-none;
 }
 
 .profile-link {
@@ -13,4 +14,27 @@
 .profile-link-active {
   @apply text-black font-medium;
   @apply after:absolute after:bottom-0 after:left-0 after:w-full after:h-1 after:bg-black;
+}
+
+.image-mask {
+  @apply relative;
+  @apply w-fit;
+}
+.image-mask-layer {
+  @apply absolute flex flex-col items-center justify-center;
+  @apply w-full h-full rounded-full;
+  @apply bg-black/40 hover:bg-black/20;
+  @apply cursor-pointer;
+}
+/* CUSTOM CLASSES */
+.ant-modal .ant-modal-footer .ant-btn {
+  @apply text-white;
+  border: none;
+}
+.ant-modal .ant-modal-footer .ant-btn:hover {
+  background-color: #db147f !important;
+}
+
+.ant-upload-list-item-card-actions button {
+  background-color: transparent !important;
 }

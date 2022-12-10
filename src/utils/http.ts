@@ -4,7 +4,6 @@ const API_URL = import.meta.env.VITE_API
 let axiosInstance: any = axios.create({
   baseURL: API_URL,
   headers: {
-    "Content-Type": "application/json",
     common: {
       Authorization: `Bearer ${JSON.parse(
         localStorage.getItem("accessToken") as string
@@ -84,6 +83,19 @@ export const verifyEmailAPI = async (token: string) => {
 export const getUserAPI = async (id: string) => {
   try {
     const res = await axiosInstance.get(`/users/get-user/${id}`)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.messages[0].message)
+  }
+}
+export const updateProfileImageAPI = async (formData: FormData) => {
+  try {
+    console.log(formData)
+
+    const res = await axiosInstance.patch(
+      `/users/update-profile-picture/`,
+      formData
+    )
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.messages[0].message)

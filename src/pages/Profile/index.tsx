@@ -1,16 +1,22 @@
 import useUser from "@/hooks/useUser"
 import UserInfo from "@/interfaces/UserInfo"
-import { getFullAddressAPI, getUserAPI } from "@/utils/http"
+import { getUserAPI, updateProfileImageAPI } from "@/utils/http"
 import { getFirstCharacterOfName } from "@/utils/reusable"
-import { Tooltip } from "antd"
-import { FunctionComponent, useEffect, useState } from "react"
-import { AiFillEdit, AiOutlineEdit, AiOutlinePlus } from "react-icons/ai"
-import { BsCalendar2Week } from "react-icons/bs"
+import { Modal, Tooltip } from "antd"
+import { FunctionComponent, useContext, useEffect, useState } from "react"
+import { AiFillEdit, AiOutlinePlus } from "react-icons/ai"
+import { BsCalendar2Week, BsCloudUploadFill } from "react-icons/bs"
 import { FaLocationArrow } from "react-icons/fa"
-import { NavLink, Outlet, useNavigate } from "react-router-dom"
-import { TbEdit } from "react-icons/tb"
-import "./styles/index.css"
+import { HiOutlinePhotograph } from "react-icons/hi"
 import { RiMapPinAddLine } from "react-icons/ri"
+import { TbEdit } from "react-icons/tb"
+import { NavLink, Outlet, useNavigate } from "react-router-dom"
+import "./styles/index.css"
+import { message, Upload } from "antd"
+import type { UploadProps } from "antd"
+import { AppContext } from "@/App"
+
+const { Dragger } = Upload
 
 interface ProfileProps {}
 
@@ -40,7 +46,25 @@ const Profile: FunctionComponent<ProfileProps> = () => {
 
   const navigator = useNavigate()
   const user = useUser()
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    id: "",
+    username: "",
+    email: "",
+    first_name: "",
+    last_name: "",
+    phone_number: "",
+    address: {
+      country: "",
+      province: "",
+      district: "",
+      street_address: "",
+    },
+    profile_picture: "",
+  })
+  const [openProfileModal, setOpenProfileModal] = useState<boolean>(false)
+  const [openImageModal, setOpenImageModal] = useState<boolean>(false)
+  const [image, setImage] = useState<any>(null)
+  const { setLoading } = useContext(AppContext)
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -54,8 +78,44 @@ const Profile: FunctionComponent<ProfileProps> = () => {
   }, [])
 
   const handleEditButtonClick = () => {
-    navigator("/edit-profile")
+    // navigator("/edit-profile")
+    setOpenProfileModal(true)
   }
+  const handleEditImageClick = () => {
+    setOpenImageModal(true)
+  }
+  const handleUploadImage = async () => {
+    console.log(image)
+
+    if (image) {
+      setLoading(true)
+      try {
+        const formData = new FormData()
+        formData.append("id", user.id)
+        formData.append("profile_picture", image)
+        const response = await updateProfileImageAPI(formData)
+        setUserInfo((prev) => ({ ...prev, profile_picture: response }))
+        setOpenImageModal(false)
+        setLoading(false)
+        message.success("Image uploaded successfully")
+      } catch (error: any) {
+        message.error(error.response.data.message)
+      }
+    }
+  }
+
+  const props: UploadProps = {
+    name: "file",
+    listType: "picture",
+    maxCount: 1,
+    beforeUpload(file: any) {
+      console.log(file)
+      setImage(file)
+      return false
+    },
+  }
+  console.log(userInfo)
+
   return (
     <div className="profile flex flex-col w-full gap-8">
       <div className="general-info-container flex flex-col shadow-custom px-4 rounded-md">
@@ -175,6 +235,62 @@ const Profile: FunctionComponent<ProfileProps> = () => {
           <Outlet context={{ userInfo, setUserInfo }} />
         </div>
       </div>
+      <Modal
+        open={openProfileModal}
+        width={800}
+        onCancel={() => setOpenProfileModal(false)}
+      >
+        <div className="main-modal-container flex">
+          <div className="modal-image-edit w-[30%]">
+            <div className="image-container">
+              <div className="image-mask">
+                <div
+                  className="image-mask-layer"
+                  onClick={handleEditImageClick}
+                >
+                  <HiOutlinePhotograph size={30} className="text-white" />
+                  <span className="text-white">Upload a photo</span>
+                </div>
+                {userInfo?.profile_picture ? (
+                  <img
+                    src={userInfo?.profile_picture}
+                    alt="profile picture"
+                    className="profile-picture"
+                  />
+                ) : (
+                  <div className="profile-picture">
+                    {getFirstCharacterOfName(
+                      userInfo?.first_name,
+                      userInfo?.last_name
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="modal-info-edit justify-self-stretch flex-grow"></div>
+        </div>
+      </Modal>
+      <Modal
+        open={openImageModal}
+        width={700}
+        onCancel={() => setOpenImageModal(false)}
+        okText="Upload"
+        onOk={handleUploadImage}
+      >
+        <Dragger {...props}>
+          <div className="ant-upload-drag-icon flex justify-center">
+            <BsCloudUploadFill size={40} />
+          </div>
+          <p className="ant-upload-text">
+            Click or drag file to this area to upload
+          </p>
+          <p className="ant-upload-hint">
+            Support for a single or bulk upload. Strictly prohibit from
+            uploading company data or other band files
+          </p>
+        </Dragger>
+      </Modal>
     </div>
   )
 }
