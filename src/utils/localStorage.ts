@@ -16,6 +16,14 @@ export const getAccessTokenFromLocal = () => {
   return JSON.parse(localStorage?.getItem("accessToken") || "null")
 }
 
+export const setRefreshTokenToLocal = (refreshToken: string) => {
+  localStorage.setItem("refreshToken", JSON.stringify(refreshToken))
+}
+
+export const getRefreshTokenFromLocal = () => {
+  return JSON.parse(localStorage?.getItem("refreshToken") || "null")
+}
+
 export const setUserToLocal = (user: User) => {
   localStorage.setItem("user", JSON.stringify(user))
 }

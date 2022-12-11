@@ -1,6 +1,6 @@
 import { AppContext } from "@/App"
 import { signOutAPI } from "@/utils/http"
-import { signOutUser } from "@/utils/localStorage"
+import { getRefreshTokenFromLocal, signOutUser } from "@/utils/localStorage"
 import { FunctionComponent, useContext, useState } from "react"
 import { AiOutlineMenu, AiOutlineProfile } from "react-icons/ai"
 import { FiLogOut } from "react-icons/fi"
@@ -39,7 +39,8 @@ const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
     setLoading(true)
     setCurrentRoute("/")
     try {
-      await signOutAPI
+      const refreshToken = getRefreshTokenFromLocal()
+      await signOutAPI(refreshToken)
       signOutUser()
       setLoading(false)
       navigator("/login/signIn")

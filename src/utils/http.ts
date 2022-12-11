@@ -46,9 +46,11 @@ export const signInAPI = async (user: { email: string; password: string }) => {
     throw new Error(error.response.data.error)
   }
 }
-export const signOutAPI = async () => {
+export const signOutAPI = async (refreshToken: string) => {
   try {
-    const res = await axiosInstance.post(`${API_URL}/auth/logout`)
+    const res = await axiosInstance.post(`${API_URL}/auth/logout/`, {
+      refresh: refreshToken,
+    })
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.error)

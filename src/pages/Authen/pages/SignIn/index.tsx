@@ -2,7 +2,11 @@ import { Button, Form, Input } from "antd"
 import { FunctionComponent, useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { signInAPI } from "@/utils/http"
-import { setAccessTokenToLocal, setUserToLocal } from "@/utils/localStorage"
+import {
+  setAccessTokenToLocal,
+  setRefreshTokenToLocal,
+  setUserToLocal,
+} from "@/utils/localStorage"
 import { AppContext } from "@/App"
 
 interface SignInPageProps {}
@@ -14,9 +18,12 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
   const handleSubmit = async (signInData: any) => {
     setLoading(true)
     try {
-      const { access_token, ...user } = await signInAPI(signInData)
+      const { access_token, refresh_token, ...user } = await signInAPI(
+        signInData
+      )
       setUserToLocal(user)
       setAccessTokenToLocal(access_token)
+      setRefreshTokenToLocal(refresh_token)
       setLoading(false)
       if (currentRoute) {
         setCurrentRoute(null)
