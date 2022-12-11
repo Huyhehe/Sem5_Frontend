@@ -12,6 +12,6 @@ export default interface UserInfo {
     street_address: string
   }
   profile_picture: string
-  created_at?: string
+  create_at?: any
   about?: string
 }

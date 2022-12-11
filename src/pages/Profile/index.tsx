@@ -2,8 +2,14 @@ import useUser from "@/hooks/useUser"
 import UserInfo from "@/interfaces/UserInfo"
 import { getUserAPI, updateProfileImageAPI } from "@/utils/http"
 import { getFirstCharacterOfName } from "@/utils/reusable"
-import { Modal, Tooltip } from "antd"
-import { FunctionComponent, useContext, useEffect, useState } from "react"
+import { Form, Input, Modal, Tooltip } from "antd"
+import {
+  FunctionComponent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import { AiFillEdit, AiOutlinePlus } from "react-icons/ai"
 import { BsCalendar2Week, BsCloudUploadFill } from "react-icons/bs"
 import { FaLocationArrow } from "react-icons/fa"
@@ -12,9 +18,12 @@ import { RiMapPinAddLine } from "react-icons/ri"
 import { TbEdit } from "react-icons/tb"
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import "./styles/index.css"
-import { message, Upload } from "antd"
+import { message, Upload, Select } from "antd"
 import type { UploadProps } from "antd"
 import { AppContext } from "@/App"
+import getAllCountry from "./utils/getAllCountry"
+import getAllProvince from "./utils/getAllProvince"
+import getAllDistrict from "./utils/getAllDistrict"
 
 const { Dragger } = Upload
 
@@ -64,6 +73,18 @@ const Profile: FunctionComponent<ProfileProps> = () => {
   const [openProfileModal, setOpenProfileModal] = useState<boolean>(false)
   const [openImageModal, setOpenImageModal] = useState<boolean>(false)
   const [image, setImage] = useState<any>(null)
+  const [stateAddress, setStateAddress] = useState<any>({
+    countries: [],
+    provinces: [],
+    districts: [],
+    street_addresses: [],
+  })
+  const [selectedAddress, setSelectedAddress] = useState<any>({
+    country: "",
+    province: "",
+    district: "",
+  })
+  const formRef = useRef<any>(null)
   const { setLoading } = useContext(AppContext)
   useEffect(() => {
     const getUser = async () => {
@@ -76,6 +97,12 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     }
     getUser()
   }, [])
+
+  const getCreatedDate = (date: string) => {
+    return new Date(date)
+      .toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })
+      .replace(/\//g, "-")
+  }
 
   const handleEditButtonClick = () => {
     // navigator("/edit-profile")
@@ -103,6 +130,14 @@ const Profile: FunctionComponent<ProfileProps> = () => {
       }
     }
   }
+  const handleEditProfileSave = () => {
+    if (formRef.current) {
+      formRef.current.submit()
+    }
+  }
+  const handleFormSubmit = (values: any) => {
+    console.log({ ...values, id: user.id })
+  }
 
   const props: UploadProps = {
     name: "file",
@@ -114,7 +149,8 @@ const Profile: FunctionComponent<ProfileProps> = () => {
       return false
     },
   }
-  console.log(userInfo)
+
+  const { countries, provinces, districts } = stateAddress
 
   return (
     <div className="profile flex flex-col w-full gap-8">
@@ -204,7 +240,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
               <div className="flex gap-2 items-center">
                 <BsCalendar2Week />
                 <span>{`Joined on ${
-                  userInfo?.created_at || "1-11-1111"
+                  getCreatedDate(userInfo?.create_at) || "1-11-1111"
                 }`}</span>
               </div>
               <div className="">
@@ -239,6 +275,11 @@ const Profile: FunctionComponent<ProfileProps> = () => {
         open={openProfileModal}
         width={800}
         onCancel={() => setOpenProfileModal(false)}
+        onOk={() => {
+          handleEditProfileSave()
+          setOpenProfileModal(false)
+        }}
+        okText="Save"
       >
         <div className="main-modal-container flex">
           <div className="modal-image-edit w-[30%]">
@@ -268,7 +309,110 @@ const Profile: FunctionComponent<ProfileProps> = () => {
               </div>
             </div>
           </div>
-          <div className="modal-info-edit justify-self-stretch flex-grow"></div>
+          <div className="modal-info-edit justify-self-stretch flex-grow mr-4">
+            <Form onFinish={(values) => handleFormSubmit(values)} ref={formRef}>
+              <div className="flex gap-2">
+                <Form.Item
+                  name={"first_name"}
+                  label="First name"
+                  initialValue={userInfo?.first_name || ""}
+                >
+                  <Input allowClear placeholder="First name" />
+                </Form.Item>
+                <Form.Item
+                  name={"last_name"}
+                  label="Last name"
+                  initialValue={userInfo?.last_name || ""}
+                >
+                  <Input allowClear placeholder="Last name" />
+                </Form.Item>
+              </div>
+              <Form.Item
+                name={"username"}
+                label="Username"
+                labelCol={{ span: 24 }}
+                initialValue={userInfo?.username || ""}
+              >
+                <Input allowClear placeholder="Username" />
+              </Form.Item>
+              <Form.Item
+                name={"phone_number"}
+                label="Phone number"
+                labelCol={{ span: 24 }}
+                initialValue={userInfo?.phone_number || ""}
+              >
+                <Input allowClear placeholder="Phone number" />
+              </Form.Item>
+              <Form.Item
+                name={"country"}
+                label="Country"
+                labelCol={{ span: 24 }}
+                initialValue={userInfo?.address.country || ""}
+              >
+                <Select
+                  allowClear
+                  placeholder="Country"
+                  options={countries}
+                  onFocus={() => getAllCountry(stateAddress, setStateAddress)}
+                  onSelect={(value: any) => {
+                    setSelectedAddress({ ...selectedAddress, country: value })
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                name={"province"}
+                label="Province"
+                labelCol={{ span: 24 }}
+                initialValue={userInfo?.address.province || ""}
+              >
+                <Select
+                  allowClear
+                  placeholder="Province"
+                  options={provinces}
+                  onFocus={() =>
+                    getAllProvince(
+                      stateAddress,
+                      setStateAddress,
+                      selectedAddress.country
+                    )
+                  }
+                  onSelect={(value: any) => {
+                    setSelectedAddress({ ...selectedAddress, province: value })
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                name={"district"}
+                label="District"
+                labelCol={{ span: 24 }}
+                initialValue={userInfo?.address.district || ""}
+              >
+                <Select
+                  allowClear
+                  placeholder="District"
+                  options={districts}
+                  onFocus={() =>
+                    getAllDistrict(
+                      stateAddress,
+                      setStateAddress,
+                      selectedAddress.province
+                    )
+                  }
+                  onSelect={(value: any) => {
+                    setSelectedAddress({ ...selectedAddress, district: value })
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                name={"street_address"}
+                label="Street address"
+                labelCol={{ span: 24 }}
+                initialValue={userInfo?.address.street_address || ""}
+              >
+                <Input allowClear placeholder="Street address" />
+              </Form.Item>
+            </Form>
+          </div>
         </div>
       </Modal>
       <Modal

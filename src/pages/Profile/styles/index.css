@@ -38,3 +38,10 @@
 .ant-upload-list-item-card-actions button {
   background-color: transparent !important;
 }
+.ant-form-item-label {
+  padding: 0 !important;
+}
+.ant-form-item-label label {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+}

@@ -121,3 +121,31 @@ export const getFullAddressAPI = async ({
     throw new Error(error.response.data.messages[0].message)
   }
 }
+export const getAllCountryAPI = async () => {
+  try {
+    const res = await axiosInstance.get(`/address/get-all-country/`)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.messages[0].message)
+  }
+}
+export const getAllProvinceAPI = async (country_id: string) => {
+  try {
+    const res = await axiosInstance.get(
+      `/address/get-list-province/${country_id}`
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.messages[0].message)
+  }
+}
+export const getAllDistrictAPI = async (province_id: string) => {
+  try {
+    const res = await axiosInstance.get(
+      `/address/get-list-district/${province_id}`
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.messages[0].message)
+  }
+}

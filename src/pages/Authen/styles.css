@@ -4,7 +4,7 @@
 }
 .ant-form-item-label label {
   font-size: 1rem !important;
-  color: #857e7f !important;
+  color: #857e7f;
 }
 .ant-form-item {
   margin-bottom: 0.75rem !important;
