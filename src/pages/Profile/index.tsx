@@ -1,6 +1,10 @@
 import useUser from "@/hooks/useUser"
 import UserInfo from "@/interfaces/UserInfo"
-import { getUserAPI, updateProfileImageAPI } from "@/utils/http"
+import {
+  getUserAPI,
+  updateProfileImageAPI,
+  updateProfileInfoAPI,
+} from "@/utils/http"
 import { getFirstCharacterOfName } from "@/utils/reusable"
 import { Form, Input, Modal, Tooltip } from "antd"
 import {
@@ -63,9 +67,18 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     last_name: "",
     phone_number: "",
     address: {
-      country: "",
-      province: "",
-      district: "",
+      country: {
+        id: "",
+        name: "",
+      },
+      province: {
+        id: "",
+        name: "",
+      },
+      district: {
+        id: "",
+        name: "",
+      },
       street_address: "",
     },
     profile_picture: "",
@@ -91,6 +104,11 @@ const Profile: FunctionComponent<ProfileProps> = () => {
       try {
         const response = await getUserAPI(user.id)
         setUserInfo(response)
+        setSelectedAddress({
+          country: response.address.country.id,
+          province: response.address.province.id,
+          district: response.address.district.id,
+        })
       } catch (error) {
         console.log(error)
       }
@@ -112,8 +130,6 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     setOpenImageModal(true)
   }
   const handleUploadImage = async () => {
-    console.log(image)
-
     if (image) {
       setLoading(true)
       try {
@@ -135,8 +151,29 @@ const Profile: FunctionComponent<ProfileProps> = () => {
       formRef.current.submit()
     }
   }
-  const handleFormSubmit = (values: any) => {
-    console.log({ ...values, id: user.id })
+  const handleFormSubmit = async (values: any) => {
+    setLoading(true)
+    try {
+      const res = await updateProfileInfoAPI({
+        ...values,
+        id: user.id,
+        country: selectedAddress.country,
+        province: selectedAddress.province,
+        district: selectedAddress.district,
+      })
+      setUserInfo(res)
+      setSelectedAddress({
+        country: res.address.country.id,
+        province: res.address.province.id,
+        district: res.address.district.id,
+      })
+
+      setLoading(false)
+      message.success("Profile updated successfully")
+      setOpenProfileModal(false)
+    } catch (error: any) {
+      message.error(error.response.data.message)
+    }
   }
 
   const props: UploadProps = {
@@ -144,7 +181,6 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     listType: "picture",
     maxCount: 1,
     beforeUpload(file: any) {
-      console.log(file)
       setImage(file)
       return false
     },
@@ -233,8 +269,9 @@ const Profile: FunctionComponent<ProfileProps> = () => {
               <div className="flex gap-2 items-center">
                 <FaLocationArrow />
                 <span>
-                  {userInfo?.address.province}, {userInfo?.address.district},
-                  {userInfo?.address.country}
+                  {userInfo?.address.province.name},{" "}
+                  {userInfo?.address.district.name},{" "}
+                  {userInfo?.address.country.name}
                 </span>
               </div>
               <div className="flex gap-2 items-center">
@@ -275,10 +312,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
         open={openProfileModal}
         width={800}
         onCancel={() => setOpenProfileModal(false)}
-        onOk={() => {
-          handleEditProfileSave()
-          setOpenProfileModal(false)
-        }}
+        onOk={handleEditProfileSave}
         okText="Save"
       >
         <div className="main-modal-container flex">
@@ -315,6 +349,13 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 <Form.Item
                   name={"first_name"}
                   label="First name"
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your first name!",
+                    },
+                  ]}
                   initialValue={userInfo?.first_name || ""}
                 >
                   <Input allowClear placeholder="First name" />
@@ -322,9 +363,16 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 <Form.Item
                   name={"last_name"}
                   label="Last name"
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your last name!",
+                    },
+                  ]}
                   initialValue={userInfo?.last_name || ""}
                 >
-                  <Input allowClear placeholder="Last name" />
+                  <Input min={1} allowClear placeholder="Last name" />
                 </Form.Item>
               </div>
               <Form.Item
@@ -347,7 +395,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 name={"country"}
                 label="Country"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.country || ""}
+                initialValue={userInfo?.address.country.name || ""}
               >
                 <Select
                   allowClear
@@ -363,7 +411,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 name={"province"}
                 label="Province"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.province || ""}
+                initialValue={userInfo?.address.province.name || ""}
               >
                 <Select
                   allowClear
@@ -385,7 +433,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 name={"district"}
                 label="District"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.district || ""}
+                initialValue={userInfo?.address.district.name || ""}
               >
                 <Select
                   allowClear

@@ -103,6 +103,14 @@ export const updateProfileImageAPI = async (formData: FormData) => {
     throw new Error(error.response.data.messages[0].message)
   }
 }
+export const updateProfileInfoAPI = async (data: any) => {
+  try {
+    const res = await axiosInstance.put(`${API_URL}/users/update-user/`, data)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.messages[0].message)
+  }
+}
 
 // ADDRESS
 export const getFullAddressAPI = async ({

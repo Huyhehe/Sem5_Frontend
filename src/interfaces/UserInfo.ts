@@ -1,3 +1,8 @@
+interface AddressDetail {
+  id: string
+  name: string
+}
+
 export default interface UserInfo {
   id: string
   username: string
@@ -6,9 +11,9 @@ export default interface UserInfo {
   last_name: string
   phone_number: string
   address: {
-    country: string
-    province: string
-    district: string
+    country: AddressDetail
+    province: AddressDetail
+    district: AddressDetail
     street_address: string
   }
   profile_picture: string

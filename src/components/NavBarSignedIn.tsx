@@ -51,6 +51,7 @@ const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
     }
   }
   const handleProfileClick = () => {
+    setIsHiddenNavbarOpen(false)
     navigator("/profile")
   }
 

@@ -1,8 +1,6 @@
 import { getAllCountryAPI } from "@/utils/http"
 
 const getAllCountry = async (stateAddress: any, setStateAddress: any) => {
-  console.log(stateAddress)
-
   try {
     const res = await getAllCountryAPI()
     const options = res.map((item: any) => ({
