@@ -11,38 +11,58 @@ import { AppContext } from "@/App"
 interface HomeProps {}
 
 const Home: FunctionComponent<HomeProps> = () => {
-  const dataOnError = [
+  const dataOnError: LocationReview[] = [
     {
-      id: 0,
-      title: "???",
-      address: "???, ???",
+      id: "0",
+      name: "???",
+      address: {
+        country: "??",
+        province: "??",
+        district: "??",
+        street_address: "???",
+      },
       description: "????????",
-      price: 0,
-      rate: 0,
+      price_level: 0,
+      rating: "0",
     },
     {
-      id: 0,
-      title: "???",
-      address: "???, ???",
+      id: "0",
+      name: "???",
+      address: {
+        country: "??",
+        province: "??",
+        district: "??",
+        street_address: "???",
+      },
       description: "????????",
-      price: 0,
-      rate: 0,
+      price_level: 0,
+      rating: "0",
     },
     {
-      id: 0,
-      title: "???",
-      address: "???, ???",
+      id: "0",
+      name: "???",
+      address: {
+        country: "??",
+        province: "??",
+        district: "??",
+        street_address: "???",
+      },
       description: "????????",
-      price: 0,
-      rate: 0,
+      price_level: 0,
+      rating: "0",
     },
     {
-      id: 0,
-      title: "???",
-      address: "???, ???",
+      id: "0",
+      name: "???",
+      address: {
+        country: "??",
+        province: "??",
+        district: "??",
+        street_address: "???",
+      },
       description: "????????",
-      price: 0,
-      rate: 0,
+      price_level: 0,
+      rating: "0",
     },
   ]
   const { setCurrentRoute } = useContext(AppContext)
@@ -62,7 +82,7 @@ const Home: FunctionComponent<HomeProps> = () => {
     }
     fetchData()
   }, [])
-  const handleCardClick = (id: number) => {
+  const handleCardClick = (id: string) => {
     navigator(`/search/${id}`)
   }
   return (
@@ -81,10 +101,10 @@ const Home: FunctionComponent<HomeProps> = () => {
           return (
             <Card
               key={index}
-              title={item.title}
+              title={item.name}
               description={item.description}
-              price={item.price}
-              rate={item.rate}
+              price={item.price_level}
+              rate={item.rating}
               onClickFunc={() => handleCardClick(item.id)}
             />
           )

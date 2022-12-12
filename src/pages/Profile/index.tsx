@@ -28,6 +28,7 @@ import { AppContext } from "@/App"
 import getAllCountry from "./utils/getAllCountry"
 import getAllProvince from "./utils/getAllProvince"
 import getAllDistrict from "./utils/getAllDistrict"
+import { LocationTypo } from "@/components/common/LocationTypo"
 
 const { Dragger } = Upload
 
@@ -266,14 +267,11 @@ const Profile: FunctionComponent<ProfileProps> = () => {
           <div className="left-top shadow-custom p-4 rounded-md">
             <h1 className="font-bold text-xl">Intro</h1>
             <div className="intro flex flex-col gap-2 p-3">
-              <div className="flex gap-2 items-center">
-                <FaLocationArrow />
-                <span>
-                  {userInfo?.address.province.name},{" "}
-                  {userInfo?.address.district.name},{" "}
-                  {userInfo?.address.country.name}
-                </span>
-              </div>
+              <LocationTypo
+                country={userInfo.address.country.name}
+                province={userInfo.address.province.name}
+                district={userInfo.address.district.name}
+              />
               <div className="flex gap-2 items-center">
                 <BsCalendar2Week />
                 <span>{`Joined on ${

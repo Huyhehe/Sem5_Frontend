@@ -1,4 +1,5 @@
 import { AppContext } from "@/App"
+import { getAddressString, removeAccent } from "@/utils/reusable"
 import { FunctionComponent, useContext, useEffect, useState } from "react"
 import { Outlet, useParams, useSearchParams } from "react-router-dom"
 import Search from "../../components/Search/Search"
@@ -19,20 +20,23 @@ const SearchPage: FunctionComponent<SearchPageProps> = () => {
     const fetchData = async () => {
       try {
         const response = await getAllLocationReviews()
+
         if (!id) setLoading(true)
         setTimeout(() => {
           setLoading(false)
-          setSearchResult(
-            response.filter(
-              (item: LocationReview) =>
-                item.title
-                  .toLowerCase()
-                  .includes(queryString.get("data")?.toLowerCase() as string) ||
-                item.address
-                  .toLowerCase()
-                  .includes(queryString.get("data")?.toLowerCase() as string)
-            )
-          )
+          queryString.get("data")?.toLowerCase()
+            ? setSearchResult(
+                response.filter(
+                  (item: LocationReview) =>
+                    removeAccent(item.name.toLowerCase()).includes(
+                      queryString.get("data")?.toLowerCase() as string
+                    ) ||
+                    removeAccent(
+                      getAddressString(item.address).toLowerCase()
+                    ).includes(queryString.get("data")?.toLowerCase() as string)
+                )
+              )
+            : setSearchResult(response)
         }, 2000)
       } catch (error) {
         console.log(error)

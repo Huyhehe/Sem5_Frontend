@@ -9,7 +9,7 @@ interface CardProps {
   title: string
   description: string
   price: number
-  rate: number
+  rate: string
   onClickFunc?: () => void
 }
 
@@ -54,7 +54,12 @@ const Card: FunctionComponent<CardProps> = ({
         <div className="w-[36px] aspect-square bg-primary text-white flex justify-center items-center rounded-lg font-bold">
           <span>{toDouble(rate)}</span>
         </div>
-        <div className="w-[36px] aspect-square flex justify-center items-center text-white bg-black/30 rounded-lg hover:text-primary">
+        <div
+          className="w-[36px] aspect-square flex justify-center items-center text-white bg-black/30 rounded-lg hover:text-primary"
+          onClick={() => {
+            console.log("clicked")
+          }}
+        >
           <AiOutlineHeart size={20} />
         </div>
       </div>

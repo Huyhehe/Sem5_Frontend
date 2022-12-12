@@ -1,15 +1,15 @@
-export const getRatingString = (rating: number) => {
-  if (rating <= 2) {
+export const getRatingString = (rating: string) => {
+  if (Number(rating) <= 2) {
     return "Bad"
   }
-  if (rating > 2 && rating < 4) {
+  if (Number(rating) > 2 && Number(rating) < 4) {
     return "Average"
   }
   return "Good"
 }
 
-export const toDouble = (value: number) => {
-  return value.toFixed(1)
+export const toDouble = (rating: string) => {
+  return Number(rating).toFixed(1)
 }
 
 export const getFirstCharacterOfName = (
@@ -17,4 +17,16 @@ export const getFirstCharacterOfName = (
   lastName: string = ""
 ) => {
   return firstName.charAt(0) + lastName.charAt(0)
+}
+
+export const getAddressString = (address: any) => {
+  return `${address.street_address}, ${address.district}, ${address.province}, ${address.country}`
+}
+
+export const removeAccent = (str: string) => {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
 }

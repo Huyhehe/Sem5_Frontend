@@ -15,15 +15,19 @@ let axiosInstance: any = axios.create({
 // AUTH
 export const getAllLocationReviews = async () => {
   try {
-    const res = await axiosInstance.get(`${API_URL}/reviews`)
+    const res = await axiosInstance.get(
+      `${API_URL}/locations/get-all-location/`
+    )
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.error)
   }
 }
-export const getLocationReviewById = async (id: number) => {
+export const getLocationReviewById = async (id: string) => {
   try {
-    const res = await axiosInstance.get(`${API_URL}/reviews/${id}`)
+    const res = await axiosInstance.get(
+      `${API_URL}/locations/get-location/${id}`
+    )
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.error)

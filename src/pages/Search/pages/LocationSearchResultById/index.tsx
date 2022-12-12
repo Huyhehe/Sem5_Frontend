@@ -1,5 +1,6 @@
 import { AppContext } from "@/App"
 import { example } from "@/assets/images"
+import { LocationTypo } from "@/components/common/LocationTypo"
 import CustomSlide from "@/components/CustomSlide"
 import useUser from "@/hooks/useUser"
 import LocationReview from "@/interfaces/LocationReview"
@@ -20,9 +21,23 @@ interface SearchResultByIdProps {}
 const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
   const user = useUser()
   const { id } = useParams()
-  const [locationReview, setLocationReview] = useState<LocationReview | null>(
-    null
-  )
+  const [locationReview, setLocationReview] = useState<LocationReview>({
+    id: id || "",
+    address: {
+      country: "",
+      province: "",
+      district: "",
+      street_address: "",
+    },
+    name: "",
+    rating: "",
+    category: {
+      id: "",
+      name: "",
+    },
+    price_level: 0,
+    description: "",
+  })
   const { openNotification, setCurrentRoute } = useContext(AppContext)
   const navigator = useNavigate()
   const currentLocation = useLocation()
@@ -30,9 +45,9 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getLocationReviewById(Number(id))
+        const response = await getLocationReviewById(String(id))
         setLocationReview(response)
-        document.title = response.title
+        document.title = response.name
       } catch (error) {
         console.log(error)
       }
@@ -78,7 +93,7 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
       <div className="content-container">
         <div className="content-header">
           <h1 className="text-[2.5rem] font-bold self-end">
-            {locationReview?.title}
+            {locationReview?.name}
           </h1>
           <div className="header-icons flex items-center">
             <div className="p-2 border-[2px] text-love border-love rounded-full hover:text-white hover:border-white hover:bg-love cursor-pointer">
@@ -86,11 +101,16 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
             </div>
           </div>
         </div>
+        <LocationTypo
+          country={locationReview.address.country}
+          province={locationReview.address.province}
+          district={locationReview.address.district}
+        />
         <div className="content-rating-wrapper">
           <div className="content-rating">
             <AiFillStar className="star-icon text-gold" size={25} />
             <span className="content-rating_text font-bold">
-              {toDouble(locationReview?.rate || 0)}
+              {toDouble(locationReview?.rating || "0")}
             </span>
           </div>
           <BsDot size={30} />
