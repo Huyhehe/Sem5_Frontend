@@ -1,3 +1,4 @@
+import { NotFound } from "@/pages/404"
 import VerifyEmailSending from "@/pages/Authen/pages/Verify/pages/VerifyEmailSending"
 import { VerifySending } from "@/pages/Authen/pages/Verify/pages/VerifySending"
 import Profile from "@/pages/Profile"
@@ -120,5 +121,9 @@ export const router = createBrowserRouter([
         element: <div>Following</div>,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ])
