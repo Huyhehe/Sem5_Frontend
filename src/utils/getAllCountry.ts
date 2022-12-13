@@ -1,4 +1,4 @@
-import { getAllCountryAPI } from "@/utils/http"
+import { getAllCountryAPI } from "./http"
 
 const getAllCountry = async (stateAddress: any, setStateAddress: any) => {
   try {

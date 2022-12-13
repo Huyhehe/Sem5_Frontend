@@ -1,12 +1,18 @@
+import { AppContext } from "@/App"
+import { LocationTypo } from "@/components/common/LocationTypo"
 import useUser from "@/hooks/useUser"
 import UserInfo from "@/interfaces/UserInfo"
+import getAllCountry from "@/utils/getAllCountry"
+import getAllDistrict from "@/utils/getAllDistrict"
+import getAllProvince from "@/utils/getAllProvince"
 import {
   getUserAPI,
   updateProfileImageAPI,
   updateProfileInfoAPI,
 } from "@/utils/http"
 import { getFirstCharacterOfName } from "@/utils/reusable"
-import { Form, Input, Modal, Tooltip } from "antd"
+import type { FormInstance, UploadProps } from "antd"
+import { Form, Input, message, Modal, Select, Tooltip, Upload } from "antd"
 import {
   FunctionComponent,
   useContext,
@@ -16,19 +22,11 @@ import {
 } from "react"
 import { AiFillEdit, AiOutlinePlus } from "react-icons/ai"
 import { BsCalendar2Week, BsCloudUploadFill } from "react-icons/bs"
-import { FaLocationArrow } from "react-icons/fa"
 import { HiOutlinePhotograph } from "react-icons/hi"
 import { RiMapPinAddLine } from "react-icons/ri"
 import { TbEdit } from "react-icons/tb"
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import "./styles/index.css"
-import { message, Upload, Select } from "antd"
-import type { UploadProps } from "antd"
-import { AppContext } from "@/App"
-import getAllCountry from "./utils/getAllCountry"
-import getAllProvince from "./utils/getAllProvince"
-import getAllDistrict from "./utils/getAllDistrict"
-import { LocationTypo } from "@/components/common/LocationTypo"
 
 const { Dragger } = Upload
 
@@ -98,7 +96,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     province: "",
     district: "",
   })
-  const formRef = useRef<any>(null)
+  const formRef = useRef<FormInstance>(null)
   const { setLoading } = useContext(AppContext)
   useEffect(() => {
     const getUser = async () => {
@@ -148,9 +146,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
     }
   }
   const handleEditProfileSave = () => {
-    if (formRef.current) {
-      formRef.current.submit()
-    }
+    formRef.current?.submit()
   }
   const handleFormSubmit = async (values: any) => {
     setLoading(true)
@@ -295,7 +291,12 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 <TbEdit />
                 <span>Review a place you've been to</span>
               </div>
-              <div className="flex gap-2 items-center cursor-pointer hover:text-gray-600">
+              <div
+                className="flex gap-2 items-center cursor-pointer hover:text-gray-600"
+                onClick={() => {
+                  navigator("/location-add")
+                }}
+              >
                 <RiMapPinAddLine />
                 <span>Add a place</span>
               </div>

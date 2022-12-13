@@ -1,4 +1,4 @@
-import { getAllDistrictAPI } from "@/utils/http"
+import { getAllDistrictAPI } from "./http"
 
 const getAllDistrict = async (
   stateAddress: any,

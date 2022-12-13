@@ -163,3 +163,22 @@ export const getAllDistrictAPI = async (province_id: string) => {
     throw new Error(error.response.data.messages[0].message)
   }
 }
+
+// LOCATION
+export const createLocationAPI = async (data: any) => {
+  try {
+    const res = await axiosInstance.post(`/locations/create-location/`, data)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.messages[0].message)
+  }
+}
+
+export const getAllCategoryAPI = async () => {
+  try {
+    const res = await axiosInstance.get(`/locations/get-all-category/`)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.messages[0].message)
+  }
+}

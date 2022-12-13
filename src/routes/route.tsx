@@ -1,6 +1,7 @@
 import { NotFound } from "@/pages/404"
 import VerifyEmailSending from "@/pages/Authen/pages/Verify/pages/VerifyEmailSending"
 import { VerifySending } from "@/pages/Authen/pages/Verify/pages/VerifySending"
+import { AddLocation } from "@/pages/Location"
 import Profile from "@/pages/Profile"
 import ActivityFeed from "@/pages/Profile/pages/activity-feed"
 import { createBrowserRouter, Outlet } from "react-router-dom"
@@ -121,6 +122,14 @@ export const router = createBrowserRouter([
         element: <div>Following</div>,
       },
     ],
+  },
+  {
+    path: "/location-add",
+    element: (
+      <AuthLayout>
+        <AddLocation />
+      </AuthLayout>
+    ),
   },
   {
     path: "*",
