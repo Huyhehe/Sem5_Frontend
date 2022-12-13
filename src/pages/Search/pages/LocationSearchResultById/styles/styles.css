@@ -53,3 +53,7 @@
 .ant-image-preview-img-wrapper {
   @apply flex justify-center items-center;
 }
+
+.ant-message-custom-content {
+  @apply flex items-center;
+}

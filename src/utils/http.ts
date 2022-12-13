@@ -13,26 +13,6 @@ let axiosInstance: any = axios.create({
 })
 
 // AUTH
-export const getAllLocationReviews = async () => {
-  try {
-    const res = await axiosInstance.get(
-      `${API_URL}/locations/get-all-location/`
-    )
-    return res.data
-  } catch (error: any) {
-    throw new Error(error.response.data.error)
-  }
-}
-export const getLocationReviewById = async (id: string) => {
-  try {
-    const res = await axiosInstance.get(
-      `${API_URL}/locations/get-location/${id}`
-    )
-    return res.data
-  } catch (error: any) {
-    throw new Error(error.response.data.error)
-  }
-}
 export const signInAPI = async (user: { email: string; password: string }) => {
   try {
     const res = await axios.post(`${API_URL}/auth/login/`, user)
@@ -180,5 +160,27 @@ export const getAllCategoryAPI = async () => {
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.messages[0].message)
+  }
+}
+
+// REVIEW
+export const getAllLocationReviews = async () => {
+  try {
+    const res = await axiosInstance.get(
+      `${API_URL}/locations/get-all-location/`
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.error)
+  }
+}
+export const getLocationReviewById = async (id: string) => {
+  try {
+    const res = await axiosInstance.get(
+      `${API_URL}/locations/get-location/${id}`
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.error)
   }
 }

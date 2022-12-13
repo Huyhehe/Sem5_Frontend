@@ -7,7 +7,7 @@ import LocationReview from "@/interfaces/LocationReview"
 import { getLocationReviewById } from "@/utils/http"
 import { getAccessTokenFromLocal } from "@/utils/localStorage"
 import { toDouble } from "@/utils/reusable"
-import { Image, notification, Tabs } from "antd"
+import { Image, notification, Tabs, message } from "antd"
 import { FunctionComponent, useContext, useEffect, useState } from "react"
 import { AiFillStar, AiOutlineHeart } from "react-icons/ai"
 import { BsDot } from "react-icons/bs"
@@ -92,11 +92,20 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
     <div className="location-search-result-by-Id pb-8 px-8 md:px-0 flex flex-col gap-8">
       <div className="content-container">
         <div className="content-header">
-          <h1 className="text-[2.5rem] font-bold self-end">
-            {locationReview?.name}
-          </h1>
+          <div className="flex flex-col">
+            <h1 className="text-[2.5rem] font-bold">{locationReview?.name}</h1>
+            <span className="font-bold text-gray-500">
+              {"#"}
+              {locationReview.category?.name}
+            </span>
+          </div>
           <div className="header-icons flex items-center">
-            <div className="p-2 border-[2px] text-love border-love rounded-full hover:text-white hover:border-white hover:bg-love cursor-pointer">
+            <div
+              className="p-2 border-[2px] text-love border-love rounded-full hover:text-white hover:border-white hover:bg-love cursor-pointer"
+              onClick={() => {
+                message.warning("This feature is not available yet")
+              }}
+            >
               <AiOutlineHeart size={30} />
             </div>
           </div>

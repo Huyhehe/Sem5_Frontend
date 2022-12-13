@@ -1,11 +1,12 @@
 import getAllCategory from "@/utils/getAllCategory"
-import { Form, Input, Select, Upload, message } from "antd"
+import { Form, Input, Select, Upload, message, Rate } from "antd"
 import { useRef, useState } from "react"
 import getAllCountry from "@/utils/getAllCountry"
 import getAllProvince from "@/utils/getAllProvince"
 import type { FormInstance, UploadProps } from "antd"
 import getAllDistrict from "@/utils/getAllDistrict"
 import { BsCloudUploadFill } from "react-icons/bs"
+import { createLocationAPI } from "@/utils/http"
 
 const { Dragger } = Upload
 
@@ -15,10 +16,9 @@ export const AddLocation = () => {
     countries: [],
     provinces: [],
     districts: [],
-    street_address: [],
     categories: [],
   })
-  const { countries, provinces, districts, street_address, categories } = state
+  const { countries, provinces, districts, categories } = state
   const [images, setImages] = useState<any[]>([])
   const uploadProps: UploadProps = {
     name: "file",
@@ -29,8 +29,22 @@ export const AddLocation = () => {
       return false
     },
   }
-  const handleSubmit = (values: any) => {
-    console.log(values)
+  const handleSubmit = async (values: any) => {
+    console.log({
+      ...values,
+      rating: String(formRef.current?.getFieldValue("rating")),
+    })
+
+    try {
+      const res = await createLocationAPI({
+        ...values,
+        rating: String(formRef.current?.getFieldValue("rating")),
+      })
+      message.success(res.success)
+    } catch (error: any) {
+      message.error(error.message)
+    }
+
     formRef.current?.resetFields()
   }
   return (
@@ -155,6 +169,19 @@ export const AddLocation = () => {
           <Input placeholder="Price Level" type="number" />
         </Form.Item>
         <Form.Item
+          name={"rating"}
+          label="Rating"
+          labelCol={{ span: 24 }}
+          rules={[
+            {
+              required: true,
+              message: "Please rate your location!",
+            },
+          ]}
+        >
+          <Rate allowHalf />
+        </Form.Item>
+        <Form.Item
           name={"description"}
           label="Description"
           labelCol={{ span: 24 }}
@@ -175,7 +202,11 @@ export const AddLocation = () => {
             </p>
           </Dragger>
         </Form.Item>
-        <Input type="submit" value="Submit" />
+        <Input
+          type="submit"
+          value="Submit"
+          className="cursor-pointer shadow-none text-white bg-black hover:bg-black/70 border-none"
+        />
       </Form>
     </div>
   )
