@@ -130,27 +130,15 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
             </div>
           </div>
           <div className="main-images">
-            <CustomSlide size={860}>
-              <div className="w-[860px] aspect-[16/9] flex justify-center">
-                <img
-                  src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp"
-                  className="w-full object-cover"
-                />
-              </div>
-              <div className="w-[860px] aspect-[16/9] flex justify-center">
-                <img src={example} className="max-w-full object-cover" />
-              </div>
-              <div className="w-[860px] aspect-[16/9] flex justify-center">
+            <CustomSlide size={673}>
+              <div className="w-[673px] flex justify-center items-center">
                 <Image
                   src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp"
-                  className="object-cover"
+                  className="object-contain aspect-[16/9]"
                 />
               </div>
-              <div className="w-[860px] flex justify-center">
-                <Image
-                  src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp"
-                  width={250}
-                />
+              <div className="w-[673px] flex justify-center items-center">
+                <Image src={example} className="object-contain aspect-[16/9]" />
               </div>
             </CustomSlide>
           </div>

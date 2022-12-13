@@ -50,3 +50,6 @@
 .ant-image {
   @apply w-full;
 }
+.ant-image-preview-img-wrapper {
+  @apply flex justify-center items-center;
+}
