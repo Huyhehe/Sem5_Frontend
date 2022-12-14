@@ -6,7 +6,7 @@ import getAllProvince from "@/utils/getAllProvince"
 import type { FormInstance, UploadProps } from "antd"
 import getAllDistrict from "@/utils/getAllDistrict"
 import { BsCloudUploadFill } from "react-icons/bs"
-import { createLocationAPI } from "@/utils/http"
+import { createImageReviewAPI, createLocationAPI } from "@/utils/http"
 
 const { Dragger } = Upload
 
@@ -33,12 +33,15 @@ export const AddLocation = () => {
     const { rating, images, ...rest } = values
     const data = { ...rest }
     data.rating = String(rating)
-    const imagesList = images.fileList
-    console.log(data)
-    console.log(imagesList)
 
     try {
       const res = await createLocationAPI(data)
+      images.fileList.forEach(async (file: any) => {
+        const formData = new FormData()
+        formData.append("review_id", res.id)
+        formData.append("file", file.originFileObj)
+        const imgRes = await createImageReviewAPI(formData)
+      })
       message.success(res.success)
     } catch (error: any) {
       message.error(error.message)

@@ -163,6 +163,15 @@ export const getAllCategoryAPI = async () => {
   }
 }
 
+export const getAllImageByLocationIdAPI = async (id: string) => {
+  try {
+    const res = await axiosInstance.get(`/locations/get-images/${id}`)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.messages[0].message)
+  }
+}
+
 // LOCATION REVIEW
 export const getAllLocationReviews = async () => {
   try {
@@ -187,7 +196,27 @@ export const getLocationReviewById = async (id: string) => {
 // USER REVIEW
 export const getAllUserReviewsByLocationId = async (id: string) => {
   try {
-    const res = await axiosInstance.get(`${API_URL}/reviews/get-reviews/${id}`)
+    const res = await axiosInstance.get(
+      `${API_URL}/reviews/get-reviews-by-location/${id}`
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.error)
+  }
+}
+export const getReviewByReviewId = async (id: string) => {
+  try {
+    const res = await axiosInstance.get(`${API_URL}/reviews/get-review/${id}`)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.error)
+  }
+}
+export const getAllReviewByUserIdAPI = async (id: string) => {
+  try {
+    const res = await axiosInstance.get(
+      `${API_URL}/reviews/get-reviews-by-user/${id}`
+    )
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.error)
@@ -206,6 +235,51 @@ export const createUserReviewAPI = async (data: any) => {
     const res = await axiosInstance.post(
       `${API_URL}/reviews/create-review/`,
       data
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.error)
+  }
+}
+export const createImageReviewAPI = async (data: any) => {
+  try {
+    const res = await axiosInstance.post(
+      `${API_URL}/reviews/create-image/`,
+      data
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.error)
+  }
+}
+
+export const updateReviewAPI = async (data: any) => {
+  try {
+    const res = await axiosInstance.patch(
+      `${API_URL}/reviews/update-review/`,
+      data
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.error)
+  }
+}
+
+export const deleteImageReviewAPI = async (id: string) => {
+  try {
+    const res = await axiosInstance.delete(
+      `${API_URL}/reviews/delete-image/${id}`
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.error)
+  }
+}
+
+export const deleteReviewAPI = async (id: string) => {
+  try {
+    const res = await axiosInstance.delete(
+      `${API_URL}/reviews/delete-review/${id}`
     )
     return res.data
   } catch (error: any) {

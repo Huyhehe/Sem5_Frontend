@@ -12,6 +12,10 @@ interface User {
   }
   profile_picture: string
 }
+interface Image {
+  id: string
+  image: string
+}
 
 export default interface UserReview {
   id: string
@@ -27,5 +31,5 @@ export default interface UserReview {
     localized_name: string
   }
   review_date: string
-  images: string[]
+  images: Image[]
 }

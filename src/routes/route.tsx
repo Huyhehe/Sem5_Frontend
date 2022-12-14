@@ -4,8 +4,11 @@ import { VerifySending } from "@/pages/Authen/pages/Verify/pages/VerifySending"
 import { AddLocation } from "@/pages/Location"
 import Profile from "@/pages/Profile"
 import ActivityFeed from "@/pages/Profile/pages/activity-feed"
+import { MyReviews } from "@/pages/Profile/pages/my-reviews"
 import { Review } from "@/pages/Review"
 import { LocationReviewPage } from "@/pages/Review/pages/LocationReview"
+import { ReviewEdit } from "@/pages/Review/pages/ReviewEdit"
+import { EditPage } from "@/pages/Review/pages/ReviewEdit/pages/EditPage"
 import { createBrowserRouter, Outlet } from "react-router-dom"
 import AuthLayout from "../layouts/AuthLayout"
 import UnAuthLayout from "../layouts/UnAuthLayout"
@@ -109,7 +112,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "my-reviews",
-        element: <div>My reviews</div>,
+        element: <MyReviews />,
       },
       {
         path: "bookmarks",
@@ -144,6 +147,16 @@ export const router = createBrowserRouter([
       {
         path: ":id",
         element: <LocationReviewPage />,
+      },
+      {
+        path: "edit",
+        element: <ReviewEdit />,
+        children: [
+          {
+            path: ":id",
+            element: <EditPage />,
+          },
+        ],
       },
     ],
   },

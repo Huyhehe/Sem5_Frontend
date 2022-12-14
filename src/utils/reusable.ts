@@ -37,10 +37,17 @@ export const removeAccent = (str: string) => {
     .replace(/đ/g, "d")
     .replace(/Đ/g, "D")
 }
-export const getDateTimeFormatted = (date: string) => {
-  return new Date(date).toLocaleString("vi-VN", {
-    year: "numeric",
-    month: "long",
+export const getDateTimeFormatted = (
+  date: string,
+  options: any = {
+    timeZone: "UTC",
     day: "numeric",
-  })
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  }
+) => {
+  return new Date(date).toLocaleString("en-US", options)
 }

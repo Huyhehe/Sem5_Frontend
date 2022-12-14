@@ -5,6 +5,7 @@ import CustomSlide from "@/components/CustomSlide"
 import useUser from "@/hooks/useUser"
 import LocationReview from "@/interfaces/LocationReview"
 import {
+  getAllImageByLocationIdAPI,
   getAllUserReviewsByLocationId,
   getLocationReviewById,
 } from "@/utils/http"
@@ -42,6 +43,7 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
     description: "",
   })
   const [userReviews, setUserReviews] = useState<any>([])
+  const [imageList, setImageList] = useState<any>([])
   const { openNotification, setCurrentRoute } = useContext(AppContext)
   const navigator = useNavigate()
   const currentLocation = useLocation()
@@ -51,8 +53,10 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
       try {
         const location = await getLocationReviewById(String(id))
         const userReviews = await getAllUserReviewsByLocationId(String(id))
+        const images = await getAllImageByLocationIdAPI(String(id))
         setLocationReview(location)
         setUserReviews(userReviews || [])
+        setImageList(images || [])
         document.title = location.name
       } catch (error) {
         console.log(error)
@@ -146,15 +150,14 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
           </div>
           <div className="main-images">
             <CustomSlide size={673}>
-              <div className="w-[673px] flex justify-center items-center">
-                <Image
-                  src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp"
-                  className="object-contain aspect-[16/9]"
-                />
-              </div>
-              <div className="w-[673px] flex justify-center items-center">
-                <Image src={example} className="object-contain aspect-[16/9]" />
-              </div>
+              {imageList?.map((image: any) => (
+                <div className="w-[673px] flex justify-center items-center">
+                  <Image
+                    src={image.image}
+                    className="object-contain aspect-[16/9]"
+                  />
+                </div>
+              ))}
             </CustomSlide>
           </div>
         </div>
