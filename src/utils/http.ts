@@ -163,7 +163,7 @@ export const getAllCategoryAPI = async () => {
   }
 }
 
-// REVIEW
+// LOCATION REVIEW
 export const getAllLocationReviews = async () => {
   try {
     const res = await axiosInstance.get(
@@ -178,6 +178,34 @@ export const getLocationReviewById = async (id: string) => {
   try {
     const res = await axiosInstance.get(
       `${API_URL}/locations/get-location/${id}`
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.error)
+  }
+}
+// USER REVIEW
+export const getAllUserReviewsByLocationId = async (id: string) => {
+  try {
+    const res = await axiosInstance.get(`${API_URL}/reviews/get-reviews/${id}`)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.error)
+  }
+}
+export const getAllTripTypeAPI = async () => {
+  try {
+    const res = await axiosInstance.get(`${API_URL}/reviews/get-all-trip-type/`)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.error)
+  }
+}
+export const createUserReviewAPI = async (data: any) => {
+  try {
+    const res = await axiosInstance.post(
+      `${API_URL}/reviews/create-review/`,
+      data
     )
     return res.data
   } catch (error: any) {

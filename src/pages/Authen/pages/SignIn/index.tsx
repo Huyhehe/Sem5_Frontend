@@ -12,6 +12,7 @@ import { AppContext } from "@/App"
 interface SignInPageProps {}
 
 const SignInPage: FunctionComponent<SignInPageProps> = () => {
+  document.title = "TravelCare | Sign in"
   const { openNotification, currentRoute, setCurrentRoute, setLoading } =
     useContext(AppContext)
   const navigator = useNavigate()

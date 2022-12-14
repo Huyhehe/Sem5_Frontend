@@ -20,7 +20,14 @@ export const getFirstCharacterOfName = (
 }
 
 export const getAddressString = (address: any) => {
-  return `${address.street_address}, ${address.district}, ${address.province}, ${address.country}`
+  return address
+    ? `${address.street_address}, ${address.district}, ${address.province}, ${address.country}`
+    : ""
+}
+export const getAddressStringWithoutStreetAddress = (address: any) => {
+  return address
+    ? `${address.district}, ${address.province}, ${address.country}`
+    : ""
 }
 
 export const removeAccent = (str: string) => {
@@ -29,4 +36,11 @@ export const removeAccent = (str: string) => {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/đ/g, "d")
     .replace(/Đ/g, "D")
+}
+export const getDateTimeFormatted = (date: string) => {
+  return new Date(date).toLocaleString("vi-VN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })
 }

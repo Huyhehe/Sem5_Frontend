@@ -4,7 +4,10 @@ import { LocationTypo } from "@/components/common/LocationTypo"
 import CustomSlide from "@/components/CustomSlide"
 import useUser from "@/hooks/useUser"
 import LocationReview from "@/interfaces/LocationReview"
-import { getLocationReviewById } from "@/utils/http"
+import {
+  getAllUserReviewsByLocationId,
+  getLocationReviewById,
+} from "@/utils/http"
 import { getAccessTokenFromLocal } from "@/utils/localStorage"
 import { toDouble } from "@/utils/reusable"
 import { Image, notification, Tabs, message } from "antd"
@@ -38,6 +41,7 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
     price_level: 0,
     description: "",
   })
+  const [userReviews, setUserReviews] = useState<any>([])
   const { openNotification, setCurrentRoute } = useContext(AppContext)
   const navigator = useNavigate()
   const currentLocation = useLocation()
@@ -45,9 +49,11 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getLocationReviewById(String(id))
-        setLocationReview(response)
-        document.title = response.name
+        const location = await getLocationReviewById(String(id))
+        const userReviews = await getAllUserReviewsByLocationId(String(id))
+        setLocationReview(location)
+        setUserReviews(userReviews || [])
+        document.title = location.name
       } catch (error) {
         console.log(error)
       }
@@ -171,7 +177,7 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
         <div>
           <Tabs size="large">
             <Tabs.TabPane tab="Reviews" key="tab1">
-              <UserReviewContainer userReviews={locationReview?.userReviews} />
+              <UserReviewContainer userReviews={userReviews} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Q&A" key="tab2">
               <div>Q&A feature is in development progress</div>

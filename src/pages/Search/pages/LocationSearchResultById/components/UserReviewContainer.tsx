@@ -1,6 +1,6 @@
 import UserReview from "@/interfaces/UserReview"
 import { Input } from "antd"
-import { FunctionComponent, useMemo, useState } from "react"
+import { FunctionComponent, useEffect, useMemo, useState } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import UserReviewArticle from "./UserReviewArticle"
 
@@ -8,50 +8,18 @@ interface UserReviewContainerProps {
   userReviews: UserReview[]
 }
 
-const fallbackData = {
-  userReviews: [
-    {
-      id: 1,
-      title: "Review 1",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
-      rate: 4.5,
-      user: {
-        id: 1,
-        name: "User 1",
-        email: "test1@gmail.com",
-        avatar: "https://i.pravatar.cc/50?img=1",
-        address: "Ho Chi Minh City, Vietnam",
-      },
-      timeWritten: "08-01-2021",
-      likes: 0,
-    },
-    {
-      id: 2,
-      title: "Review 2",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
-      rate: 2.5,
-      user: {
-        id: 2,
-        name: "User 2",
-        email: "test2@gmail.com",
-        avatar: "https://i.pravatar.cc/50?img=3",
-        address: "Hanoi City, Vietnam",
-      },
-      timeWritten: "08-01-2021",
-      likes: 0,
-    },
-  ],
-}
 const UserReviewContainer: FunctionComponent<UserReviewContainerProps> = ({
-  userReviews = fallbackData.userReviews,
+  userReviews,
 }) => {
   let searchTimeout: any
 
   const [searchQueryString, setSearchQueryString] = useState("")
-  const [filteredUserReviews, setFilteredUserReviews] =
-    useState<UserReview[]>(userReviews)
+  const [filteredUserReviews, setFilteredUserReviews] = useState<UserReview[]>([
+    ...userReviews,
+  ])
+  useEffect(() => {
+    setFilteredUserReviews(userReviews)
+  }, [userReviews])
 
   const handleOnChangeSearchInput = (e: any) => {
     const value = e.target.value.trim()
@@ -60,8 +28,10 @@ const UserReviewContainer: FunctionComponent<UserReviewContainerProps> = ({
       const filteredUserReviewsRes = userReviews.filter(
         (userReview) =>
           userReview.title.toLowerCase().includes(value.toLowerCase()) ||
-          userReview.description.toLowerCase().includes(value.toLowerCase()) ||
-          userReview.user.name.toLowerCase().includes(value.toLowerCase())
+          userReview.content.toLowerCase().includes(value.toLowerCase()) ||
+          userReview.user.account.username
+            .toLowerCase()
+            .includes(value.toLowerCase())
       )
       setFilteredUserReviews(filteredUserReviewsRes)
       setSearchQueryString(value)

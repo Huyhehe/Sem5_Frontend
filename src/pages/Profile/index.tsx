@@ -33,6 +33,7 @@ const { Dragger } = Upload
 interface ProfileProps {}
 
 const Profile: FunctionComponent<ProfileProps> = () => {
+  document.title = "TravelCare | Profile"
   const links = [
     {
       name: "Activity feed",

@@ -9,6 +9,7 @@ interface AuthLayoutProps {
 
 const AuthLayout: FunctionComponent<AuthLayoutProps> = ({ children }) => {
   const user = useUser()
+  document.title = "TravelCare"
   return (
     <div className="authLayout flex flex-col items-center relative mb-4">
       <div className="w-full flex justify-center sticky top-0 z-50 bg-white border-b">

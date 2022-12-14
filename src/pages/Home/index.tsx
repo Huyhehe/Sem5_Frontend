@@ -73,7 +73,6 @@ const Home: FunctionComponent<HomeProps> = () => {
     const fetchData = async () => {
       try {
         const response = await getAllLocationReviews()
-        console.log(response)
         setCardItems(response)
       } catch (error) {
         console.log(error)

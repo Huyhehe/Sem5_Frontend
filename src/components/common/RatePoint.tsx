@@ -3,7 +3,7 @@ import { AiFillStar } from "react-icons/ai"
 import { toDouble } from "@/utils/reusable"
 
 interface RatePointProps {
-  point: number
+  point: string
 }
 
 const RatePoint: FunctionComponent<RatePointProps> = ({ point }) => {

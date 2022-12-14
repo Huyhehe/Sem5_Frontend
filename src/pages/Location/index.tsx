@@ -30,16 +30,15 @@ export const AddLocation = () => {
     },
   }
   const handleSubmit = async (values: any) => {
-    console.log({
-      ...values,
-      rating: String(formRef.current?.getFieldValue("rating")),
-    })
+    const { rating, images, ...rest } = values
+    const data = { ...rest }
+    data.rating = String(rating)
+    const imagesList = images.fileList
+    console.log(data)
+    console.log(imagesList)
 
     try {
-      const res = await createLocationAPI({
-        ...values,
-        rating: String(formRef.current?.getFieldValue("rating")),
-      })
+      const res = await createLocationAPI(data)
       message.success(res.success)
     } catch (error: any) {
       message.error(error.message)

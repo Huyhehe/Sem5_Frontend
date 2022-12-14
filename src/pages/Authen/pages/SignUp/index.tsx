@@ -8,6 +8,8 @@ import { Link, useNavigate } from "react-router-dom"
 interface SignUpPageProps {}
 
 const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
+  document.title = "TravelCare | Sign Up"
+
   const navigator = useNavigate()
   const { setLoading, openNotification } = useContext(AppContext)
 

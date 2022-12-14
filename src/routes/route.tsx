@@ -4,6 +4,8 @@ import { VerifySending } from "@/pages/Authen/pages/Verify/pages/VerifySending"
 import { AddLocation } from "@/pages/Location"
 import Profile from "@/pages/Profile"
 import ActivityFeed from "@/pages/Profile/pages/activity-feed"
+import { Review } from "@/pages/Review"
+import { LocationReviewPage } from "@/pages/Review/pages/LocationReview"
 import { createBrowserRouter, Outlet } from "react-router-dom"
 import AuthLayout from "../layouts/AuthLayout"
 import UnAuthLayout from "../layouts/UnAuthLayout"
@@ -130,6 +132,20 @@ export const router = createBrowserRouter([
         <AddLocation />
       </AuthLayout>
     ),
+  },
+  {
+    path: "review",
+    element: (
+      <AuthLayout>
+        <Review />
+      </AuthLayout>
+    ),
+    children: [
+      {
+        path: ":id",
+        element: <LocationReviewPage />,
+      },
+    ],
   },
   {
     path: "*",

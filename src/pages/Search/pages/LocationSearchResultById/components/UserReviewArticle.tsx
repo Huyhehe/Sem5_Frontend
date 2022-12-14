@@ -2,6 +2,10 @@ import { AppContext } from "@/App"
 import RatePoint from "@/components/common/RatePoint"
 import UserReview from "@/interfaces/UserReview"
 import { getAccessTokenFromLocal } from "@/utils/localStorage"
+import {
+  getAddressStringWithoutStreetAddress,
+  getDateTimeFormatted,
+} from "@/utils/reusable"
 import { notification } from "antd"
 import { FunctionComponent, useContext, useState } from "react"
 import { AiFillLike, AiOutlineLike } from "react-icons/ai"
@@ -65,21 +69,23 @@ const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
       setIsLiked(!isLiked)
     }
   }
-
   return (
     <div className="UserReviewArticle flex flex-col gap-4">
       <header className="flex justify-between">
         <div className="user-box flex gap-1 items-center">
           <img
-            src={userReview.user.avatar}
-            className="rounded-full scale-[80%]"
+            src={userReview.user.profile_picture}
+            className="rounded-full w-[50px] aspect-square scale-[80%]"
           />
           <div className="flex flex-col">
             <span className="text-[1rem] font-bold">
-              {highLightText(userReview.user.name, searchQueryString)}
+              {highLightText(
+                userReview.user.account.username,
+                searchQueryString
+              )}
             </span>
             <span className="text-[0.8rem] text-gray-500">
-              {userReview.user.address}
+              {getAddressStringWithoutStreetAddress(userReview.user.address)}
             </span>
           </div>
         </div>
@@ -94,7 +100,8 @@ const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
               <AiOutlineLike size={25} />
             )}
             <span className="text-[0.8rem] text-gray-500">
-              {isLiked ? userReview.likes + 1 : userReview.likes}
+              {/* {isLiked ? userReview.likes + 1 : userReview.likes} */}
+              {isLiked ? 1 : 0}
             </span>
           </div>
           <div className="p-1 cursor-pointer rounded-full hover:bg-gray-200">
@@ -103,15 +110,15 @@ const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
         </div>
       </header>
       <main className="flex flex-col">
-        <RatePoint point={userReview.rate} />
+        <RatePoint point={userReview.rating} />
         <span className="text-[1rem] font-bold">
           {highLightText(userReview.title, searchQueryString)}
         </span>
-        <p>{highLightText(userReview.description, searchQueryString)}</p>
+        <p>{highLightText(userReview.content, searchQueryString)}</p>
       </main>
       <footer>
         <span className="text-[0.75rem] text-gray-500">
-          Written on {userReview.timeWritten}
+          Written on {getDateTimeFormatted(userReview.review_date)}
         </span>
       </footer>
     </div>
