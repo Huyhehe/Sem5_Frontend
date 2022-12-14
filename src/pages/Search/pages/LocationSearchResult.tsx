@@ -29,7 +29,7 @@ const SearchResult: FunctionComponent<SearchResultProps> = ({
           >
             <SearchCard
               item={item}
-              onClickFunc={() => handleOnCardClick(item.id)}
+              onClickFunc={() => handleOnCardClick(item.id as any as number)}
             />
           </div>
         ))}
