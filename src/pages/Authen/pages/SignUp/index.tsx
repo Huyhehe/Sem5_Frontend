@@ -41,7 +41,7 @@ const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
       setLoading(false)
       openNotification("success", {
         message: "Success",
-        description: `Something went wrong, it might be ${res}`,
+        description: `Create account successfully`,
       })
       navigator("/login/verify")
     } catch (error: any) {
