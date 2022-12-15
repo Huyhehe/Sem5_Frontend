@@ -53,11 +53,15 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
       try {
         const location = await getLocationReviewById(String(id))
         const userReviews = await getAllUserReviewsByLocationId(String(id))
-        const images = await getAllImageByLocationIdAPI(String(id))
         setLocationReview(location)
         setUserReviews(userReviews || [])
-        setImageList(images || [])
         document.title = location.name
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        const images = await getAllImageByLocationIdAPI(String(id))
+        setImageList(images || [])
       } catch (error) {
         console.log(error)
       }
@@ -134,7 +138,10 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
           </div>
           <BsDot size={30} />
           <div className="content-details">
-            <span className="content-rating_text">Rated by ? people</span>
+            <span className="content-rating_text">
+              Rated by <span className="font-bold">{userReviews.length}</span>{" "}
+              people
+            </span>
           </div>
         </div>
         <div className="content-main flex gap-[2rem]">
@@ -150,14 +157,23 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
           </div>
           <div className="main-images">
             <CustomSlide size={673}>
-              {imageList?.map((image: any) => (
+              {imageList.length > 0 ? (
+                imageList?.map((image: any) => (
+                  <div className="w-[673px] flex justify-center items-center">
+                    <Image
+                      src={image.image}
+                      className="object-contain aspect-[16/9]"
+                    />
+                  </div>
+                ))
+              ) : (
                 <div className="w-[673px] flex justify-center items-center">
                   <Image
-                    src={image.image}
                     className="object-contain aspect-[16/9]"
+                    fallback="https://images.unsplash.com/photo-1616166330003-8e1b0e2b1b1a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
                   />
                 </div>
-              ))}
+              )}
             </CustomSlide>
           </div>
         </div>

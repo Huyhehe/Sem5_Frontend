@@ -86,6 +86,8 @@ export const LocationReviewPage = ({ ...props }: LocationReviewProps) => {
         const imageFormData = new FormData()
         imageFormData.append("review_id", reviewRes.id)
         imageFormData.append("image", file.originFileObj)
+        console.log(imageFormData)
+
         const imageRes = await createImageReviewAPI(imageFormData)
       })
       setLoading(false)

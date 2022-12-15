@@ -71,17 +71,23 @@ export const EditPage = () => {
     setLoading(true)
     try {
       const reviewRes = await updateReviewAPI(data)
+      setLoading(false)
+      message.success("Review updated successfully")
+    } catch (error: any) {
+      setLoading(false)
+      message.error(error.message || "Can not update review")
+    }
+    try {
       images.fileList.forEach(async (file: any) => {
         const imageFormData = new FormData()
         imageFormData.append("review_id", id as string)
         imageFormData.append("image", file.originFileObj)
         const imageRes = await createImageReviewAPI(imageFormData)
+        setLoading(false)
       })
-      setLoading(false)
-      message.success("Review created successfully")
     } catch (error: any) {
       setLoading(false)
-      message.error(error.message || "Something went wrong")
+      message.error("Can not upload image")
     }
   }
   const handleDeleteImage = async (id: string) => {

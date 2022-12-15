@@ -171,19 +171,6 @@ export const AddLocation = () => {
           <Input placeholder="Price Level" type="number" />
         </Form.Item>
         <Form.Item
-          name={"rating"}
-          label="Rating"
-          labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please rate your location!",
-            },
-          ]}
-        >
-          <Rate allowHalf />
-        </Form.Item>
-        <Form.Item
           name={"description"}
           label="Description"
           labelCol={{ span: 24 }}

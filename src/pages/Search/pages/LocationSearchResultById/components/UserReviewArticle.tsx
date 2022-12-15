@@ -118,17 +118,19 @@ const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
             </span>
           </div>
           <div className="p-1 cursor-pointer rounded-full hover:bg-gray-200">
-            <Tooltip
-              title="Edit profile"
-              placement="bottom"
-              overlayClassName="rounded-md"
-            >
-              <AiFillEdit
-                size={30}
-                className="text-gray-400 hover:text-primary cursor-pointer"
-                onClick={handleEditButtonClick}
-              />
-            </Tooltip>
+            {user && (
+              <Tooltip
+                title="Edit profile"
+                placement="bottom"
+                overlayClassName="rounded-md"
+              >
+                <AiFillEdit
+                  size={30}
+                  className="text-gray-400 hover:text-primary cursor-pointer"
+                  onClick={handleEditButtonClick}
+                />
+              </Tooltip>
+            )}
           </div>
         </div>
       </header>

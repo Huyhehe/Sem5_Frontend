@@ -170,6 +170,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
       message.success("Profile updated successfully")
       setOpenProfileModal(false)
     } catch (error: any) {
+      setLoading(false)
       message.error(error.response.data.message)
     }
   }
@@ -395,7 +396,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 name={"country"}
                 label="Country"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.country.name || ""}
+                initialValue={userInfo?.address.country.name}
               >
                 <Select
                   allowClear
@@ -411,7 +412,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 name={"province"}
                 label="Province"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.province.name || ""}
+                initialValue={userInfo?.address.province.name}
               >
                 <Select
                   allowClear
@@ -433,7 +434,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 name={"district"}
                 label="District"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.district.name || ""}
+                initialValue={userInfo?.address.district.name}
               >
                 <Select
                   allowClear
@@ -455,7 +456,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 name={"street_address"}
                 label="Street address"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.street_address || ""}
+                initialValue={userInfo?.address.street_address}
               >
                 <Input allowClear placeholder="Street address" />
               </Form.Item>
