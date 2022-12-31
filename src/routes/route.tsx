@@ -9,6 +9,7 @@ import { Review } from "@/pages/Review"
 import { LocationReviewPage } from "@/pages/Review/pages/LocationReview"
 import { ReviewEdit } from "@/pages/Review/pages/ReviewEdit"
 import { EditPage } from "@/pages/Review/pages/ReviewEdit/pages/EditPage"
+import type { RouteObject } from "react-router-dom"
 import { createBrowserRouter, Outlet } from "react-router-dom"
 import AuthLayout from "../layouts/AuthLayout"
 import UnAuthLayout from "../layouts/UnAuthLayout"
@@ -21,7 +22,8 @@ import Verify from "../pages/Authen/pages/Verify"
 import Home from "../pages/Home"
 import Search from "../pages/Search"
 import SearchResult from "../pages/Search/pages/LocationSearchResultById"
-export const router = createBrowserRouter([
+
+const routes: RouteObject[] = [
   {
     path: "/",
     element: (
@@ -164,4 +166,7 @@ export const router = createBrowserRouter([
     path: "*",
     element: <NotFound />,
   },
-])
+]
+export const router = createBrowserRouter(routes, {
+  basename: "/",
+})

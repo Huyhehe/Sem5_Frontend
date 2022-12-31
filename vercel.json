@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" },
+    { "source": "/search/:path*", "destination": "/index.html" }
+  ],
+  "trailingSlash": false
+}
