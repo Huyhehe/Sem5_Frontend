@@ -1,8 +1,7 @@
 import Routing from "./routes"
-import "antd/dist/antd.css"
+import "antd/dist/reset.css"
 import { createContext, useState } from "react"
 import Loading from "./components/Loading"
-import type { NotificationPlacement } from "antd/es/notification"
 import { notification } from "antd"
 
 export const AppContext = createContext<any>({})
@@ -12,7 +11,7 @@ function App() {
   const [currentRoute, setCurrentRoute] = useState<string | null>(null)
   const [api, contextHolder] = notification.useNotification()
   notification.config({
-    placement: "bottomLeft" as NotificationPlacement,
+    placement: "bottomLeft",
   })
   const openNotification = (
     type: "success" | "error" | "info" | "warning",

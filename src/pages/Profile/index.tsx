@@ -11,7 +11,7 @@ import {
   updateProfileInfoAPI,
 } from "@/utils/http"
 import { getFirstCharacterOfName } from "@/utils/reusable"
-import type { FormInstance, UploadProps } from "antd"
+import { FormInstance, QRCode, UploadProps } from "antd"
 import { Form, Input, message, Modal, Select, Tooltip, Upload } from "antd"
 import {
   FunctionComponent,

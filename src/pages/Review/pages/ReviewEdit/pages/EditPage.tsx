@@ -18,8 +18,8 @@ import {
   Select,
   UploadProps,
 } from "antd"
+import dayjs from "dayjs"
 import Dragger from "antd/lib/upload/Dragger"
-import moment from "moment"
 import { useContext, useLayoutEffect, useRef, useState } from "react"
 import { BsCloudUploadFill } from "react-icons/bs"
 import { MdDelete } from "react-icons/md"
@@ -168,10 +168,10 @@ export const EditPage = () => {
                 message: "Please input trip time!",
               },
             ]}
-            initialValue={moment(userReview.trip_time)}
+            initialValue={dayjs(userReview.trip_time)}
           >
             <DatePicker
-              defaultValue={moment(userReview.trip_time)}
+              defaultValue={dayjs(userReview.trip_time)}
               format={"DD-MM-YYYY"}
             />
           </Form.Item>
