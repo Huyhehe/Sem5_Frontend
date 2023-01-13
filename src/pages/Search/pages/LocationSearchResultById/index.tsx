@@ -50,6 +50,8 @@ const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(id)
+
       try {
         const location = await getLocationReviewById(String(id))
         const userReviews = await getAllUserReviewsByLocationId(String(id))
