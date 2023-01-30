@@ -1,9 +1,8 @@
 import { AppContext } from "@/App"
-import { FunctionComponent, useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
-interface VerifySendingProps {}
-export const VerifySending: FunctionComponent<VerifySendingProps> = () => {
+export const VerifySending = () => {
   const { param1, param2 } = useParams()
   const { setLoading } = useContext(AppContext)
   const [isVerifySucceed, setIsVerifySucceed] = useState(false)

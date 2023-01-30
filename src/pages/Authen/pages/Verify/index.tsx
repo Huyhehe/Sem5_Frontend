@@ -1,10 +1,6 @@
 import { getEmailFromLocal } from "@/utils/localStorage"
-import { FunctionComponent } from "react"
-import CodeField from "./components/CodeField"
 
-interface VerifyProps {}
-
-const Verify: FunctionComponent<VerifyProps> = () => {
+const Verify = () => {
   const email = getEmailFromLocal()
 
   return (

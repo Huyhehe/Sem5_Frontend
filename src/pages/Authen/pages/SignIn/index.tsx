@@ -1,17 +1,15 @@
-import { Button, Form, Input } from "antd"
-import { FunctionComponent, useContext } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { AppContext } from "@/App"
 import { signInAPI } from "@/utils/http"
 import {
   setAccessTokenToLocal,
   setRefreshTokenToLocal,
   setUserToLocal,
 } from "@/utils/localStorage"
-import { AppContext } from "@/App"
+import { Button, Form, Input } from "antd"
+import { useContext } from "react"
+import { Link, useNavigate } from "react-router-dom"
 
-interface SignInPageProps {}
-
-const SignInPage: FunctionComponent<SignInPageProps> = () => {
+const SignInPage = () => {
   document.title = "TravelCare | Sign in"
   const { openNotification, currentRoute, setCurrentRoute, setLoading } =
     useContext(AppContext)

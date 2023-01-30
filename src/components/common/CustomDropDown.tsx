@@ -1,5 +1,4 @@
 import { Dropdown } from "antd"
-import { FunctionComponent } from "react"
 import { AiOutlineUser } from "react-icons/ai"
 
 interface Item {
@@ -13,10 +12,10 @@ interface CustomDropDownProps {
   userItems: any
 }
 
-const CustomDropDown: FunctionComponent<CustomDropDownProps> = ({
+const CustomDropDown = ({
   mainDisplay = "",
   userItems = [],
-}) => {
+}: CustomDropDownProps) => {
   const items = userItems.map((item: Item, index: number) => {
     return {
       key: index as any as string,

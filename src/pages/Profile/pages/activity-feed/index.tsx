@@ -1,9 +1,6 @@
-import { FunctionComponent } from "react"
 import { useOutletContext } from "react-router-dom"
 
-interface ActivityFeedProps {}
-
-const ActivityFeed: FunctionComponent<ActivityFeedProps> = () => {
+const ActivityFeed = () => {
   const { userInfo } = useOutletContext<any>()
   return (
     <div className="activity-feed shadow-custom px-4 rounded-md">

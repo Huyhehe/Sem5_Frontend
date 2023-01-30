@@ -1,12 +1,12 @@
-import { FunctionComponent, useMemo } from "react"
-import { AiFillStar } from "react-icons/ai"
 import { toDouble } from "@/utils/reusable"
+import { useMemo } from "react"
+import { AiFillStar } from "react-icons/ai"
 
 interface RatePointProps {
   point: string
 }
 
-const RatePoint: FunctionComponent<RatePointProps> = ({ point }) => {
+const RatePoint = ({ point }: RatePointProps) => {
   const ratePoint = useMemo(() => {
     return toDouble(point)
   }, [point])

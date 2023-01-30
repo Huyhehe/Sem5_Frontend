@@ -1,7 +1,7 @@
 import { Empty } from "antd"
-import React, { FunctionComponent } from "react"
-import CircleButton from "../CircleButton"
+import React from "react"
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai"
+import CircleButton from "../CircleButton"
 
 interface CustomSlideProps {
   children?: React.ReactNode[] | React.ReactNode
@@ -11,13 +11,13 @@ interface CustomSlideProps {
   slideBgColor?: string
 }
 
-const CustomSlide: FunctionComponent<CustomSlideProps> = ({
+const CustomSlide = ({
   children,
   size,
   className,
   slideBgColor = "bg-gray-200",
   slideToShow = 1,
-}) => {
+}: CustomSlideProps) => {
   const [childrenArray, setChildrenArray] = React.useState<
     React.ReactNode[] | null
   >()

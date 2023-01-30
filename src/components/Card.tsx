@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react"
 import { AiOutlineHeart } from "react-icons/ai"
 import { RiMoneyDollarCircleFill } from "react-icons/ri"
 import { example } from "../assets/images"
@@ -13,14 +12,14 @@ interface CardProps {
   onClickFunc?: () => void
 }
 
-const Card: FunctionComponent<CardProps> = ({
+const Card = ({
   img,
   title,
   description,
   price,
   rate,
   onClickFunc,
-}) => {
+}: CardProps) => {
   return (
     <div
       onClick={onClickFunc}

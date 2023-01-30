@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react"
 import { IconType } from "react-icons/lib"
 
 interface CircleButtonProps {
@@ -7,11 +6,11 @@ interface CircleButtonProps {
   additionalClass?: string
 }
 
-const CircleButton: FunctionComponent<CircleButtonProps> = ({
+const CircleButton = ({
   Icon,
   onClickFunc,
   additionalClass,
-}) => {
+}: CircleButtonProps) => {
   return (
     <div className={additionalClass}>
       <button

@@ -1,13 +1,11 @@
 import { AppContext } from "@/App"
 import { registerAPI } from "@/utils/http"
 import { setEmailToLocal } from "@/utils/localStorage"
-import { Input, Form, Button } from "antd"
-import { FunctionComponent, useContext } from "react"
+import { Button, Form, Input } from "antd"
+import { useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
-interface SignUpPageProps {}
-
-const SignUpPage: FunctionComponent<SignUpPageProps> = () => {
+const SignUpPage = () => {
   document.title = "TravelCare | Sign Up"
 
   const navigator = useNavigate()

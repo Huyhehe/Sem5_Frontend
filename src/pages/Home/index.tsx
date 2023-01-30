@@ -1,16 +1,14 @@
-import { FunctionComponent, useContext, useEffect, useState } from "react"
-import Search from "../../components/Search/Search"
-import { searchBg } from "../../assets/images"
-import CustomSlide from "@/components/CustomSlide"
-import { getAllLocationReviews } from "@/utils/http"
-import LocationReview from "@/interfaces/LocationReview"
-import Card from "@/components/Card"
-import { useNavigate } from "react-router-dom"
 import { AppContext } from "@/App"
+import Card from "@/components/Card"
+import CustomSlide from "@/components/CustomSlide"
+import LocationReview from "@/interfaces/LocationReview"
+import { getAllLocationReviews } from "@/utils/http"
+import { useContext, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { searchBg } from "../../assets/images"
+import Search from "../../components/Search/Search"
 
-interface HomeProps {}
-
-const Home: FunctionComponent<HomeProps> = () => {
+const Home = () => {
   const dataOnError: LocationReview[] = [
     {
       id: "0",

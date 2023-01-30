@@ -1,5 +1,4 @@
 import { AppContext } from "@/App"
-import { example } from "@/assets/images"
 import { LocationTypo } from "@/components/common/LocationTypo"
 import CustomSlide from "@/components/CustomSlide"
 import useUser from "@/hooks/useUser"
@@ -11,8 +10,8 @@ import {
 } from "@/utils/http"
 import { getAccessTokenFromLocal } from "@/utils/localStorage"
 import { toDouble } from "@/utils/reusable"
-import { Image, notification, Tabs, message } from "antd"
-import { FunctionComponent, useContext, useEffect, useState } from "react"
+import { Image, message, notification, Tabs } from "antd"
+import { useContext, useEffect, useState } from "react"
 import { AiFillStar, AiOutlineHeart } from "react-icons/ai"
 import { BsDot } from "react-icons/bs"
 import { HiOutlineChevronDown } from "react-icons/hi"
@@ -20,9 +19,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom"
 import UserReviewContainer from "./components/UserReviewContainer"
 import "./styles/styles.css"
 
-interface SearchResultByIdProps {}
-
-const SearchResultById: FunctionComponent<SearchResultByIdProps> = () => {
+const SearchResultById = () => {
   const user = useUser()
   const { id } = useParams()
   const [locationReview, setLocationReview] = useState<LocationReview>({

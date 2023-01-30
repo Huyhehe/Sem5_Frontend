@@ -1,13 +1,12 @@
-import useUser from "@/hooks/useUser"
-import { FunctionComponent, useEffect } from "react"
-import NavBar from "../../components/NavBar"
 import NavBarSignedIn from "@/components/NavBarSignedIn"
+import useUser from "@/hooks/useUser"
+import NavBar from "../../components/NavBar"
 
 interface AuthLayoutProps {
   children: React.ReactNode
 }
 
-const AuthLayout: FunctionComponent<AuthLayoutProps> = ({ children }) => {
+const AuthLayout = ({ children }: AuthLayoutProps) => {
   const user = useUser()
   document.title = "TravelCare"
   return (

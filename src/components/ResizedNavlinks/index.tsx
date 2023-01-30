@@ -1,5 +1,5 @@
 import { Button, Space } from "antd"
-import { Dispatch, FunctionComponent } from "react"
+import { Dispatch } from "react"
 import { NavLink } from "react-router-dom"
 import "./styles.css"
 
@@ -11,13 +11,13 @@ interface ResizedNavlinksProps {
   user?: any
 }
 
-const ResizedNavlinks: FunctionComponent<ResizedNavlinksProps> = ({
+const ResizedNavlinks = ({
   navItems,
   userItems = [],
   navigator,
   setIsHiddenNavbarOpen,
   user = undefined,
-}) => {
+}: ResizedNavlinksProps) => {
   return (
     <div className="resizedNavlinks flex flex-col gap-[1rem]">
       <div className="flex sm:hidden pb-[1rem] flex-col border-b">

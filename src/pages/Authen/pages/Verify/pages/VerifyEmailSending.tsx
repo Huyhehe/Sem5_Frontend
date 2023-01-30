@@ -1,17 +1,9 @@
 import { AppContext } from "@/App"
 import { verifyEmailAPI } from "@/utils/http"
-import {
-  FunctionComponent,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react"
+import { useContext, useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
-interface VerifyEmailSendingProps {}
-
-const VerifyEmailSending: FunctionComponent<VerifyEmailSendingProps> = () => {
+const VerifyEmailSending = () => {
   const { openNotification } = useContext(AppContext)
   const [counter, setCounter] = useState<number | null>(null)
   const [queryString] = useSearchParams()

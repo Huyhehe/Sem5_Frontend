@@ -1,8 +1,4 @@
-import { FunctionComponent } from "react"
-
-interface AboutProps {}
-
-const About: FunctionComponent<AboutProps> = () => {
+const About = () => {
   return <div>About page</div>
 }
 

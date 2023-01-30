@@ -1,12 +1,10 @@
 import { Button, Space } from "antd"
-import { FunctionComponent, useState } from "react"
-import { NavLink, useNavigate } from "react-router-dom"
+import { useState } from "react"
 import { AiOutlineMenu } from "react-icons/ai"
+import { NavLink, useNavigate } from "react-router-dom"
 import ResizedNavlinks from "./ResizedNavlinks"
 
-interface NavBarProps {}
-
-const NavBar: FunctionComponent<NavBarProps> = () => {
+const NavBar = () => {
   const navigator = useNavigate()
   const [isHiddenNavbarOpen, setIsHiddenNavbarOpen] = useState<boolean>(false)
   const navItems = [

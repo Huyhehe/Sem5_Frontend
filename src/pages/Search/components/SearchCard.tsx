@@ -1,18 +1,14 @@
+import LocationReview from "@/interfaces/LocationReview"
 import { getAddressString, getRatingString } from "@/utils/reusable"
-import { FunctionComponent } from "react"
 import { AiFillStar } from "react-icons/ai"
 import { RiMoneyDollarCircleFill } from "react-icons/ri"
-import LocationReview from "@/interfaces/LocationReview"
 
 interface SearchCardProps {
   item: LocationReview
   onClickFunc?: () => void
 }
 
-const SearchCard: FunctionComponent<SearchCardProps> = ({
-  item,
-  onClickFunc,
-}) => {
+const SearchCard = ({ item, onClickFunc }: SearchCardProps) => {
   return (
     <div className="h-[12.5rem] flex gap-[1rem] p-[1rem]" onClick={onClickFunc}>
       <div className="search-card-img h-full aspect-square bg-coral">

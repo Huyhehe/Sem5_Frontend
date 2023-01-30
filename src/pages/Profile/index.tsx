@@ -11,15 +11,18 @@ import {
   updateProfileInfoAPI,
 } from "@/utils/http"
 import { getFirstCharacterOfName } from "@/utils/reusable"
-import { FormInstance, QRCode, UploadProps } from "antd"
-import { Form, Input, message, Modal, Select, Tooltip, Upload } from "antd"
 import {
-  FunctionComponent,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react"
+  Form,
+  FormInstance,
+  Input,
+  message,
+  Modal,
+  Select,
+  Tooltip,
+  Upload,
+  UploadProps,
+} from "antd"
+import { useContext, useEffect, useRef, useState } from "react"
 import { AiFillEdit, AiOutlinePlus } from "react-icons/ai"
 import { BsCalendar2Week, BsCloudUploadFill } from "react-icons/bs"
 import { HiOutlinePhotograph } from "react-icons/hi"
@@ -30,9 +33,7 @@ import "./styles/index.css"
 
 const { Dragger } = Upload
 
-interface ProfileProps {}
-
-const Profile: FunctionComponent<ProfileProps> = () => {
+const Profile = () => {
   document.title = "TravelCare | Profile"
   const links = [
     {

@@ -1,6 +1,6 @@
 import UserReview from "@/interfaces/UserReview"
 import { Input } from "antd"
-import { FunctionComponent, useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import UserReviewArticle from "./UserReviewArticle"
 
@@ -8,9 +8,7 @@ interface UserReviewContainerProps {
   userReviews: UserReview[]
 }
 
-const UserReviewContainer: FunctionComponent<UserReviewContainerProps> = ({
-  userReviews,
-}) => {
+const UserReviewContainer = ({ userReviews }: UserReviewContainerProps) => {
   let searchTimeout: any
 
   const [searchQueryString, setSearchQueryString] = useState("")

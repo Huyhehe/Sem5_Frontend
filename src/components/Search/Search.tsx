@@ -1,11 +1,5 @@
 import { Form, Input } from "antd"
-import {
-  FunctionComponent,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 import { BiSearch } from "react-icons/bi"
 import { FiMapPin } from "react-icons/fi"
 import { createSearchParams, useNavigate } from "react-router-dom"
@@ -15,7 +9,7 @@ interface SearchProps {
   defaultValue?: string
 }
 
-const Search: FunctionComponent<SearchProps> = ({ defaultValue }) => {
+const Search = ({ defaultValue }: SearchProps) => {
   const dummySearchResult = [
     {
       title: "Hoi An Hotel",

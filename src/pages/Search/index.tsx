@@ -1,6 +1,6 @@
 import { AppContext } from "@/App"
 import { getAddressString, removeAccent } from "@/utils/reusable"
-import { FunctionComponent, useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Outlet, useParams, useSearchParams } from "react-router-dom"
 import Search from "../../components/Search/Search"
 import LocationReview from "../../interfaces/LocationReview"
@@ -8,9 +8,7 @@ import { getAllLocationReviews } from "../../utils/http"
 import SearchResult from "./pages/LocationSearchResult"
 import "./styles.css"
 
-interface SearchPageProps {}
-
-const SearchPage: FunctionComponent<SearchPageProps> = () => {
+const SearchPage = () => {
   const [queryString] = useSearchParams()
   const { id } = useParams()
   const [searchResult, setSearchResult] = useState<LocationReview[]>([])

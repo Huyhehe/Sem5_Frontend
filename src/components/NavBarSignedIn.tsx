@@ -1,7 +1,7 @@
 import { AppContext } from "@/App"
 import { signOutAPI } from "@/utils/http"
 import { getRefreshTokenFromLocal, signOutUser } from "@/utils/localStorage"
-import { FunctionComponent, useContext, useState } from "react"
+import { useContext, useState } from "react"
 import { AiOutlineMenu, AiOutlineProfile } from "react-icons/ai"
 import { FiLogOut } from "react-icons/fi"
 import { NavLink, useNavigate } from "react-router-dom"
@@ -12,7 +12,7 @@ interface NavBarProps {
   user: any
 }
 
-const NavBar: FunctionComponent<NavBarProps> = ({ user }) => {
+const NavBar = ({ user }: NavBarProps) => {
   const navigator = useNavigate()
   const [isHiddenNavbarOpen, setIsHiddenNavbarOpen] = useState<boolean>(false)
   const { setCurrentRoute } = useContext(AppContext)

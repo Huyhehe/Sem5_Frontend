@@ -2,12 +2,10 @@ import { AppContext } from "@/App"
 import { forgotPasswordAPI } from "@/utils/http"
 import { setEmailToLocal } from "@/utils/localStorage"
 import { Button, Form, Input } from "antd"
-import { FunctionComponent, useContext } from "react"
+import { useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
-interface ForgotPasswordProps {}
-
-const ForgotPassword: FunctionComponent<ForgotPasswordProps> = () => {
+const ForgotPassword = () => {
   const { openNotification, setLoading } = useContext(AppContext)
   const navigator = useNavigate()
   const handleSubmit = async (e: any) => {

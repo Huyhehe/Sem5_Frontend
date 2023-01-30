@@ -1,11 +1,9 @@
-import { FunctionComponent, useState } from "react"
+import { useState } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import { coverX2 } from "../../assets/images/index"
 import "./styles.css"
 
-interface AuthenPageProps {}
-
-const AuthenPage: FunctionComponent<AuthenPageProps> = () => {
+const AuthenPage = () => {
   const navigator = useNavigate()
   const [email, setEmail] = useState<string | null>(null)
 

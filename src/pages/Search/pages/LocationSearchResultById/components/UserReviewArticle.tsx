@@ -8,9 +8,8 @@ import {
   getDateTimeFormatted,
 } from "@/utils/reusable"
 import { Image, notification, Tooltip } from "antd"
-import { FunctionComponent, useContext, useState } from "react"
+import { useContext, useState } from "react"
 import { AiFillEdit, AiFillLike, AiOutlineLike } from "react-icons/ai"
-import { SlOptionsVertical } from "react-icons/sl"
 import { useLocation, useNavigate } from "react-router-dom"
 
 interface UserReviewArticleProps {
@@ -18,10 +17,10 @@ interface UserReviewArticleProps {
   searchQueryString: string
 }
 
-const UserReviewArticle: FunctionComponent<UserReviewArticleProps> = ({
+const UserReviewArticle = ({
   userReview,
   searchQueryString,
-}) => {
+}: UserReviewArticleProps) => {
   const user = useUser()
   const { openNotification, setCurrentRoute } = useContext(AppContext)
   const navigator = useNavigate()

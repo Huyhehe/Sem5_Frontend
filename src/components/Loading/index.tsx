@@ -1,8 +1,4 @@
-import { FunctionComponent } from "react"
-
-interface LoadingProps {}
-
-const Loading: FunctionComponent<LoadingProps> = () => {
+const Loading = () => {
   return (
     <div className="loading-component absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black/30 z-[9999]">
       <div

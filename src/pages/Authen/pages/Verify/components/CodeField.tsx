@@ -1,10 +1,8 @@
 import { Button, Form, Input } from "antd"
-import { FunctionComponent, useRef } from "react"
+import { useRef } from "react"
 import "../styles.css"
 
-interface CodeFieldProps {}
-
-const CodeField: FunctionComponent<CodeFieldProps> = () => {
+const CodeField = () => {
   const formRef = useRef<any>(null)
 
   const handleSubmit = (e: any) => {
@@ -27,10 +25,6 @@ const CodeField: FunctionComponent<CodeFieldProps> = () => {
     }
   }
   const handleEnterAgain = () => {
-    // ;[0, 1, 2, 3].forEach((i) => {
-    //   const input = document.getElementById(`input${i}`) as HTMLInputElement
-    //   input.value = ""
-    // })
     formRef?.current?.resetFields()
 
     const input = document.getElementById("input0") as HTMLInputElement
