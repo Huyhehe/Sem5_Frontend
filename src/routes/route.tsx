@@ -84,11 +84,11 @@ const routes: RouteObject[] = [
         children: [
           {
             path: "",
-            element: <div>This page doesn't exist</div>,
+            element: <VerifyEmailSending />,
           },
           {
             path: ":param1",
-            element: <VerifyEmailSending />,
+            element: <NotFound />,
             children: [
               {
                 path: ":param2",
