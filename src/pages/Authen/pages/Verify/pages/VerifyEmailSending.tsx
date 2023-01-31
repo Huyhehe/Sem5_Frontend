@@ -1,5 +1,6 @@
 import { AppContext } from "@/App"
 import { verifyEmailAPI } from "@/utils/http"
+import { Spin } from "antd"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
@@ -8,7 +9,7 @@ const VerifyEmailSending = () => {
   const [counter, setCounter] = useState<number | null>(null)
   const [queryString] = useSearchParams()
   const token = useMemo(() => {
-    return queryString.get("jwt")?.toLowerCase() || ""
+    return queryString.get("token")?.toLowerCase() || ""
   }, [queryString])
 
   useEffect(() => {
@@ -47,7 +48,9 @@ const VerifyEmailSending = () => {
   return (
     <div>
       {!counter ? (
-        <h1 className="text-2xl font-bold">Hold on, still verifying...</h1>
+        <h1 className="text-2xl font-bold">
+          Hold on, still verifying <Spin />
+        </h1>
       ) : (
         <div>
           <h1 className="text-2xl font-bold">
