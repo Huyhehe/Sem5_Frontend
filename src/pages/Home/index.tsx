@@ -1,6 +1,5 @@
 import { AppContext } from "@/App"
-import Card from "@/components/Card"
-import CustomSlide from "@/components/CustomSlide"
+import Slide from "@/components/common/Slide"
 import LocationReview from "@/interfaces/LocationReview"
 import { getAllLocationReviews } from "@/utils/http"
 import { useContext, useEffect, useState } from "react"
@@ -64,7 +63,7 @@ const Home = () => {
     },
   ]
   const { setCurrentRoute } = useContext(AppContext)
-  const [cardItems, setCardItems] = useState<LocationReview[] | null>(null)
+  const [cardItems, setCardItems] = useState<LocationReview[]>(dataOnError)
   const navigator = useNavigate()
   useEffect(() => {
     setCurrentRoute(window.location.pathname)
@@ -88,25 +87,7 @@ const Home = () => {
         <Search />
         <img src={searchBg} alt="search-background" />
       </div>
-      <CustomSlide
-        size={300}
-        className="h-fit gap-4"
-        slideBgColor="bg-transparent"
-        slideToShow={4}
-      >
-        {cardItems?.map((item, index) => {
-          return (
-            <Card
-              key={index}
-              title={item.name}
-              description={item.description}
-              price={item.price_level}
-              rate={item.rating}
-              onClickFunc={() => handleCardClick(item.id)}
-            />
-          )
-        })}
-      </CustomSlide>
+      <Slide cardItems={cardItems} handleCardClick={handleCardClick} />
     </div>
   )
 }
