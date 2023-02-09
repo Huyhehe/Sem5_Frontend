@@ -1,4 +1,5 @@
-import { AiOutlineHeart } from "react-icons/ai"
+import { useState } from "react"
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai"
 import { RiMoneyDollarCircleFill } from "react-icons/ri"
 import { example } from "../assets/images"
 import { getRatingString, toDouble } from "../utils/reusable"
@@ -20,13 +21,19 @@ const Card = ({
   rate,
   onClickFunc,
 }: CardProps) => {
+  const [isFavourite, setIsFavourite] = useState<boolean>(false)
+  const handleFavoriteClick = (e: any) => {
+    e.stopPropagation()
+    setIsFavourite(!isFavourite)
+  }
+
   return (
     <div
       onClick={onClickFunc}
       className="card-container relative flex flex-col box-border md:w-[250px] xl:w-[300px] h-[250px] bg-white rounded-[0.5rem] overflow-hidden border cursor-pointer hover:shadow-md"
     >
       <div className="card-image w-full h-[55%]">
-        <img src={example} className="w-full h-full object-cover" />
+        <img src={example ?? img} className="w-full h-full object-cover" />
       </div>
       <div className="card-content p-4 flex-grow flex flex-col">
         <h1 className="font-bold">{title}</h1>
@@ -55,11 +62,15 @@ const Card = ({
         </div>
         <div
           className="w-[36px] aspect-square flex justify-center items-center text-white bg-black/30 rounded-lg hover:text-primary"
-          onClick={() => {
-            console.log("clicked")
+          onClick={(e) => {
+            handleFavoriteClick(e)
           }}
         >
-          <AiOutlineHeart size={20} />
+          {isFavourite ? (
+            <AiFillHeart size={20} />
+          ) : (
+            <AiOutlineHeart size={20} />
+          )}
         </div>
       </div>
     </div>
