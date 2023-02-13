@@ -1,6 +1,7 @@
 import { NotFound } from "@/pages/404"
 import VerifyEmailSending from "@/pages/Authen/pages/Verify/pages/VerifyEmailSending"
 import { VerifySending } from "@/pages/Authen/pages/Verify/pages/VerifySending"
+import Booking from "@/pages/Booking"
 import { AddLocation } from "@/pages/Location"
 import Profile from "@/pages/Profile"
 import ActivityFeed from "@/pages/Profile/pages/activity-feed"
@@ -161,6 +162,14 @@ const routes: RouteObject[] = [
         ],
       },
     ],
+  },
+  {
+    path: "/booking",
+    element: (
+      <AuthLayout>
+        <Booking />
+      </AuthLayout>
+    ),
   },
   {
     path: "*",

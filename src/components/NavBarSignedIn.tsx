@@ -5,7 +5,7 @@ import { useContext, useState } from "react"
 import { AiOutlineMenu, AiOutlineProfile } from "react-icons/ai"
 import { FiLogOut } from "react-icons/fi"
 import { NavLink, useNavigate } from "react-router-dom"
-import CustomDropDown from "./common/CustomDropDown"
+import ProfileDropDown from "@/pages/Profile/components/ProfileDropDown"
 import ResizedNavlinks from "./ResizedNavlinks"
 
 interface NavBarProps {
@@ -99,7 +99,7 @@ const NavBar = ({ user }: NavBarProps) => {
         })}
       </div>
       <div className="user-dropdown hidden md:flex">
-        <CustomDropDown mainDisplay={user.username} userItems={userItems} />
+        <ProfileDropDown mainDisplay={user.username} userItems={userItems} />
       </div>
       <div
         className="flex md:hidden cursor-pointer"
