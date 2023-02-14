@@ -7,15 +7,15 @@ interface Item {
   onClick?: () => void
 }
 
-interface CustomDropDownProps {
+interface ProfileDropDownProps {
   mainDisplay: string
   userItems: any
 }
 
-const CustomDropDown = ({
+const ProfileDropDown = ({
   mainDisplay = "",
   userItems = [],
-}: CustomDropDownProps) => {
+}: ProfileDropDownProps) => {
   const items = userItems.map((item: Item, index: number) => {
     return {
       key: index as any as string,
@@ -43,4 +43,4 @@ const CustomDropDown = ({
   )
 }
 
-export default CustomDropDown
+export default ProfileDropDown
