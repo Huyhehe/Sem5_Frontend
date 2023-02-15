@@ -33,6 +33,7 @@ const CountBox = <T extends BaseEntity>({
     <div className="flex justify-between items-center">
       <RenderLabelNode />
       <InputNumber
+        min={0}
         value={parentState}
         onChange={(e) => {
           label &&
