@@ -1,5 +1,6 @@
 import { DateRagePicker } from "@/components/common/DateRagePicker"
-import CustomDropdown from "@/components/common/Dropdown"
+import HotelFilterDropdown from "./components/HotelFilterDropdown"
+import CustomDropdown from "@/components/common/CustomDropdown"
 import TypographyTitle from "@/components/common/TypographyTitle"
 import { Col, Row } from "antd"
 
@@ -21,11 +22,11 @@ const Header = ({ title = "" }: HeaderProps) => {
           />
         </Row>
         <Row justify="space-between">
-          <Col span={15}>
-            <DateRagePicker size="large" className="w-full" />
+          <Col span={16}>
+            <DateRagePicker size="large" className="w-full h-[3rem]" />
           </Col>
-          <Col span={8}>
-            <CustomDropdown />
+          <Col span={7}>
+            <CustomDropdown Dropdown={HotelFilterDropdown} />
           </Col>
         </Row>
       </Col>
