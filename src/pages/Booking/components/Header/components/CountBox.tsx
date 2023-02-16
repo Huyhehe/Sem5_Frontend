@@ -1,51 +1,47 @@
 import TypographyTitle from "@/components/common/TypographyTitle"
 import { InputNumber, Space } from "antd"
-import { Dispatch, SetStateAction } from "react"
+import React, { memo } from "react"
 
-interface BaseEntity {
-  room: number
-  people: number
-}
-
-interface CountBoxProps<T> {
+interface CountBoxProps {
   label?: string
   icon?: React.ReactNode
-  parentState?: number
-  setParentState?: Dispatch<SetStateAction<T>>
+  min?: number
+  max?: number
+  onChange?: (e: number) => void
+  value: number
 }
 
-const CountBox = <T extends BaseEntity>({
-  label,
-  icon,
-  parentState,
-  setParentState,
-}: CountBoxProps<T>) => {
-  const RenderLabelNode = () => {
+const RenderLabelNode = memo(
+  ({ icon, label }: { icon: React.ReactNode; label: string }) => {
     return (
       <Space align="center">
-        {icon}
-        <TypographyTitle text={label} level={4} className="capitalize" />
+        <>
+          {icon}
+          <TypographyTitle text={label} level={4} className="capitalize" />
+        </>
       </Space>
     )
   }
+)
 
+const CountBox = ({
+  label,
+  icon,
+  min = 0,
+  max = 999,
+  onChange,
+  value,
+  ...props
+}: CountBoxProps) => {
   return (
     <div className="flex justify-between items-center">
-      <RenderLabelNode />
+      <RenderLabelNode icon={icon} label={label || ""} />
       <InputNumber
-        min={0}
-        value={parentState}
-        onChange={(e) => {
-          label &&
-            setParentState &&
-            setParentState(
-              (prevState) =>
-                ({
-                  ...prevState,
-                  [label]: e,
-                } as T)
-            )
-        }}
+        onChange={(value) => value && onChange && onChange(value)}
+        min={min}
+        max={max}
+        value={value}
+        {...props}
       />
     </div>
   )
