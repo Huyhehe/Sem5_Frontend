@@ -1,17 +1,17 @@
 import LocationReview from "@/interfaces/LocationReview"
 import { Carousel } from "antd"
-import { CarouselRef } from "antd/es/carousel"
+import { CarouselProps, CarouselRef } from "antd/es/carousel"
 import { useRef } from "react"
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai"
 import Card from "../Card"
 import CircleButton from "../CircleButton"
 
-interface SlideProps {
+export interface SlideProps extends CarouselProps {
   cardItems: LocationReview[]
   handleCardClick: (id: string) => void
 }
 
-const responsive = [
+const defaultResponsive = [
   {
     breakpoint: 1024,
     settings: {
@@ -38,7 +38,16 @@ const responsive = [
   },
 ]
 
-const Slide = ({ cardItems, handleCardClick }: SlideProps) => {
+const Slide = ({
+  cardItems,
+  handleCardClick,
+  slidesToShow = 4,
+  dots = false,
+  autoplay = false,
+  pauseOnHover = true,
+  responsive = defaultResponsive,
+  ...props
+}: SlideProps) => {
   const ref = useRef<CarouselRef>(null)
   const next = () => {
     ref.current?.next()
@@ -50,11 +59,12 @@ const Slide = ({ cardItems, handleCardClick }: SlideProps) => {
   return (
     <div className="relative">
       <Carousel
+        {...props}
         ref={ref}
-        autoplay
-        slidesToShow={4}
+        autoplay={autoplay}
+        slidesToShow={slidesToShow}
         pauseOnHover
-        dots={false}
+        dots={dots}
         responsive={responsive}
       >
         {cardItems?.map((item, index) => {
