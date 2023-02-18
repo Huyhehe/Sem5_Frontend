@@ -1,4 +1,5 @@
 import { AppContext } from "@/App"
+import Card from "@/components/Card"
 import Slide from "@/components/common/Slide"
 import LocationReview from "@/interfaces/LocationReview"
 import { getAllLocationReviews } from "@/utils/http"
@@ -87,7 +88,20 @@ const Home = () => {
         <Search />
         <img src={searchBg} alt="search-background" />
       </div>
-      <Slide cardItems={cardItems} handleCardClick={handleCardClick} />
+      <Slide>
+        {cardItems?.map((item, index) => {
+          return (
+            <Card
+              key={index}
+              title={item.name}
+              description={item.description}
+              price={item.price_level}
+              rate={item.rating}
+              onClickFunc={() => handleCardClick(item.id)}
+            />
+          )
+        })}
+      </Slide>
     </div>
   )
 }

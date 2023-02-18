@@ -1,5 +1,6 @@
 import { AppContext } from "@/App"
 import { LocationTypo } from "@/components/common/LocationTypo"
+import Slide from "@/components/common/Slide"
 import CustomSlide from "@/components/CustomSlide"
 import useUser from "@/hooks/useUser"
 import LocationReview from "@/interfaces/LocationReview"
@@ -155,7 +156,7 @@ const SearchResultById = () => {
             </div>
           </div>
           <div className="main-images">
-            <CustomSlide size={673}>
+            <Slide slidesToShow={1} autoplay>
               {imageList.length > 0 ? (
                 imageList?.map((image: any) => (
                   <div className="w-[673px] flex justify-center items-center">
@@ -173,7 +174,7 @@ const SearchResultById = () => {
                   />
                 </div>
               )}
-            </CustomSlide>
+            </Slide>
           </div>
         </div>
       </div>
