@@ -23,7 +23,13 @@ const Header = ({ title = "" }: HeaderProps) => {
         </Row>
         <Row justify="space-between">
           <Col span={16}>
-            <DateRagePicker size="large" className="w-full h-[3rem]" />
+            <DateRagePicker
+              size="large"
+              className="w-full h-[3rem]"
+              disabledDate={(date) => {
+                return date.isBefore(new Date(), "day")
+              }}
+            />
           </Col>
           <Col span={7}>
             <CustomDropdown Dropdown={HotelFilterDropdown} />
