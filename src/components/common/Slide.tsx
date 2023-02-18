@@ -7,7 +7,6 @@ import CircleButton from "../CircleButton"
 export interface SlideProps extends CarouselProps {
   isShowArrow?: boolean
   wrapperClass?: string
-  // children?: React.ReactNode[] | React.ReactNode
 }
 
 const defaultResponsive = [
