@@ -18,11 +18,21 @@ const Header = ({ title = "" }: HeaderProps) => {
   const [rangePickerType, setRangePickerType] = useState<RangePickerTypes>()
 
   useEffect(() => {
-    setEndDate(Dayjs(startDate).add(1, "day"))
+    if (
+      Dayjs(startDate).isAfter(Dayjs(endDate)) ||
+      Dayjs(startDate).isSame(Dayjs(endDate)) ||
+      !endDate
+    ) {
+      setEndDate(Dayjs(startDate).add(1, "day"))
+    }
   }, [startDate])
 
   useEffect(() => {
-    if (Dayjs(startDate).isSame(Dayjs(endDate))) {
+    if (
+      Dayjs(startDate).isSame(Dayjs(endDate)) ||
+      Dayjs(startDate).isAfter(Dayjs(endDate)) ||
+      !startDate
+    ) {
       setStartDate(Dayjs(endDate).subtract(1, "day"))
     }
   }, [endDate])
@@ -50,7 +60,7 @@ const Header = ({ title = "" }: HeaderProps) => {
                   return date.isBefore(new Date(), "day")
                 } else if (rangePickerType === RangePickerTypes.END) {
                   if (startDate) {
-                    return date.isBefore(startDate) || date.isBefore(new Date())
+                    return date.isBefore(new Date())
                   }
                 }
                 return date.isBefore(new Date(), "day")
