@@ -1,14 +1,31 @@
-import { DateRagePicker } from "@/components/common/DateRagePicker"
-import HotelFilterDropdown from "./components/HotelFilterDropdown"
 import CustomDropdown from "@/components/common/CustomDropdown"
+import { DateRagePicker } from "@/components/common/DateRagePicker"
 import TypographyTitle from "@/components/common/TypographyTitle"
 import { Col, Row } from "antd"
+import Dayjs from "dayjs"
+import type { Dayjs as DayjsType } from "dayjs"
+import { useEffect, useState } from "react"
+import HotelFilterDropdown from "./components/HotelFilterDropdown"
+import { RangePickerTypes } from "@/utils/enum"
 
 interface HeaderProps {
   title?: string
 }
 
 const Header = ({ title = "" }: HeaderProps) => {
+  const [startDate, setStartDate] = useState<DayjsType>(Dayjs())
+  const [endDate, setEndDate] = useState<DayjsType>(Dayjs().add(1, "day"))
+  const [rangePickerType, setRangePickerType] = useState<RangePickerTypes>()
+
+  useEffect(() => {
+    setEndDate(Dayjs(startDate).add(1, "day"))
+  }, [startDate])
+
+  useEffect(() => {
+    if (Dayjs(startDate).isSame(Dayjs(endDate))) {
+      setStartDate(Dayjs(endDate).subtract(1, "day"))
+    }
+  }, [endDate])
   return (
     <Row className="mb-8" justify="space-between">
       <Col span={6} className="bg-blue-400/20">
@@ -26,9 +43,30 @@ const Header = ({ title = "" }: HeaderProps) => {
             <DateRagePicker
               size="large"
               className="w-full h-[3rem]"
+              inputReadOnly
+              allowClear={false}
               disabledDate={(date) => {
+                if (rangePickerType === RangePickerTypes.START) {
+                  return date.isBefore(new Date(), "day")
+                } else if (rangePickerType === RangePickerTypes.END) {
+                  if (startDate) {
+                    return date.isBefore(startDate) || date.isBefore(new Date())
+                  }
+                }
                 return date.isBefore(new Date(), "day")
               }}
+              onCalendarChange={(dates, _, info) => {
+                if (info.range === "start") {
+                  setStartDate(Dayjs(dates?.[0]))
+                }
+                if (info.range === "end") {
+                  setEndDate(Dayjs(dates?.[1]))
+                }
+              }}
+              onFocus={(e) => {
+                setRangePickerType(e.target.placeholder as RangePickerTypes)
+              }}
+              value={[startDate, endDate]}
             />
           </Col>
           <Col span={7}>
