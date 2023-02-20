@@ -37,6 +37,7 @@ export const removeAccent = (str: string) => {
     .replace(/đ/g, "d")
     .replace(/Đ/g, "D")
 }
+
 export const getDateTimeFormatted = (
   date: string,
   options: any = {
@@ -50,4 +51,8 @@ export const getDateTimeFormatted = (
   }
 ) => {
   return new Date(date).toLocaleString("en-US", options)
+}
+
+export const wordTransformByQuantity = (word: string, value: number) => {
+  return value > 1 ? word + "s" : word
 }

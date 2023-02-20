@@ -1,6 +1,8 @@
 import { Col, Row, Space } from "antd"
 import { useSearchParams } from "react-router-dom"
 import { default as HeaderContainer } from "./components/Header"
+import MainContainer from "./components/Main"
+import { hotelList } from "@/assets/data/hotel"
 
 const Booking = () => {
   const [queryString] = useSearchParams()
@@ -12,10 +14,8 @@ const Booking = () => {
         <Col span={6} className="bg-black/25">
           <Space direction="vertical">Sider</Space>
         </Col>
-        <Col span={17} className="bg-red-500/10">
-          <Space direction="vertical" size={10}>
-            Main
-          </Space>
+        <Col span={17}>
+          <MainContainer data={hotelList} />
         </Col>
       </Row>
     </Col>
