@@ -1,9 +1,16 @@
 {
-  "rewrites": [{ "source": "/search/(.*)", "destination": "/" }],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/search/:id",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/search/:id/*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "trailingSlash": false
