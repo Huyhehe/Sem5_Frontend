@@ -1,4 +1,10 @@
 {
   "rewrites": [{ "source": "/search/(.*)", "destination": "/" }],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
   "trailingSlash": false
 }
