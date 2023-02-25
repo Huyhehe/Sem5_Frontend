@@ -1,7 +1,4 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "index.html" },
-    { "source": "/search/:id*", "destination": "index.html" }
-  ],
+  "rewrites": [{ "source": "/search/(.*)", "destination": "/" }],
   "trailingSlash": false
 }
