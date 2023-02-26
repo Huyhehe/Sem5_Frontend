@@ -1,4 +1,13 @@
 {
-  "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/(.*)/(.*)",
+      "destination": "/index.html"
+    }
+  ],
   "trailingSlash": false
 }
