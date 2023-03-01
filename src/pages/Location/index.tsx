@@ -10,7 +10,7 @@ import { createImageReviewAPI, createLocationAPI } from "@/utils/http"
 
 const { Dragger } = Upload
 
-export const AddLocation = () => {
+const AddLocation = () => {
   const formRef = useRef<FormInstance>(null)
   const [state, setState] = useState({
     countries: [],
@@ -200,3 +200,5 @@ export const AddLocation = () => {
     </div>
   )
 }
+
+export default AddLocation

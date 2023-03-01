@@ -4,7 +4,7 @@ import { getAllReviewByUserIdAPI } from "@/utils/http"
 import { useEffect, useState } from "react"
 import { useOutletContext } from "react-router-dom"
 
-export const MyReviews = () => {
+const MyReviews = () => {
   const { userInfo } = useOutletContext<any>()
 
   const [reviews, setReviews] = useState<UserReview[]>([])
@@ -29,3 +29,5 @@ export const MyReviews = () => {
     </div>
   )
 }
+
+export default MyReviews

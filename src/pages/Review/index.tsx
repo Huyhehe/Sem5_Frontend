@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom"
 
 interface ReviewProps {}
 
-export const Review = ({ ...props }: ReviewProps) => {
+const Review = ({ ...props }: ReviewProps) => {
   document.title = "TravelCare | Review"
   return (
     <div className="w-full">
@@ -10,3 +10,5 @@ export const Review = ({ ...props }: ReviewProps) => {
     </div>
   )
 }
+
+export default Review

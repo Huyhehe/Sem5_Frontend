@@ -1,9 +1,11 @@
 import { Outlet } from "react-router-dom"
 
-export const ReviewEdit = () => {
+const ReviewEdit = () => {
   return (
     <div>
       <Outlet />
     </div>
   )
 }
+
+export default ReviewEdit

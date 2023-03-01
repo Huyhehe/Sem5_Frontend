@@ -1,28 +1,37 @@
 import { NotFound } from "@/pages/404"
 import VerifyEmailSending from "@/pages/Authen/pages/Verify/pages/VerifyEmailSending"
 import { VerifySending } from "@/pages/Authen/pages/Verify/pages/VerifySending"
-import Booking from "@/pages/Booking"
-import { AddLocation } from "@/pages/Location"
-import Profile from "@/pages/Profile"
-import ActivityFeed from "@/pages/Profile/pages/activity-feed"
-import { MyReviews } from "@/pages/Profile/pages/my-reviews"
-import { Review } from "@/pages/Review"
-import { LocationReviewPage } from "@/pages/Review/pages/LocationReview"
-import { ReviewEdit } from "@/pages/Review/pages/ReviewEdit"
-import { EditPage } from "@/pages/Review/pages/ReviewEdit/pages/EditPage"
+import { lazy } from "react"
 import type { RouteObject } from "react-router-dom"
 import { createBrowserRouter, Outlet } from "react-router-dom"
 import AuthLayout from "../layouts/AuthLayout"
 import UnAuthLayout from "../layouts/UnAuthLayout"
-import About from "../pages/About"
 import AuthenPage from "../pages/Authen"
-import ForgotPassword from "../pages/Authen/pages/ForgotPassword"
-import SignInPage from "../pages/Authen/pages/SignIn"
-import SignUpPage from "../pages/Authen/pages/SignUp"
-import Verify from "../pages/Authen/pages/Verify"
-import Home from "../pages/Home"
-import Search from "../pages/Search"
-import SearchResult from "../pages/Search/pages/LocationSearchResultById"
+const Booking = lazy(() => import("@/pages/Booking"))
+const AddLocation = lazy(() => import("@/pages/Location"))
+const Profile = lazy(() => import("@/pages/Profile"))
+const ActivityFeed = lazy(() => import("@/pages/Profile/pages/activity-feed"))
+const MyReviews = lazy(() => import("@/pages/Profile/pages/my-reviews"))
+const Review = lazy(() => import("@/pages/Review"))
+const LocationReviewPage = lazy(
+  () => import("@/pages/Review/pages/LocationReview")
+)
+const ReviewEdit = lazy(() => import("@/pages/Review/pages/ReviewEdit"))
+const EditPage = lazy(
+  () => import("@/pages/Review/pages/ReviewEdit/pages/EditPage")
+)
+const About = lazy(() => import("../pages/About"))
+const ForgotPassword = lazy(
+  () => import("../pages/Authen/pages/ForgotPassword")
+)
+const SignInPage = lazy(() => import("../pages/Authen/pages/SignIn"))
+const SignUpPage = lazy(() => import("../pages/Authen/pages/SignUp"))
+const Verify = lazy(() => import("../pages/Authen/pages/Verify"))
+const Home = lazy(() => import("../pages/Home"))
+const Search = lazy(() => import("../pages/Search"))
+const SearchResult = lazy(
+  () => import("../pages/Search/pages/LocationSearchResultById")
+)
 
 const routes: RouteObject[] = [
   {

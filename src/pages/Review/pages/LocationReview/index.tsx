@@ -24,7 +24,7 @@ import { useParams } from "react-router-dom"
 
 interface LocationReviewProps {}
 
-export const LocationReviewPage = ({ ...props }: LocationReviewProps) => {
+const LocationReviewPage = ({ ...props }: LocationReviewProps) => {
   const user = useUser()
   const { id } = useParams()
   const { setLoading } = useContext(AppContext)
@@ -203,3 +203,5 @@ export const LocationReviewPage = ({ ...props }: LocationReviewProps) => {
     </div>
   )
 }
+
+export default LocationReviewPage
