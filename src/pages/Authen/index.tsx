@@ -22,8 +22,8 @@ const AuthenPage = () => {
           <Outlet />
         </div>
       </div>
-      <div className="authen-extraContent max-w-[60%] hidden xl:flex justify-end">
-        <img src={coverX2} />
+      <div className="authen-extraContent w-[60%] hidden xl:flex justify-end">
+        <img src={coverX2} loading="lazy" />
       </div>
     </div>
   )
