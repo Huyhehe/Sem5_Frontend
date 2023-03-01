@@ -1,5 +1,5 @@
 import useUser from "@/hooks/useUser"
-import { useEffect } from "react"
+import { Suspense, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 interface UnAuthLayoutProps {
@@ -15,7 +15,11 @@ const UnAuthLayout = ({ children }: UnAuthLayoutProps) => {
     }
   }, [])
 
-  return <div className="unAuth-layout py-[1.5rem]">{children}</div>
+  return (
+    <Suspense fallback={<div>loadign...</div>}>
+      <div className="unAuth-layout py-[1.5rem]">{children}</div>
+    </Suspense>
+  )
 }
 
 export default UnAuthLayout
