@@ -1,54 +1,54 @@
-import getAllCategory from "@/utils/getAllCategory"
-import { Form, Input, Select, Upload, message, Rate } from "antd"
-import { useRef, useState } from "react"
-import getAllCountry from "@/utils/getAllCountry"
-import getAllProvince from "@/utils/getAllProvince"
-import type { FormInstance, UploadProps } from "antd"
-import getAllDistrict from "@/utils/getAllDistrict"
-import { BsCloudUploadFill } from "react-icons/bs"
-import { createImageReviewAPI, createLocationAPI } from "@/utils/http"
+import getAllCategory from "@/utils/getAllCategory";
+import { Form, Input, Select, Upload, message, Rate } from "antd";
+import { useRef, useState } from "react";
+import getAllCountry from "@/utils/getAllCountry";
+import getAllProvince from "@/utils/getAllProvince";
+import type { FormInstance, UploadProps } from "antd";
+import getAllDistrict from "@/utils/getAllDistrict";
+import { BsCloudUploadFill } from "react-icons/bs";
+import { createImageReviewAPI, createLocationAPI } from "@/utils/http";
 
-const { Dragger } = Upload
+const { Dragger } = Upload;
 
-export const AddLocation = () => {
-  const formRef = useRef<FormInstance>(null)
+export default function AddLocation() {
+  const formRef = useRef<FormInstance>(null);
   const [state, setState] = useState({
     countries: [],
     provinces: [],
     districts: [],
     categories: [],
-  })
-  const { countries, provinces, districts, categories } = state
-  const [images, setImages] = useState<any[]>([])
+  });
+  const { countries, provinces, districts, categories } = state;
+  const [images, setImages] = useState<any[]>([]);
   const uploadProps: UploadProps = {
     name: "file",
     listType: "picture",
     beforeUpload(file: any) {
-      setImages((images) => [...images, file])
-      console.log(images)
-      return false
+      setImages((images) => [...images, file]);
+      console.log(images);
+      return false;
     },
-  }
+  };
   const handleSubmit = async (values: any) => {
-    const { rating, images, ...rest } = values
-    const data = { ...rest }
-    data.rating = String(rating)
+    const { rating, images, ...rest } = values;
+    const data = { ...rest };
+    data.rating = String(rating);
 
     try {
-      const res = await createLocationAPI(data)
+      const res = await createLocationAPI(data);
       images.fileList.forEach(async (file: any) => {
-        const formData = new FormData()
-        formData.append("review_id", res.id)
-        formData.append("file", file.originFileObj)
-        const imgRes = await createImageReviewAPI(formData)
-      })
-      message.success(res.success)
+        const formData = new FormData();
+        formData.append("review_id", res.id);
+        formData.append("file", file.originFileObj);
+        const imgRes = await createImageReviewAPI(formData);
+      });
+      message.success(res.success);
     } catch (error: any) {
-      message.error(error.message)
+      message.error(error.message);
     }
 
-    formRef.current?.resetFields()
-  }
+    formRef.current?.resetFields();
+  };
   return (
     <div className="location-add w-full flex flex-col">
       <Form className="w-full px-[10rem]" onFinish={handleSubmit} ref={formRef}>
@@ -198,5 +198,5 @@ export const AddLocation = () => {
         />
       </Form>
     </div>
-  )
+  );
 }

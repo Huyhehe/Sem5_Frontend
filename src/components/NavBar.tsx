@@ -1,34 +1,36 @@
-import { Button, Space } from "antd"
-import { useState } from "react"
-import { AiOutlineMenu } from "react-icons/ai"
-import { NavLink, useNavigate } from "react-router-dom"
-import ResizedNavlinks from "./ResizedNavlinks"
+import { Button, Space } from "antd";
+import { useState } from "react";
+import { AiOutlineMenu } from "react-icons/ai";
+import { NavLink, useNavigate } from "react-router-dom";
+import ResizedNavlinks from "./ResizedNavlinks";
+
+const navItems = [
+  {
+    title: "Home",
+    link: "/",
+  },
+  {
+    title: "Search",
+    link: "/search",
+  },
+  {
+    title: "Review",
+    link: "/review",
+  },
+  {
+    title: "About",
+    link: "/about",
+  },
+];
 
 const NavBar = () => {
-  const navigator = useNavigate()
-  const [isHiddenNavbarOpen, setIsHiddenNavbarOpen] = useState<boolean>(false)
-  const navItems = [
-    {
-      title: "Home",
-      link: "/",
-    },
-    {
-      title: "Search",
-      link: "/search",
-    },
-    {
-      title: "Review",
-      link: "/review",
-    },
-    {
-      title: "About",
-      link: "/about",
-    },
-  ]
+  const navigator = useNavigate();
+  const [isHiddenNavbarOpen, setIsHiddenNavbarOpen] = useState<boolean>(false);
+
   const activeClassName =
-    "relative self-stretch flex items-center text-[1.5rem] text-primary font-bold cursor-pointer hover:text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary"
+    "relative self-stretch flex items-center text-[1.5rem] text-primary font-bold cursor-pointer hover:text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary";
   const unActiveClassName =
-    "relative self-stretch flex items-center text-[1.5rem] font-bold cursor-pointer hover:text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:transform after:scale-x-0 hover:after:scale-x-100"
+    "relative self-stretch flex items-center text-[1.5rem] font-bold cursor-pointer hover:text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary after:transition-all after:duration-300 after:transform after:scale-x-0 hover:after:scale-x-100";
 
   return (
     <div className="w-[1260px] h-[3.5rem] px-4 xl:px-0 flex justify-between items-center bg-white">
@@ -53,7 +55,7 @@ const NavBar = () => {
             >
               {item.title}
             </NavLink>
-          )
+          );
         })}
       </div>
       <div className="log-button-container hidden md:flex">
@@ -91,7 +93,7 @@ const NavBar = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;
