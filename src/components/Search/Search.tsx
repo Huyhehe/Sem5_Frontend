@@ -39,7 +39,7 @@ const Search = ({ defaultValue }: SearchProps) => {
   const formContainerRef = useRef<HTMLDivElement>(null)
   const dropDownRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<any>(null)
-  const [isFocusing, setIsFocusing] = useState<Boolean>(false)
+  const [isFocusing, setIsFocusing] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState(defaultValue || "")
   const [searchResult, setSearchResult] = useState(dummySearchResult)
   const navigator = useNavigate()
