@@ -12,10 +12,7 @@ export const toDouble = (rating: string) => {
   return Number(rating).toFixed(1)
 }
 
-export const getFirstCharacterOfName = (
-  firstName: string = "",
-  lastName: string = ""
-) => {
+export const getFirstCharacterOfName = (firstName = "", lastName = "") => {
   return firstName.charAt(0) + lastName.charAt(0)
 }
 

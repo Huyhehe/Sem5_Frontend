@@ -70,7 +70,7 @@ const SearchResultById = () => {
   }, [])
 
   const checkUserIsValid = (
-    helperText: string = "Something has to be checked again"
+    helperText = "Something has to be checked again"
   ) => {
     const accessToken = getAccessTokenFromLocal()
     setCurrentRoute(currentLocation.pathname)
@@ -158,8 +158,11 @@ const SearchResultById = () => {
           <div className="main-images">
             <Slide slidesToShow={1} autoplay>
               {imageList.length > 0 ? (
-                imageList?.map((image: any) => (
-                  <div className="w-[673px] flex justify-center items-center">
+                imageList?.map((image: any, index: number) => (
+                  <div
+                    className="w-[673px] flex justify-center items-center"
+                    key={index}
+                  >
                     <Image
                       src={image.image}
                       className="object-contain aspect-[16/9]"
