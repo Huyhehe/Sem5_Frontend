@@ -53,3 +53,43 @@ export const getDateTimeFormatted = (
 export const wordTransformByQuantity = (word: string, value: number) => {
   return value > 1 ? word + "s" : word
 }
+
+export const convertSnakeToCamelObjectArray = <T extends Record<string, any>>(
+  objs: T[]
+): T[] => {
+  return objs.map((obj) => {
+    const result: Record<string, any> = {}
+
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const camelKey = key.replace(/_([a-z])/g, (match, p1) =>
+          p1.toUpperCase()
+        )
+        const value = obj[key]
+        result[camelKey] =
+          typeof value === "object"
+            ? convertSnakeToCamelObjectArray(value)
+            : value
+      }
+    }
+
+    return result as T
+  })
+}
+
+export const convertToStringIdObject = (object: any) => {
+  return {
+    ...object,
+    id: object.id?.toString() || object.code?.toString(),
+  }
+}
+
+export const convertToStringIdObjectArray = (objects: any[]) => {
+  return objects.map((object) => convertToStringIdObject(object))
+}
+
+export const compareMatchingString = (str: string, input: string) => {
+  return removeAccent(str || "")
+    .toLowerCase()
+    .includes(removeAccent(input || "").toLowerCase())
+}

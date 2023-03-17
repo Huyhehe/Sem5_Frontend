@@ -76,8 +76,6 @@ export const getUserAPI = async (id: string) => {
 }
 export const updateProfileImageAPI = async (formData: FormData) => {
   try {
-    console.log(formData)
-
     const res = await axiosInstance.patch(
       `/users/update-profile-picture/`,
       formData
@@ -280,5 +278,14 @@ export const deleteReviewAPI = async (id: string) => {
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.error)
+  }
+}
+
+export const getProvinces = async (endpoint: string) => {
+  try {
+    const res = await axios.get(endpoint)
+    return res.data
+  } catch (error: any) {
+    throw new Error("Network problems")
   }
 }
