@@ -19,12 +19,17 @@ export const MyReviews = () => {
     }
     fetchData()
   }, [userInfo])
-  console.log(reviews)
 
   return (
     <div className="flex flex-col gap-2">
-      {reviews.map((review) => {
-        return <ReviewCardInProfile review={review} setReview={setReviews} />
+      {reviews.map((review, index) => {
+        return (
+          <ReviewCardInProfile
+            key={index}
+            review={review}
+            setReview={setReviews}
+          />
+        )
       })}
     </div>
   )

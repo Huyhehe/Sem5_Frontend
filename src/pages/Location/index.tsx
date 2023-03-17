@@ -1,38 +1,60 @@
+import SelectorField from "@/components/common/SelectorField"
+import useProvinces from "@/hooks/useProvinces"
+import { District } from "@/interfaces/location/District"
+import { Province } from "@/interfaces/location/Province"
+import { Ward } from "@/interfaces/location/Ward"
 import getAllCategory from "@/utils/getAllCategory"
-import { Form, Input, Select, Upload, message, Rate } from "antd"
-import { useRef, useState } from "react"
-import getAllCountry from "@/utils/getAllCountry"
-import getAllProvince from "@/utils/getAllProvince"
-import type { FormInstance, UploadProps } from "antd"
-import getAllDistrict from "@/utils/getAllDistrict"
-import { BsCloudUploadFill } from "react-icons/bs"
 import { createImageReviewAPI, createLocationAPI } from "@/utils/http"
+import { convertSnakeToCamelObjectArray } from "@/utils/reusable"
+import type { FormInstance, UploadProps } from "antd"
+import { Form, Input, message, Upload } from "antd"
+import { useMemo, useRef, useState } from "react"
+import { BsCloudUploadFill } from "react-icons/bs"
 
 const { Dragger } = Upload
 
+const extractData = (data: any) => {
+  return data?.map((item: any) => {
+    return {
+      id: item.code,
+      ...item,
+    }
+  })
+}
+
 export const AddLocation = () => {
+  const locations = useProvinces()
+
+  const Provinces: Province[] = useMemo(() => {
+    return (locations && convertSnakeToCamelObjectArray(locations)) || []
+  }, [locations])
+
   const formRef = useRef<FormInstance>(null)
   const [state, setState] = useState({
-    countries: [],
-    provinces: [],
-    districts: [],
+    countries: [{ id: "VN", name: "Viet Nam" }],
+    provinces: [] as Province[],
+    districts: [] as District[],
+    wards: [] as Ward[],
     categories: [],
   })
-  const { countries, provinces, districts, categories } = state
-  const [images, setImages] = useState<any[]>([])
+  const { countries, provinces, districts, wards, categories } = state
+  const [, setImages] = useState<any[]>([])
   const uploadProps: UploadProps = {
     name: "file",
     listType: "picture",
     beforeUpload(file: any) {
       setImages((images) => [...images, file])
-      console.log(images)
       return false
     },
   }
+
   const handleSubmit = async (values: any) => {
-    const { rating, images, ...rest } = values
-    const data = { ...rest }
-    data.rating = String(rating)
+    const { rating, images, description, ...rest } = values
+    const data = {
+      ...rest,
+      description: description || "",
+      rating: rating && String(rating),
+    }
 
     try {
       const res = await createLocationAPI(data)
@@ -49,6 +71,31 @@ export const AddLocation = () => {
 
     formRef.current?.resetFields()
   }
+
+  const handleCountryChange = (value: string) => {
+    if (value === "VN" && Provinces.length > 0) {
+      setState({ ...state, provinces: Provinces })
+    }
+  }
+
+  const handleProvinceChange = (value: string) => {
+    if (provinces.length > 0 && value) {
+      const province = provinces.find((item) => String(item.code) === value)
+      if (province) {
+        setState({ ...state, districts: province.districts })
+      }
+    }
+  }
+
+  const handleDistrictChange = (value: string) => {
+    if (districts.length > 0 && value) {
+      const district = districts.find((item) => String(item.code) === value)
+      if (district) {
+        setState({ ...state, wards: district.wards })
+      }
+    }
+  }
+
   return (
     <div className="location-add w-full flex flex-col">
       <Form className="w-full px-[10rem]" onFinish={handleSubmit} ref={formRef}>
@@ -59,7 +106,7 @@ export const AddLocation = () => {
           rules={[
             {
               required: true,
-              message: "Please input your last name!",
+              message: "Please input the location name!",
             },
           ]}
         >
@@ -76,8 +123,7 @@ export const AddLocation = () => {
             },
           ]}
         >
-          <Select
-            allowClear
+          <SelectorField
             placeholder="Category"
             options={categories}
             onFocus={() => getAllCategory(state, setState)}
@@ -94,11 +140,10 @@ export const AddLocation = () => {
             },
           ]}
         >
-          <Select
-            allowClear
+          <SelectorField<Province>
+            options={extractData(countries)}
             placeholder="Country"
-            options={countries}
-            onFocus={() => getAllCountry(state, setState)}
+            onChange={handleCountryChange}
           />
         </Form.Item>
         <Form.Item
@@ -112,17 +157,10 @@ export const AddLocation = () => {
             },
           ]}
         >
-          <Select
-            allowClear
+          <SelectorField<Province>
+            options={extractData(provinces)}
             placeholder="Province"
-            options={provinces}
-            onFocus={() =>
-              getAllProvince(
-                state,
-                setState,
-                formRef?.current?.getFieldValue("country")
-              )
-            }
+            onChange={handleProvinceChange}
           />
         </Form.Item>
         <Form.Item
@@ -136,17 +174,26 @@ export const AddLocation = () => {
             },
           ]}
         >
-          <Select
-            allowClear
+          <SelectorField<District>
+            options={extractData(districts)}
             placeholder="District"
-            options={districts}
-            onFocus={() =>
-              getAllDistrict(
-                state,
-                setState,
-                formRef?.current?.getFieldValue("province")
-              )
-            }
+            onChange={handleDistrictChange}
+          />
+        </Form.Item>
+        <Form.Item
+          name={"ward"}
+          label="Ward"
+          labelCol={{ span: 24 }}
+          rules={[
+            {
+              required: true,
+              message: "Please select ward!",
+            },
+          ]}
+        >
+          <SelectorField<Ward>
+            options={extractData(wards)}
+            placeholder="Ward"
           />
         </Form.Item>
         <Form.Item
