@@ -1,3 +1,5 @@
+import FormItem from "@/components/common/FormItem"
+import InputField from "@/components/common/InputField"
 import SelectorField from "@/components/common/SelectorField"
 import useProvinces from "@/hooks/useProvinces"
 import { District } from "@/interfaces/location/District"
@@ -5,7 +7,7 @@ import { Province } from "@/interfaces/location/Province"
 import { Ward } from "@/interfaces/location/Ward"
 import getAllCategory from "@/utils/getAllCategory"
 import { createImageReviewAPI, createLocationAPI } from "@/utils/http"
-import { convertSnakeToCamelObjectArray } from "@/utils/reusable"
+import { convertSnakeToCamelObjectArray, trimmedObject } from "@/utils/reusable"
 import type { FormInstance, UploadProps } from "antd"
 import { Form, Input, message, Upload } from "antd"
 import { useMemo, useRef, useState } from "react"
@@ -50,11 +52,11 @@ export const AddLocation = () => {
 
   const handleSubmit = async (values: any) => {
     const { rating, images, description, ...rest } = values
-    const data = {
+    const data = trimmedObject({
       ...rest,
       description: description || "",
       rating: rating && String(rating),
-    }
+    })
 
     try {
       const res = await createLocationAPI(data)
@@ -99,132 +101,89 @@ export const AddLocation = () => {
   return (
     <div className="location-add w-full flex flex-col">
       <Form className="w-full px-[10rem]" onFinish={handleSubmit} ref={formRef}>
-        <Form.Item
+        <FormItem
           name={"name"}
           label="Location Name"
-          labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please input the location name!",
-            },
-          ]}
+          message="Please enter your location name"
+          required
         >
-          <Input placeholder="Location name" />
-        </Form.Item>
-        <Form.Item
+          <InputField placeholder="Location name" trim />
+        </FormItem>
+        <FormItem
           name={"category"}
           label="Category"
-          labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please select category!",
-            },
-          ]}
+          message="Please select category!"
+          required
         >
           <SelectorField
             placeholder="Category"
             options={categories}
             onFocus={() => getAllCategory(state, setState)}
           />
-        </Form.Item>
-        <Form.Item
+        </FormItem>
+        <FormItem
           name={"country"}
           label="Country"
-          labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please select country!",
-            },
-          ]}
+          message="Please select country!"
+          required
         >
           <SelectorField<Province>
             options={extractData(countries)}
             placeholder="Country"
             onChange={handleCountryChange}
           />
-        </Form.Item>
-        <Form.Item
+        </FormItem>
+        <FormItem
           name={"province"}
           label="Province"
-          labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please select province!",
-            },
-          ]}
+          message="Please select province!"
+          required
         >
           <SelectorField<Province>
             options={extractData(provinces)}
             placeholder="Province"
             onChange={handleProvinceChange}
           />
-        </Form.Item>
-        <Form.Item
+        </FormItem>
+        <FormItem
           name={"district"}
           label="District"
-          labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please select district!",
-            },
-          ]}
+          message="Please select district!"
+          required
         >
           <SelectorField<District>
             options={extractData(districts)}
             placeholder="District"
             onChange={handleDistrictChange}
           />
-        </Form.Item>
-        <Form.Item
+        </FormItem>
+        <FormItem
           name={"ward"}
           label="Ward"
           labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please select ward!",
-            },
-          ]}
+          message="Please select ward!"
+          required
         >
           <SelectorField<Ward>
             options={extractData(wards)}
             placeholder="Ward"
           />
-        </Form.Item>
-        <Form.Item
-          name={"street_address"}
+        </FormItem>
+        <FormItem
+          name={"streetAddress"}
           label="Street Address"
-          labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please input street address!",
-            },
-          ]}
+          message="Please enter street address!"
+          required
         >
           <Input placeholder="Street Address" />
-        </Form.Item>
-        <Form.Item
-          name={"price_level"}
-          label="Price Level"
-          labelCol={{ span: 24 }}
-          initialValue={0}
-        >
+        </FormItem>
+        <FormItem name={"priceLevel"} label="Price Level" initialValue={0}>
           <Input placeholder="Price Level" type="number" />
-        </Form.Item>
-        <Form.Item
-          name={"description"}
-          label="Description"
-          labelCol={{ span: 24 }}
-        >
+        </FormItem>
+        <FormItem name={"description"} label="Description">
           <Input.TextArea placeholder="Description" />
-        </Form.Item>
-        <Form.Item name="images">
+        </FormItem>
+        <FormItem name="images">
           <Dragger {...uploadProps} className="max-h-[15rem]">
             <div className="ant-upload-drag-icon flex justify-center">
               <BsCloudUploadFill size={40} />
@@ -237,7 +196,7 @@ export const AddLocation = () => {
               uploading company data or other band files
             </p>
           </Dragger>
-        </Form.Item>
+        </FormItem>
         <Input
           type="submit"
           value="Submit"

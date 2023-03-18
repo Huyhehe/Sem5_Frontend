@@ -93,3 +93,12 @@ export const compareMatchingString = (str: string, input: string) => {
     .toLowerCase()
     .includes(removeAccent(input || "").toLowerCase())
 }
+
+export const trimmedObject = (obj: any) => {
+  for (const [key, value] of Object.entries(obj)) {
+    if (typeof value === "string") {
+      obj[key] = value.trim()
+    }
+  }
+  return obj
+}
