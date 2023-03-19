@@ -102,3 +102,20 @@ export const trimmedObject = (obj: any) => {
   }
   return obj
 }
+
+export const currencyFormatter = (
+  value: number,
+  locale = "vi-VN",
+  currency = "VND"
+): string => {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value)
+}
+
+export const currencyParser = (value: string | undefined): number => {
+  return Number(value?.replace(/\D/g, "")) || 0
+}
