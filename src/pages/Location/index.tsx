@@ -7,8 +7,13 @@ import { Province } from "@/interfaces/location/Province"
 import { Ward } from "@/interfaces/location/Ward"
 import getAllCategory from "@/utils/getAllCategory"
 import { createImageReviewAPI, createLocationAPI } from "@/utils/http"
-import { convertSnakeToCamelObjectArray, trimmedObject } from "@/utils/reusable"
-import type { FormInstance, UploadProps } from "antd"
+import {
+  convertSnakeToCamelObjectArray,
+  currencyFormatter,
+  currencyParser,
+  trimmedObject,
+} from "@/utils/reusable"
+import { FormInstance, InputNumber, UploadProps } from "antd"
 import { Form, Input, message, Upload } from "antd"
 import { useMemo, useRef, useState } from "react"
 import { BsCloudUploadFill } from "react-icons/bs"
@@ -178,7 +183,14 @@ export const AddLocation = () => {
           <Input placeholder="Street Address" />
         </FormItem>
         <FormItem name={"priceLevel"} label="Price Level" initialValue={0}>
-          <Input placeholder="Price Level" type="number" />
+          <InputNumber
+            placeholder="Price Level"
+            addonBefore="VND"
+            className="w-full"
+            min={0}
+            formatter={(value) => currencyFormatter(value || 0)}
+            parser={currencyParser}
+          />
         </FormItem>
         <FormItem name={"description"} label="Description">
           <Input.TextArea placeholder="Description" />
