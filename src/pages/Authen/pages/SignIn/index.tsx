@@ -17,13 +17,12 @@ const SignInPage = () => {
   const handleSubmit = async (signInData: any) => {
     setLoading(true)
     try {
-      const { access_token, refresh_token, ...user } = await signInAPI(
-        signInData
-      )
+      const { accessToken, refreshToken, ...user } = await signInAPI(signInData)
       setUserToLocal(user)
-      setAccessTokenToLocal(access_token)
-      setRefreshTokenToLocal(refresh_token)
+      setAccessTokenToLocal(accessToken)
+      setRefreshTokenToLocal(refreshToken)
       setLoading(false)
+
       if (currentRoute) {
         setCurrentRoute(null)
         navigator(currentRoute)
@@ -46,8 +45,8 @@ const SignInPage = () => {
       </h1>
       <Form onFinish={handleSubmit} size="large">
         <Form.Item
-          name={"email"}
-          label="Email"
+          name={"username"}
+          label="User name"
           required
           colon={false}
           labelCol={{ span: 24 }}
@@ -84,7 +83,7 @@ const SignInPage = () => {
           />
         </Form.Item>
         <div className="option-container flex gap-[0.5rem] justify-end">
-          <span>Don't have an account?</span>
+          <span>Don&apos;t have an account?</span>
           <Link
             to="/login/signUp"
             className="underline font-bold hover:text-primary"
