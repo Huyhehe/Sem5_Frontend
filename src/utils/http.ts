@@ -1,45 +1,36 @@
 import axios from "axios"
+import axiosInstance, { setTokenInterceptor } from "@/service/axiosInstance"
+import { setAccessTokenToLocal, setRefreshTokenToLocal } from "./localStorage"
 
 const API_URL = import.meta.env.VITE_API
-let axiosInstance: any = axios.create({
-  baseURL: API_URL,
-  headers: {
-    common: {
-      Authorization: `Bearer ${JSON.parse(
-        localStorage.getItem("accessToken") as string
-      )}`,
-    },
-  },
-})
-
 // AUTH
-export const signInAPI = async (user: { email: string; password: string }) => {
+export const signInAPI = async (user: {
+  username: string
+  password: string
+}) => {
   try {
-    const res = await axios.post(`${API_URL}/auth/login/`, user)
-    axiosInstance = axios.create({
-      baseURL: API_URL,
-      headers: {
-        "Content-Type": "application/json",
-        common: {
-          Authorization: `Bearer ${res.data.access_token}`,
-        },
-      },
-    })
+    const res = await axiosInstance.post(`/auth/login/`, user)
+    setTokenInterceptor(res.data.accessToken)
+    setAccessTokenToLocal(res.data.accessToken)
+    setRefreshTokenToLocal(res.data.refreshToken)
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.error)
   }
 }
+
 export const signOutAPI = async (refreshToken: string) => {
   try {
     const res = await axiosInstance.post(`/auth/logout/`, {
       refresh: refreshToken,
     })
+    setTokenInterceptor(null)
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.error)
   }
 }
+
 export const forgotPasswordAPI = async (email: string) => {
   try {
     const res = await axios.post(`${API_URL}/auth/forgot-password`, email)
@@ -48,6 +39,7 @@ export const forgotPasswordAPI = async (email: string) => {
     throw new Error(error.response.data.error)
   }
 }
+
 export const registerAPI = async (user: any) => {
   try {
     const res = await axios.post(`${API_URL}/auth/register/`, user)
@@ -56,6 +48,7 @@ export const registerAPI = async (user: any) => {
     throw new Error(error.response.data.email[0])
   }
 }
+
 export const verifyEmailAPI = async (token: string) => {
   try {
     const res = await axios.get(`${API_URL}/auth/email-verify/${token}`)
@@ -76,8 +69,6 @@ export const getUserAPI = async (id: string) => {
 }
 export const updateProfileImageAPI = async (formData: FormData) => {
   try {
-    console.log(formData)
-
     const res = await axiosInstance.patch(
       `/users/update-profile-picture/`,
       formData
@@ -280,5 +271,14 @@ export const deleteReviewAPI = async (id: string) => {
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.error)
+  }
+}
+
+export const getProvinces = async (endpoint: string) => {
+  try {
+    const res = await axios.get(endpoint)
+    return res.data
+  } catch (error: any) {
+    throw new Error("Network problems")
   }
 }

@@ -10,8 +10,8 @@ const CodeField = () => {
     for (const [key, value] of Object.entries(e)) {
       code += value
     }
-    console.log(code)
   }
+
   const handleOnchange = (e: any, i: number) => {
     if (e.target.value !== "") {
       // e.target.classList.add("border-black")
@@ -26,10 +26,7 @@ const CodeField = () => {
   }
   const handleEnterAgain = () => {
     formRef?.current?.resetFields()
-
     const input = document.getElementById("input0") as HTMLInputElement
-    console.log(input)
-
     input.focus()
   }
   return (

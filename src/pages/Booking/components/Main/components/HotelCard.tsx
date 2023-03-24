@@ -8,7 +8,7 @@ import { Button, Divider, Image, Rate, Space } from "antd"
 import { useState } from "react"
 import { FaStar } from "react-icons/fa"
 
-interface HotelCardProps extends Hotel {}
+type HotelCardProps = Hotel
 
 const HotelCard = ({
   Name,
@@ -82,6 +82,7 @@ const HotelCard = ({
                     target="_blank"
                     key={index}
                     className="flex gap-1 items-center"
+                    rel="noreferrer"
                   >
                     <Icon />
                     <TypographyText text={label} className="text-gray-500" />

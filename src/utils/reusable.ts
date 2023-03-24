@@ -12,10 +12,7 @@ export const toDouble = (rating: string) => {
   return Number(rating).toFixed(1)
 }
 
-export const getFirstCharacterOfName = (
-  firstName: string = "",
-  lastName: string = ""
-) => {
+export const getFirstCharacterOfName = (firstName = "", lastName = "") => {
   return firstName.charAt(0) + lastName.charAt(0)
 }
 
@@ -55,4 +52,70 @@ export const getDateTimeFormatted = (
 
 export const wordTransformByQuantity = (word: string, value: number) => {
   return value > 1 ? word + "s" : word
+}
+
+export const convertSnakeToCamelObjectArray = <T extends Record<string, any>>(
+  objs: T[]
+): T[] => {
+  return objs.map((obj) => {
+    const result: Record<string, any> = {}
+
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const camelKey = key.replace(/_([a-z])/g, (match, p1) =>
+          p1.toUpperCase()
+        )
+        const value = obj[key]
+        result[camelKey] =
+          typeof value === "object"
+            ? convertSnakeToCamelObjectArray(value)
+            : value
+      }
+    }
+
+    return result as T
+  })
+}
+
+export const convertToStringIdObject = (object: any) => {
+  return {
+    ...object,
+    id: object.id?.toString() || object.code?.toString(),
+  }
+}
+
+export const convertToStringIdObjectArray = (objects: any[]) => {
+  return objects.map((object) => convertToStringIdObject(object))
+}
+
+export const compareMatchingString = (str: string, input: string) => {
+  return removeAccent(str || "")
+    .toLowerCase()
+    .includes(removeAccent(input || "").toLowerCase())
+}
+
+export const trimmedObject = (obj: any) => {
+  for (const [key, value] of Object.entries(obj)) {
+    if (typeof value === "string") {
+      obj[key] = value.trim()
+    }
+  }
+  return obj
+}
+
+export const currencyFormatter = (
+  value: number,
+  locale = "vi-VN",
+  currency = "VND"
+): string => {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value)
+}
+
+export const currencyParser = (value: string | undefined): number => {
+  return Number(value?.replace(/\D/g, "")) || 0
 }
