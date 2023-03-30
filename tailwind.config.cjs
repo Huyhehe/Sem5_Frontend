@@ -11,6 +11,10 @@ module.exports = {
         coral: "#e1999f",
         gold: "#f6c177",
       },
+      zIndex: {
+        '100': '100',
+        '1000': '1000',
+      },
       screens: {
         mobile: { max: "480px" },
         tablet: { max: "767px", min: "481px" },
