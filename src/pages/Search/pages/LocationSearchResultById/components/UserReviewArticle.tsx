@@ -156,7 +156,7 @@ const UserReviewArticle = ({
               }}
             >
               {userReview.images?.map((image, index) => {
-                return <Image src={image.image} />
+                return <Image key={index} src={image.image} />
               })}
             </Image.PreviewGroup>
           </div>

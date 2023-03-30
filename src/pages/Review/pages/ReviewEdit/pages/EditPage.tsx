@@ -66,7 +66,6 @@ export default function EditPage  ()  {
       rating: String(values.rating),
       id: id as string,
     }
-    console.log(data)
 
     setLoading(true)
     try {

@@ -1,38 +1,67 @@
-import getAllCategory from "@/utils/getAllCategory";
-import { Form, Input, Select, Upload, message, Rate } from "antd";
-import { useRef, useState } from "react";
-import getAllCountry from "@/utils/getAllCountry";
-import getAllProvince from "@/utils/getAllProvince";
-import type { FormInstance, UploadProps } from "antd";
-import getAllDistrict from "@/utils/getAllDistrict";
-import { BsCloudUploadFill } from "react-icons/bs";
-import { createImageReviewAPI, createLocationAPI } from "@/utils/http";
+import FormItem from "@/components/common/FormItem"
+import InputField from "@/components/common/InputField"
+import SelectorField from "@/components/common/SelectorField"
+import useProvinces from "@/hooks/useProvinces"
+import { District } from "@/interfaces/location/District"
+import { Province } from "@/interfaces/location/Province"
+import { Ward } from "@/interfaces/location/Ward"
+import getAllCategory from "@/utils/getAllCategory"
+import { createImageReviewAPI, createLocationAPI } from "@/utils/http"
+import {
+  convertSnakeToCamelObjectArray,
+  currencyFormatter,
+  currencyParser,
+  trimmedObject,
+} from "@/utils/reusable"
+import { FormInstance, InputNumber, UploadProps } from "antd"
+import { Form, Input, message, Upload } from "antd"
+import { useMemo, useRef, useState } from "react"
+import { BsCloudUploadFill } from "react-icons/bs"
 
-const { Dragger } = Upload;
+const { Dragger } = Upload
 
-export default function AddLocation() {
-  const formRef = useRef<FormInstance>(null);
+const extractData = (data: any) => {
+  return data?.map((item: any) => {
+    return {
+      id: item.code,
+      ...item,
+    }
+  })
+}
+
+export const AddLocation = () => {
+  const locations = useProvinces()
+
+  const Provinces: Province[] = useMemo(() => {
+    return (locations && convertSnakeToCamelObjectArray(locations)) || []
+  }, [locations])
+
+  const formRef = useRef<FormInstance>(null)
   const [state, setState] = useState({
-    countries: [],
-    provinces: [],
-    districts: [],
+    countries: [{ id: "VN", name: "Viet Nam" }],
+    provinces: [] as Province[],
+    districts: [] as District[],
+    wards: [] as Ward[],
     categories: [],
-  });
-  const { countries, provinces, districts, categories } = state;
-  const [images, setImages] = useState<any[]>([]);
+  })
+  const { countries, provinces, districts, wards, categories } = state
+  const [, setImages] = useState<any[]>([])
   const uploadProps: UploadProps = {
     name: "file",
     listType: "picture",
     beforeUpload(file: any) {
-      setImages((images) => [...images, file]);
-      console.log(images);
-      return false;
+      setImages((images) => [...images, file])
+      return false
     },
-  };
+  }
+
   const handleSubmit = async (values: any) => {
-    const { rating, images, ...rest } = values;
-    const data = { ...rest };
-    data.rating = String(rating);
+    const { rating, images, description, ...rest } = values
+    const data = trimmedObject({
+      ...rest,
+      description: description || "",
+      rating: rating && String(rating),
+    })
 
     try {
       const res = await createLocationAPI(data);
@@ -47,137 +76,126 @@ export default function AddLocation() {
       message.error(error.message);
     }
 
-    formRef.current?.resetFields();
-  };
+    formRef.current?.resetFields()
+  }
+
+  const handleCountryChange = (value: string) => {
+    if (value === "VN" && Provinces.length > 0) {
+      setState({ ...state, provinces: Provinces })
+    }
+  }
+
+  const handleProvinceChange = (value: string) => {
+    if (provinces.length > 0 && value) {
+      const province = provinces.find((item) => String(item.code) === value)
+      if (province) {
+        setState({ ...state, districts: province.districts })
+      }
+    }
+  }
+
+  const handleDistrictChange = (value: string) => {
+    if (districts.length > 0 && value) {
+      const district = districts.find((item) => String(item.code) === value)
+      if (district) {
+        setState({ ...state, wards: district.wards })
+      }
+    }
+  }
+
   return (
     <div className="location-add w-full flex flex-col">
       <Form className="w-full px-[10rem]" onFinish={handleSubmit} ref={formRef}>
-        <Form.Item
+        <FormItem
           name={"name"}
           label="Location Name"
-          labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please input your last name!",
-            },
-          ]}
+          message="Please enter your location name"
+          required
         >
-          <Input placeholder="Location name" />
-        </Form.Item>
-        <Form.Item
+          <InputField placeholder="Location name" trim />
+        </FormItem>
+        <FormItem
           name={"category"}
           label="Category"
-          labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please select category!",
-            },
-          ]}
+          message="Please select category!"
+          required
         >
-          <Select
-            allowClear
+          <SelectorField
             placeholder="Category"
             options={categories}
             onFocus={() => getAllCategory(state, setState)}
           />
-        </Form.Item>
-        <Form.Item
+        </FormItem>
+        <FormItem
           name={"country"}
           label="Country"
-          labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please select country!",
-            },
-          ]}
+          message="Please select country!"
+          required
         >
-          <Select
-            allowClear
+          <SelectorField<Province>
+            options={extractData(countries)}
             placeholder="Country"
-            options={countries}
-            onFocus={() => getAllCountry(state, setState)}
+            onChange={handleCountryChange}
           />
-        </Form.Item>
-        <Form.Item
+        </FormItem>
+        <FormItem
           name={"province"}
           label="Province"
-          labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please select province!",
-            },
-          ]}
+          message="Please select province!"
+          required
         >
-          <Select
-            allowClear
+          <SelectorField<Province>
+            options={extractData(provinces)}
             placeholder="Province"
-            options={provinces}
-            onFocus={() =>
-              getAllProvince(
-                state,
-                setState,
-                formRef?.current?.getFieldValue("country")
-              )
-            }
+            onChange={handleProvinceChange}
           />
-        </Form.Item>
-        <Form.Item
+        </FormItem>
+        <FormItem
           name={"district"}
           label="District"
-          labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please select district!",
-            },
-          ]}
+          message="Please select district!"
+          required
         >
-          <Select
-            allowClear
+          <SelectorField<District>
+            options={extractData(districts)}
             placeholder="District"
-            options={districts}
-            onFocus={() =>
-              getAllDistrict(
-                state,
-                setState,
-                formRef?.current?.getFieldValue("province")
-              )
-            }
+            onChange={handleDistrictChange}
           />
-        </Form.Item>
-        <Form.Item
-          name={"street_address"}
-          label="Street Address"
+        </FormItem>
+        <FormItem
+          name={"ward"}
+          label="Ward"
           labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please input street address!",
-            },
-          ]}
+          message="Please select ward!"
+          required
+        >
+          <SelectorField<Ward>
+            options={extractData(wards)}
+            placeholder="Ward"
+          />
+        </FormItem>
+        <FormItem
+          name={"streetAddress"}
+          label="Street Address"
+          message="Please enter street address!"
+          required
         >
           <Input placeholder="Street Address" />
-        </Form.Item>
-        <Form.Item
-          name={"price_level"}
-          label="Price Level"
-          labelCol={{ span: 24 }}
-          initialValue={0}
-        >
-          <Input placeholder="Price Level" type="number" />
-        </Form.Item>
-        <Form.Item
-          name={"description"}
-          label="Description"
-          labelCol={{ span: 24 }}
-        >
+        </FormItem>
+        <FormItem name={"priceLevel"} label="Price Level" initialValue={0}>
+          <InputNumber
+            placeholder="Price Level"
+            addonBefore="VND"
+            className="w-full"
+            min={0}
+            formatter={(value) => currencyFormatter(value || 0)}
+            parser={currencyParser}
+          />
+        </FormItem>
+        <FormItem name={"description"} label="Description">
           <Input.TextArea placeholder="Description" />
-        </Form.Item>
-        <Form.Item name="images">
+        </FormItem>
+        <FormItem name="images">
           <Dragger {...uploadProps} className="max-h-[15rem]">
             <div className="ant-upload-drag-icon flex justify-center">
               <BsCloudUploadFill size={40} />
@@ -190,7 +208,7 @@ export default function AddLocation() {
               uploading company data or other band files
             </p>
           </Dragger>
-        </Form.Item>
+        </FormItem>
         <Input
           type="submit"
           value="Submit"
