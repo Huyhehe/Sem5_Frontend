@@ -1,28 +1,28 @@
-import NotFound from "@/pages/404";
-import VerifyEmailSending from "@/pages/Authen/pages/Verify/pages/VerifyEmailSending";
-import VerifySending from "@/pages/Authen/pages/Verify/pages/VerifySending";
-import Booking from "@/pages/Booking";
-import AddLocation from "@/pages/Location";
-import Profile from "@/pages/Profile";
-import ActivityFeed from "@/pages/Profile/pages/activity-feed";
-import MyReviews from "@/pages/Profile/pages/my-reviews";
-import Review from "@/pages/Review";
-import LocationReviewPage from "@/pages/Review/pages/LocationReview";
-import ReviewEdit from "@/pages/Review/pages/ReviewEdit";
-import EditPage from "@/pages/Review/pages/ReviewEdit/pages/EditPage";
-import type { RouteObject } from "react-router-dom";
-import { createBrowserRouter, Outlet } from "react-router-dom";
-import AuthLayout from "../layouts/AuthLayout";
-import UnAuthLayout from "../layouts/UnAuthLayout";
-import About from "../pages/About";
-import AuthenPage from "../pages/Authen";
-import ForgotPassword from "../pages/Authen/pages/ForgotPassword";
-import SignInPage from "../pages/Authen/pages/SignIn";
-import SignUpPage from "../pages/Authen/pages/SignUp";
-import Verify from "../pages/Authen/pages/Verify";
-import Home from "../pages/Home";
-import Search from "../pages/Search";
-import SearchResult from "../pages/Search/pages/LocationSearchResultById";
+import NotFound from "@/pages/404"
+import VerifyEmailSending from "@/pages/Authen/pages/Verify/pages/VerifyEmailSending"
+import VerifySending from "@/pages/Authen/pages/Verify/pages/VerifySending"
+import Booking from "@/pages/Booking"
+
+import Profile from "@/pages/Profile"
+import ActivityFeed from "@/pages/Profile/pages/activity-feed"
+import MyReviews from "@/pages/Profile/pages/my-reviews"
+import Review from "@/pages/Review"
+import LocationReviewPage from "@/pages/Review/pages/LocationReview"
+import ReviewEdit from "@/pages/Review/pages/ReviewEdit"
+import EditPage from "@/pages/Review/pages/ReviewEdit/pages/EditPage"
+import type { RouteObject } from "react-router-dom"
+import { createBrowserRouter, Outlet } from "react-router-dom"
+import AuthLayout from "../layouts/AuthLayout"
+import UnAuthLayout from "../layouts/UnAuthLayout"
+import About from "../pages/About"
+import AuthenPage from "../pages/Authen"
+import ForgotPassword from "../pages/Authen/pages/ForgotPassword"
+import SignInPage from "../pages/Authen/pages/SignIn"
+import SignUpPage from "../pages/Authen/pages/SignUp"
+import Verify from "../pages/Authen/pages/Verify"
+import Home from "../pages/Home"
+import Search from "../pages/Search"
+import SearchResult from "../pages/Search/pages/LocationSearchResultById"
 import {
   ABOUT_PATH,
   ACCEPT_ALL_PATH,
@@ -33,7 +33,8 @@ import {
   PROFILE_PATH,
   REVIEW_PATH,
   SEARCH_PATH,
-} from "./path";
+} from "./path"
+import AddLocation from "@/pages/Location"
 
 const routes: RouteObject[] = [
   {
@@ -186,7 +187,7 @@ const routes: RouteObject[] = [
     path: ACCEPT_ALL_PATH,
     element: <NotFound />,
   },
-];
+]
 export const router = createBrowserRouter(routes, {
   basename: "/",
-});
+})

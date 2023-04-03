@@ -29,7 +29,7 @@ const extractData = (data: any) => {
   })
 }
 
-export const AddLocation = () => {
+export default function AddLocation() {
   const locations = useProvinces()
 
   const Provinces: Province[] = useMemo(() => {
