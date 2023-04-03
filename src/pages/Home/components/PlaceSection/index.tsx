@@ -10,7 +10,6 @@ interface IPlaceSection {
   desc?: string;
 }
 
-// 
 function PlaceSection(props: IPlaceSection) {
   return (
     <div className='mt-6 flex flex-col gap-y-3'>

@@ -8,7 +8,7 @@ interface ILocationItemProps {
   img?: string;
   description: string;
 }
-function LocationItem(props: ILocationItemProps) {
+const LocationItem = (props: ILocationItemProps) => {
 
   const [isFavourite, setIsFavourite] = useState<boolean>(false);
 
