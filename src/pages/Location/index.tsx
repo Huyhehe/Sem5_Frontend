@@ -29,7 +29,7 @@ const extractData = (data: any) => {
   })
 }
 
-export const AddLocation = () => {
+export default function AddLocation() {
   const locations = useProvinces()
 
   const Provinces: Province[] = useMemo(() => {
@@ -64,16 +64,16 @@ export const AddLocation = () => {
     })
 
     try {
-      const res = await createLocationAPI(data)
+      const res = await createLocationAPI(data);
       images.fileList.forEach(async (file: any) => {
-        const formData = new FormData()
-        formData.append("review_id", res.id)
-        formData.append("file", file.originFileObj)
-        const imgRes = await createImageReviewAPI(formData)
-      })
-      message.success(res.success)
+        const formData = new FormData();
+        formData.append("review_id", res.id);
+        formData.append("file", file.originFileObj);
+        const imgRes = await createImageReviewAPI(formData);
+      });
+      message.success(res.success);
     } catch (error: any) {
-      message.error(error.message)
+      message.error(error.message);
     }
 
     formRef.current?.resetFields()
@@ -216,5 +216,5 @@ export const AddLocation = () => {
         />
       </Form>
     </div>
-  )
+  );
 }

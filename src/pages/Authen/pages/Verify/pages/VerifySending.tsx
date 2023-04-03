@@ -2,7 +2,7 @@ import { AppContext } from "@/App"
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
-export const VerifySending = () => {
+export default function VerifySending() {
   const { param1, param2 } = useParams()
   const { setLoading } = useContext(AppContext)
   const [isVerifySucceed, setIsVerifySucceed] = useState(false)

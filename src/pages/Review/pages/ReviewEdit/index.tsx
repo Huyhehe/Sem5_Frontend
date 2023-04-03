@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom"
 
-export const ReviewEdit = () => {
+export default function ReviewEdit() {
   return (
     <div>
       <Outlet />
     </div>
-  )
+  );
 }

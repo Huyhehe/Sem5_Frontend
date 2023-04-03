@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-export const NotFound = () => {
+export default function NotFound() {
   return (
     <div>
       <h1 className="text-[5rem] font-black tracking-widest text-center">
