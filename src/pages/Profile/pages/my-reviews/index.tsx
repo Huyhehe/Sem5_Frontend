@@ -1,20 +1,20 @@
-import { ReviewCardInProfile } from "@/components/ReviewCardInProfile";
-import UserReview from "@/interfaces/UserReview";
-import { getAllReviewByUserIdAPI } from "@/utils/http";
-import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { ReviewCardInProfile } from "@/components/ReviewCardInProfile"
+import UserReview from "@/interfaces/UserReview"
+import { getAllReviewByUserIdAPI } from "@/utils/http"
+import { useEffect, useState } from "react"
+import { useOutletContext } from "react-router-dom"
 
 export default function MyReviews() {
-  const { userInfo } = useOutletContext<any>();
+  const { userInfo } = useOutletContext<any>()
 
-  const [reviews, setReviews] = useState<UserReview[]>([]);
+  const [reviews, setReviews] = useState<UserReview[]>([])
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const reviews = await getAllReviewByUserIdAPI(userInfo.id);
-        setReviews(reviews);
+        const reviews = await getAllReviewByUserIdAPI(userInfo.id)
+        setReviews(reviews)
       } catch (error: any) {
-        console.log(error);
+        console.log(error)
       }
     }
     fetchData()
@@ -32,5 +32,5 @@ export default function MyReviews() {
         )
       })}
     </div>
-  );
+  )
 }

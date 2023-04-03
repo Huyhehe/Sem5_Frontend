@@ -1,13 +1,13 @@
-import { AppContext } from "@/App";
-import { LocationTypo } from "@/components/common/LocationTypo";
-import useUser from "@/hooks/useUser";
-import LocationReview from "@/interfaces/LocationReview";
-import getAllTripType from "@/utils/getAllTripType";
+import { AppContext } from "@/App"
+import { LocationTypo } from "@/components/common/LocationTypo"
+import useUser from "@/hooks/useUser"
+import LocationReview from "@/interfaces/LocationReview"
+import getAllTripType from "@/utils/getAllTripType"
 import {
   createImageReviewAPI,
   createUserReviewAPI,
   getLocationReviewById,
-} from "@/utils/http";
+} from "@/utils/http"
 import {
   DatePicker,
   Form,
@@ -16,18 +16,18 @@ import {
   Rate,
   Select,
   UploadProps,
-} from "antd";
-import Dragger from "antd/lib/upload/Dragger";
-import { useContext, useEffect, useState } from "react";
-import { BsCloudUploadFill } from "react-icons/bs";
-import { useParams } from "react-router-dom";
+} from "antd"
+import Dragger from "antd/lib/upload/Dragger"
+import { useContext, useEffect, useState } from "react"
+import { BsCloudUploadFill } from "react-icons/bs"
+import { useParams } from "react-router-dom"
 
-interface LocationReviewProps {}
+interface LocationReviewProps { }
 
 export default function LocationReviewPage({ ...props }: LocationReviewProps) {
-  const user = useUser();
-  const { id } = useParams();
-  const { setLoading } = useContext(AppContext);
+  const user = useUser()
+  const { id } = useParams()
+  const { setLoading } = useContext(AppContext)
   const [location, setLocation] = useState<LocationReview>({
     id: "",
     address: {
@@ -44,61 +44,61 @@ export default function LocationReviewPage({ ...props }: LocationReviewProps) {
     },
     price_level: 0,
     description: "",
-  });
+  })
   const [tripTypes, setTripTypes] = useState<{ id: string; name: string }[]>(
     []
-  );
+  )
 
   const uploadProps: UploadProps = {
     name: "file",
     listType: "picture",
     beforeUpload(file: any) {
-      return false;
+      return false
     },
-  };
+  }
 
   useEffect(() => {
-    setLoading(true);
+    setLoading(true)
     const fetchData = async () => {
       try {
-        const location = await getLocationReviewById(id as string);
-        setLocation(location);
-        setLoading(false);
+        const location = await getLocationReviewById(id as string)
+        setLocation(location)
+        setLoading(false)
       } catch (error: any) {
-        setLoading(false);
-        message.error(error.message);
+        setLoading(false)
+        message.error(error.message)
       }
-    };
-    fetchData();
-  }, []);
+    }
+    fetchData()
+  }, [])
 
   const handleFormSubmit = async (values: any) => {
-    const { images, ...rest } = values;
+    const { images, ...rest } = values
     const data = {
       ...rest,
       trip_time: values.trip_time.format("YYYY-MM-DD"),
       rating: String(values.rating),
       location_id: id as string,
       user_id: user?.id,
-    };
-    setLoading(true);
-    try {
-      const reviewRes = await createUserReviewAPI(data);
-      images.fileList.forEach(async (file: any) => {
-        const imageFormData = new FormData();
-        imageFormData.append("review_id", reviewRes.id);
-        imageFormData.append("image", file.originFileObj);
-        console.log(imageFormData);
-
-        const imageRes = await createImageReviewAPI(imageFormData);
-      });
-      setLoading(false);
-      message.success("Review created successfully");
-    } catch (error: any) {
-      setLoading(false);
-      message.error(error.message || "Something went wrong");
     }
-  };
+    setLoading(true)
+    try {
+      const reviewRes = await createUserReviewAPI(data)
+      images.fileList.forEach(async (file: any) => {
+        const imageFormData = new FormData()
+        imageFormData.append("review_id", reviewRes.id)
+        imageFormData.append("image", file.originFileObj)
+        console.log(imageFormData)
+
+        const imageRes = await createImageReviewAPI(imageFormData)
+      })
+      setLoading(false)
+      message.success("Review created successfully")
+    } catch (error: any) {
+      setLoading(false)
+      message.error(error.message || "Something went wrong")
+    }
+  }
 
   return (
     <div className="location-review px-[2rem]">
@@ -203,5 +203,5 @@ export default function LocationReviewPage({ ...props }: LocationReviewProps) {
         />
       </Form>
     </div>
-  );
+  )
 }

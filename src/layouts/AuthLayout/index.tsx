@@ -1,14 +1,14 @@
-import NavBarSignedIn from "@/components/NavBarSignedIn";
-import useUser from "@/hooks/useUser";
-import NavBar from "../../components/NavBar";
+import NavBarSignedIn from "@/components/NavBarSignedIn"
+import useUser from "@/hooks/useUser"
+import NavBar from "../../components/NavBar"
 
 interface AuthLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
-  const user = useUser();
-  document.title = "TravelCare";
+  const user = useUser()
+  document.title = "TravelCare"
   return (
     <div className="authLayout flex flex-col items-center relative mb-4">
       <div className="w-full flex justify-center sticky top-0 z-50 bg-white border-b">
@@ -18,7 +18,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         {children}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AuthLayout;
+export default AuthLayout

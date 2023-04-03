@@ -1,7 +1,7 @@
-import AuthLayout from "@/layouts/AuthLayout";
-import UnAuthLayout from "@/layouts/UnAuthLayout";
-import React from "react";
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import AuthLayout from "@/layouts/AuthLayout"
+import UnAuthLayout from "@/layouts/UnAuthLayout"
+import React from "react"
+import { createBrowserRouter, Outlet } from "react-router-dom"
 import {
   ABOUT_PATH,
   ACCEPT_ALL_PATH,
@@ -12,55 +12,55 @@ import {
   PROFILE_PATH,
   REVIEW_PATH,
   SEARCH_PATH,
-} from "./path";
+} from "./path"
 
-const NotFoundPage = React.lazy(() => import("../pages/404"));
+const NotFoundPage = React.lazy(() => import("../pages/404"))
 
-const HomePage = React.lazy(() => import("../pages/Home"));
+const HomePage = React.lazy(() => import("../pages/Home"))
 
-const AboutPage = React.lazy(() => import("../pages/About"));
+const AboutPage = React.lazy(() => import("../pages/About"))
 
-const SearchPage = React.lazy(() => import("../pages/Search"));
+const SearchPage = React.lazy(() => import("../pages/Search"))
 const SearchResultPage = React.lazy(
   () => import("../pages/Search/pages/LocationSearchResultById")
-);
+)
 
-const AuthenPage = React.lazy(() => import("../pages/Authen"));
-const SignInPage = React.lazy(() => import("../pages/Authen/pages/SignIn"));
-const SignUpPage = React.lazy(() => import("../pages/Authen/pages/SignUp"));
-const VerifyPage = React.lazy(() => import("../pages/Authen/pages/Verify"));
+const AuthenPage = React.lazy(() => import("../pages/Authen"))
+const SignInPage = React.lazy(() => import("../pages/Authen/pages/SignIn"))
+const SignUpPage = React.lazy(() => import("../pages/Authen/pages/SignUp"))
+const VerifyPage = React.lazy(() => import("../pages/Authen/pages/Verify"))
 const ForgotPasswordPage = React.lazy(
   () => import("../pages/Authen/pages/ForgotPassword")
-);
+)
 const VerifyEmailSendingPage = React.lazy(
   () => import("../pages/Authen/pages/Verify/pages/VerifyEmailSending")
-);
+)
 const VerifySendingPage = React.lazy(
   () => import("../pages/Authen/pages/Verify/pages/VerifySending")
-);
+)
 
-const ProfilePage = React.lazy(() => import("../pages/Profile"));
+const ProfilePage = React.lazy(() => import("../pages/Profile"))
 const ActivityFeedPage = React.lazy(
   () => import("../pages/Profile/pages/activity-feed")
-);
+)
 const MyReviewsPage = React.lazy(
   () => import("../pages/Profile/pages/my-reviews")
-);
+)
 
-const AddLocationPage = React.lazy(() => import("../pages/Location"));
+const AddLocationPage = React.lazy(() => import("../pages/Location"))
 
-const ReviewPage = React.lazy(() => import("../pages/Review"));
+const ReviewPage = React.lazy(() => import("../pages/Review"))
 const LocationReviewPage = React.lazy(
   () => import("../pages/Review/pages/LocationReview")
-);
+)
 const ReviewEditPage = React.lazy(
   () => import("../pages/Review/pages/ReviewEdit")
-);
+)
 const EditPage = React.lazy(
   () => import("../pages/Review/pages/ReviewEdit/pages/EditPage")
-);
+)
 
-const BookingPage = React.lazy(() => import("../pages/Booking"));
+const BookingPage = React.lazy(() => import("../pages/Booking"))
 
 const routes = [
   {
@@ -213,7 +213,7 @@ const routes = [
     path: ACCEPT_ALL_PATH,
     element: <NotFoundPage />,
   },
-];
+]
 export const router = createBrowserRouter(routes, {
   basename: "/",
-});
+})
