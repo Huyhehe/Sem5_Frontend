@@ -25,7 +25,7 @@ import { BsCloudUploadFill } from "react-icons/bs"
 import { MdDelete } from "react-icons/md"
 import { useParams } from "react-router-dom"
 
-export const EditPage = () => {
+export default function EditPage  ()  {
   const { id } = useParams()
   const user = useUser()
   const { setLoading } = useContext(AppContext)

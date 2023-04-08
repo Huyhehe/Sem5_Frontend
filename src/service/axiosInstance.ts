@@ -13,7 +13,7 @@ export const setTokenInterceptor = (token: string | null) => {
 }
 
 axiosInstance.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: any) => {
     return config
   },
   (error: any) => {

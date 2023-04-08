@@ -9,6 +9,7 @@ export const AppContext = createContext<any>({})
 function App() {
   const [loading, setLoading] = useState(false)
   const [currentRoute, setCurrentRoute] = useState<string | null>(null)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [api, contextHolder] = notification.useNotification()
   notification.config({
     placement: "bottomLeft",

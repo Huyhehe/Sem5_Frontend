@@ -1,28 +1,7 @@
-import NotFound from "@/pages/404"
-import VerifyEmailSending from "@/pages/Authen/pages/Verify/pages/VerifyEmailSending"
-import VerifySending from "@/pages/Authen/pages/Verify/pages/VerifySending"
-import Booking from "@/pages/Booking"
-
-import Profile from "@/pages/Profile"
-import ActivityFeed from "@/pages/Profile/pages/activity-feed"
-import MyReviews from "@/pages/Profile/pages/my-reviews"
-import Review from "@/pages/Review"
-import LocationReviewPage from "@/pages/Review/pages/LocationReview"
-import ReviewEdit from "@/pages/Review/pages/ReviewEdit"
-import EditPage from "@/pages/Review/pages/ReviewEdit/pages/EditPage"
-import type { RouteObject } from "react-router-dom"
+import AuthLayout from "@/layouts/AuthLayout"
+import UnAuthLayout from "@/layouts/UnAuthLayout"
+import { lazy } from "react"
 import { createBrowserRouter, Outlet } from "react-router-dom"
-import AuthLayout from "../layouts/AuthLayout"
-import UnAuthLayout from "../layouts/UnAuthLayout"
-import About from "../pages/About"
-import AuthenPage from "../pages/Authen"
-import ForgotPassword from "../pages/Authen/pages/ForgotPassword"
-import SignInPage from "../pages/Authen/pages/SignIn"
-import SignUpPage from "../pages/Authen/pages/SignUp"
-import Verify from "../pages/Authen/pages/Verify"
-import Home from "../pages/Home"
-import Search from "../pages/Search"
-import SearchResult from "../pages/Search/pages/LocationSearchResultById"
 import {
   ABOUT_PATH,
   ACCEPT_ALL_PATH,
@@ -34,14 +13,57 @@ import {
   REVIEW_PATH,
   SEARCH_PATH,
 } from "./path"
-import AddLocation from "@/pages/Location"
 
-const routes: RouteObject[] = [
+const NotFoundPage = lazy(() => import("../pages/404"))
+
+const HomePage = lazy(() => import("../pages/Home"))
+
+const AboutPage = lazy(() => import("../pages/About"))
+
+const SearchPage = lazy(() => import("../pages/Search"))
+const SearchResultPage = lazy(
+  () => import("../pages/Search/pages/LocationSearchResultById")
+)
+
+const AuthenPage = lazy(() => import("../pages/Authen"))
+const SignInPage = lazy(() => import("../pages/Authen/pages/SignIn"))
+const SignUpPage = lazy(() => import("../pages/Authen/pages/SignUp"))
+const VerifyPage = lazy(() => import("../pages/Authen/pages/Verify"))
+const ForgotPasswordPage = lazy(
+  () => import("../pages/Authen/pages/ForgotPassword")
+)
+const VerifyEmailSendingPage = lazy(
+  () => import("../pages/Authen/pages/Verify/pages/VerifyEmailSending")
+)
+const VerifySendingPage = lazy(
+  () => import("../pages/Authen/pages/Verify/pages/VerifySending")
+)
+
+const ProfilePage = lazy(() => import("../pages/Profile"))
+const ActivityFeedPage = lazy(
+  () => import("../pages/Profile/pages/activity-feed")
+)
+const MyReviewsPage = lazy(() => import("../pages/Profile/pages/my-reviews"))
+
+const AddLocationPage = lazy(() => import("../pages/Location"))
+
+const ReviewPage = lazy(() => import("../pages/Review"))
+const LocationReviewPage = lazy(
+  () => import("../pages/Review/pages/LocationReview")
+)
+const ReviewEditPage = lazy(() => import("../pages/Review/pages/ReviewEdit"))
+const EditPage = lazy(
+  () => import("../pages/Review/pages/ReviewEdit/pages/EditPage")
+)
+
+const BookingPage = lazy(() => import("../pages/Booking"))
+
+const routes = [
   {
     path: HOME_PATH,
     element: (
       <AuthLayout>
-        <Home />
+        <HomePage />
       </AuthLayout>
     ),
   },
@@ -49,21 +71,18 @@ const routes: RouteObject[] = [
     path: SEARCH_PATH.DEFAULT,
     element: (
       <AuthLayout>
-        <Search />
+        <SearchPage />
       </AuthLayout>
     ),
     children: [
-      {
-        path: SEARCH_PATH.SEARCH_RESULT,
-        element: <SearchResult />,
-      },
+      { path: SEARCH_PATH.SEARCH_RESULT, element: <SearchResultPage /> },
     ],
   },
   {
     path: ABOUT_PATH,
     element: (
       <AuthLayout>
-        <About />
+        <AboutPage />
       </AuthLayout>
     ),
   },
@@ -74,6 +93,7 @@ const routes: RouteObject[] = [
         <AuthenPage />
       </UnAuthLayout>
     ),
+
     children: [
       {
         path: AUTHEN_PATH.SIGN_IN,
@@ -85,11 +105,11 @@ const routes: RouteObject[] = [
       },
       {
         path: AUTHEN_PATH.FORGOT_PASSWORD,
-        element: <ForgotPassword />,
+        element: <ForgotPasswordPage />,
       },
       {
         path: AUTHEN_PATH.VERIFY,
-        element: <Verify />,
+        element: <VerifyPage />,
       },
       {
         path: AUTHEN_PATH.EMAIL_VERIFY.DEFAULT,
@@ -97,15 +117,15 @@ const routes: RouteObject[] = [
         children: [
           {
             path: "",
-            element: <VerifyEmailSending />,
+            element: <VerifyEmailSendingPage />,
           },
           {
             path: AUTHEN_PATH.EMAIL_VERIFY.NOT_FOUND,
-            element: <NotFound />,
+            element: <NotFoundPage />,
             children: [
               {
                 path: AUTHEN_PATH.EMAIL_VERIFY.VERIFY_SENDING,
-                element: <VerifySending />,
+                element: <VerifySendingPage />,
               },
             ],
           },
@@ -117,17 +137,17 @@ const routes: RouteObject[] = [
     path: PROFILE_PATH.DEFAULT,
     element: (
       <AuthLayout>
-        <Profile />
+        <ProfilePage />
       </AuthLayout>
     ),
     children: [
       {
         index: true,
-        element: <ActivityFeed />,
+        element: <ActivityFeedPage />,
       },
       {
         path: PROFILE_PATH.MY_REVIEWS,
-        element: <MyReviews />,
+        element: <MyReviewsPage />,
       },
       {
         path: PROFILE_PATH.BOOKMARKS,
@@ -147,15 +167,16 @@ const routes: RouteObject[] = [
     path: ADD_LOCATION_PATH,
     element: (
       <AuthLayout>
-        <AddLocation />
+        <AddLocationPage />
       </AuthLayout>
     ),
   },
+
   {
     path: REVIEW_PATH.DEFAULT,
     element: (
       <AuthLayout>
-        <Review />
+        <ReviewPage />
       </AuthLayout>
     ),
     children: [
@@ -165,7 +186,7 @@ const routes: RouteObject[] = [
       },
       {
         path: REVIEW_PATH.EDIT.DEFAULT,
-        element: <ReviewEdit />,
+        element: <ReviewEditPage />,
         children: [
           {
             path: REVIEW_PATH.EDIT.EDIT_PAGE,
@@ -175,17 +196,18 @@ const routes: RouteObject[] = [
       },
     ],
   },
+
   {
     path: BOOKING_PATH,
     element: (
       <AuthLayout>
-        <Booking />
+        <BookingPage />
       </AuthLayout>
     ),
   },
   {
     path: ACCEPT_ALL_PATH,
-    element: <NotFound />,
+    element: <NotFoundPage />,
   },
 ]
 export const router = createBrowserRouter(routes, {

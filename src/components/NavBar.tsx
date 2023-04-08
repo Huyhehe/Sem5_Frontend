@@ -4,27 +4,29 @@ import { AiOutlineMenu } from "react-icons/ai"
 import { NavLink, useNavigate } from "react-router-dom"
 import ResizedNavlinks from "./ResizedNavlinks"
 
+const navItems = [
+  {
+    title: "Home",
+    link: "/",
+  },
+  {
+    title: "Search",
+    link: "/search",
+  },
+  {
+    title: "Review",
+    link: "/review",
+  },
+  {
+    title: "About",
+    link: "/about",
+  },
+]
+
 const NavBar = () => {
   const navigator = useNavigate()
   const [isHiddenNavbarOpen, setIsHiddenNavbarOpen] = useState<boolean>(false)
-  const navItems = [
-    {
-      title: "Home",
-      link: "/",
-    },
-    {
-      title: "Search",
-      link: "/search",
-    },
-    {
-      title: "Review",
-      link: "/review",
-    },
-    {
-      title: "About",
-      link: "/about",
-    },
-  ]
+
   const activeClassName =
     "relative self-stretch flex items-center text-[1.5rem] text-primary font-bold cursor-pointer hover:text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary"
   const unActiveClassName =
@@ -80,9 +82,8 @@ const NavBar = () => {
       </div>
 
       <div
-        className={`absolute md:hidden bg-white w-full top-full left-0 h-screen transition-all -z-10 box-border ${
-          isHiddenNavbarOpen ? "open" : "close"
-        }`}
+        className={`absolute md:hidden bg-white w-full top-full left-0 h-screen transition-all -z-10 box-border ${isHiddenNavbarOpen ? "open" : "close"
+          }`}
       >
         <ResizedNavlinks
           navItems={navItems}
