@@ -1,13 +1,13 @@
-import Slide from '@/components/common/Slide';
+import Slide from '@/components/common/Slide'
 
 interface PlaceItem {
-  title: string;
-  img: string;
+  title: string
+  img: string
 }
 interface IPlaceSection {
-  data: PlaceItem[];
-  title: string;
-  desc?: string;
+  data: PlaceItem[]
+  title: string
+  desc?: string
 }
 
 function PlaceSection(props: IPlaceSection) {
@@ -29,4 +29,4 @@ function PlaceSection(props: IPlaceSection) {
   )
 }
 
-export default PlaceSection;
+export default PlaceSection

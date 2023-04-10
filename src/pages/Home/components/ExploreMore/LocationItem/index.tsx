@@ -1,16 +1,16 @@
-import { example } from "@/assets/images";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { example } from "@/assets/images"
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai"
 
-import { useState } from "react";
+import { useState } from "react"
 
 interface ILocationItemProps {
-  onClick?: () => any;
-  img?: string;
-  description: string;
+  onClick?: () => any
+  img?: string
+  description: string
 }
 const LocationItem = (props: ILocationItemProps) => {
 
-  const [isFavourite, setIsFavourite] = useState<boolean>(false);
+  const [isFavourite, setIsFavourite] = useState<boolean>(false)
 
   const handleFavoriteClick = (e: any) => {
     e.stopPropagation()

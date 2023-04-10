@@ -1,9 +1,9 @@
-import { MdOutlineNotListedLocation } from "react-icons/md";
+import { MdOutlineNotListedLocation } from "react-icons/md"
 
 
 interface IRecentSearchItem {
-    title: string;
-    desc: string;
+    title: string
+    desc: string
 }
 
 const DUMMY_RECENT_SEARCH = [{
@@ -44,4 +44,4 @@ function RecentSearch() {
     )
 }
 
-export default RecentSearch;
+export default RecentSearch

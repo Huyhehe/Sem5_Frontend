@@ -1,7 +1,7 @@
-import { BiHotel, BiRestaurant } from "react-icons/bi";
-import { MdCardTravel, MdMoreVert } from "react-icons/md";
-import { RiEarthFill, RiScalesFill } from "react-icons/ri";
-import CategoryItem from "./CategoryItem";
+import { BiHotel, BiRestaurant } from "react-icons/bi"
+import { MdCardTravel, MdMoreVert } from "react-icons/md"
+import { RiEarthFill, RiScalesFill } from "react-icons/ri"
+import CategoryItem from "./CategoryItem"
 
 const categories = [
   {
@@ -62,7 +62,7 @@ const categories = [
       },
     ],
   },
-];
+]
 
 function Categories() {
   return (
@@ -71,7 +71,7 @@ function Categories() {
         <CategoryItem key={index} data={item} />
       ))}
     </div>
-  );
+  )
 }
 
-export default Categories;
+export default Categories

@@ -1,16 +1,16 @@
-import { AppContext } from "@/App";
-import Card from "@/components/Card";
-import Slide from "@/components/common/Slide";
-import LocationReview from "@/interfaces/LocationReview";
-import { getAllLocationReviews } from "@/utils/http";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { searchBg, example } from "../../assets/images";
-import Search from "../../components/Search/Search";
-import Categories from "./components/Categories";
-import ExploreMore from "./components/ExploreMore";
-import PlaceSection from "./components/PlaceSection";
-import RecentSearch from "./components/RecentSearch";
+import { AppContext } from "@/App"
+import Card from "@/components/Card"
+import Slide from "@/components/common/Slide"
+import LocationReview from "@/interfaces/LocationReview"
+import { getAllLocationReviews } from "@/utils/http"
+import { useContext, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { searchBg, example } from "../../assets/images"
+import Search from "../../components/Search/Search"
+import Categories from "./components/Categories"
+import ExploreMore from "./components/ExploreMore"
+import PlaceSection from "./components/PlaceSection"
+import RecentSearch from "./components/RecentSearch"
 
 const dataOnError: LocationReview[] = [
   {
@@ -65,7 +65,7 @@ const dataOnError: LocationReview[] = [
     price_level: 0,
     rating: "0",
   },
-];
+]
 
 const DUMMY_PLACE = [
   {
@@ -122,29 +122,29 @@ const DUMMY_LOCATION = [
 ]
 
 const Home = () => {
-  const navigator = useNavigate();
+  const navigator = useNavigate()
 
-  const { setCurrentRoute } = useContext(AppContext);
+  const { setCurrentRoute } = useContext(AppContext)
 
-  const [cardItems, setCardItems] = useState<LocationReview[]>(dataOnError);
+  const [cardItems, setCardItems] = useState<LocationReview[]>(dataOnError)
 
   const handleCardClick = (id: string) => {
-    navigator(`/search/${id}`);
-  };
+    navigator(`/search/${id}`)
+  }
 
   useEffect(() => {
-    setCurrentRoute(window.location.pathname);
+    setCurrentRoute(window.location.pathname)
     const fetchData = async () => {
       try {
-        const response = await getAllLocationReviews();
-        setCardItems(response);
+        const response = await getAllLocationReviews()
+        setCardItems(response)
       } catch (error) {
-        console.log(error);
-        setCardItems(dataOnError);
+        console.log(error)
+        setCardItems(dataOnError)
       }
-    };
-    fetchData();
-  }, []);
+    }
+    fetchData()
+  }, [])
 
   return (
     <div className="homePage-container flex flex-col gap-[2rem] w-full pb-10">
@@ -193,7 +193,7 @@ const Home = () => {
       </div>
 
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

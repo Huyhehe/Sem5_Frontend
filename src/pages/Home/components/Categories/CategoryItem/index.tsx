@@ -1,25 +1,25 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState } from "react"
 
 interface Children {
-  text: string;
-  url: string;
+  text: string
+  url: string
 }
 
 interface CategoryItemProps {
   data: {
-    title: string;
-    icon: ReactNode;
-    children?: Children[];
-  };
+    title: string
+    icon: ReactNode
+    children?: Children[]
+  }
 }
 function CategoryItem(props: CategoryItemProps) {
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleClickIcon = () => {
-    if (!props?.data?.children || props?.data?.children?.length === 0) return;
-    setIsOpen((prev) => !prev);
-  };
+    if (!props?.data?.children || props?.data?.children?.length === 0) return
+    setIsOpen((prev) => !prev)
+  }
 
   return (
     <div className="relative group h-[70px] py-3 px-4 cursor-pointer bg-white rounded-[1rem] border group border-black border-solid flex-1 hover:bg-black ">
@@ -51,7 +51,7 @@ function CategoryItem(props: CategoryItemProps) {
           )}
       </div>
     </div>
-  );
+  )
 }
 
-export default CategoryItem;
+export default CategoryItem
