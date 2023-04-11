@@ -5,11 +5,12 @@ import MainContainer from "./components/Main"
 import { hotelList } from "@/assets/data/hotel"
 
 const Booking = () => {
+  document.title = "TravelCare | Booking"
   const [queryString] = useSearchParams()
 
   return (
     <Col span={24}>
-      <HeaderContainer title={queryString.get("data")?.toString()} />
+      <HeaderContainer title={queryString.get("location")?.toString()} />
       <Row justify="space-between">
         <Col span={6} className="bg-black/25">
           <Space direction="vertical">Sider</Space>
