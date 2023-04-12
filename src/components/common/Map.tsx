@@ -17,10 +17,6 @@ interface MapProps {
   address: string
 }
 
-const script = document.createElement("script")
-script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapAPI}`
-document.body.appendChild(script)
-
 const Map = ({ address }: MapProps) => {
   const [coord, setCoord] = useState(defaultCenter)
   const { isLoaded, loadError } = useLoadScript({
