@@ -7,6 +7,7 @@ import type { Dayjs as DayjsType } from "dayjs"
 import { useEffect, useState } from "react"
 import HotelFilterDropdown from "./components/HotelFilterDropdown"
 import { RangePickerTypes } from "@/utils/enum"
+import Map from "@/components/common/Map"
 
 interface HeaderProps {
   title?: string
@@ -36,10 +37,11 @@ const Header = ({ title = "" }: HeaderProps) => {
       setStartDate(Dayjs(endDate).subtract(1, "day"))
     }
   }, [endDate])
+
   return (
-    <Row className="mb-8" justify="space-between">
+    <Row className="mb-8 min-h-[12.5vh]" justify="space-between">
       <Col span={6} className="bg-blue-400/20">
-        Maps
+        <Map address={title} />
       </Col>
       <Col span={17} className="flex flex-col gap-6">
         <Row>
