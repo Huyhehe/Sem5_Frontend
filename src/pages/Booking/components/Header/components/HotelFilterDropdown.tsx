@@ -79,7 +79,7 @@ const HotelFilterDropdown = () => {
                 min={1}
               />
               <Button
-                className="text-white border-none rounded-[5px]"
+                className="text-white border-none rounded-[5px] bg-black"
                 onClick={() => handleSubmit()}
               >
                 Update
