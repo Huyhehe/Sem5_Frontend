@@ -35,7 +35,7 @@
   background-color: #db147f !important;
 }
 
-.ant-upload-list-item-card-actions button {
+.ant-upload-list-item-card-actions > button {
   background-color: transparent !important;
 }
 .ant-form-item-label {
