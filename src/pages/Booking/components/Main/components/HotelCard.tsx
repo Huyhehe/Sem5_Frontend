@@ -47,7 +47,11 @@ const HotelCard = ({
         <TypographyTitle text={Name} level={3} className="color-primary" />
         <div className="flex flex-grow gap-2">
           <div className="flex flex-col items-center justify-center">
-            <Button type="primary" size="large" className="w-full rounded-md">
+            <Button
+              type="primary"
+              size="large"
+              className="w-full rounded-md bg-secondary hover:bg-secondary/80"
+            >
               Show Prices
             </Button>
             <TypographyText
