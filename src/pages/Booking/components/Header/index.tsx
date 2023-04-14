@@ -1,13 +1,13 @@
 import CustomDropdown from "@/components/common/CustomDropdown"
 import { DateRagePicker } from "@/components/common/DateRagePicker"
+import MapBox from "@/components/common/MapBox"
 import TypographyTitle from "@/components/common/TypographyTitle"
+import { RangePickerTypes } from "@/utils/enum"
 import { Col, Row } from "antd"
-import Dayjs from "dayjs"
 import type { Dayjs as DayjsType } from "dayjs"
+import Dayjs from "dayjs"
 import { useEffect, useState } from "react"
 import HotelFilterDropdown from "./components/HotelFilterDropdown"
-import { RangePickerTypes } from "@/utils/enum"
-import Map from "@/components/common/Map"
 
 interface HeaderProps {
   title?: string
@@ -41,7 +41,7 @@ const Header = ({ title = "" }: HeaderProps) => {
   return (
     <Row className="mb-8 min-h-[12.5vh]" justify="space-between">
       <Col span={6} className="bg-blue-400/20">
-        <Map address={title} />
+        <MapBox address={title} />
       </Col>
       <Col span={17} className="flex flex-col gap-6">
         <Row>
