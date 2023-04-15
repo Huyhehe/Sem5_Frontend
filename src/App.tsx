@@ -1,13 +1,9 @@
-import Routing from "./routes"
+import { notification } from "antd"
 import "antd/dist/reset.css"
+import "mapbox-gl/dist/mapbox-gl.css"
 import { createContext, useState } from "react"
 import Loading from "./components/Loading"
-import { notification } from "antd"
-import { googleMapAPI } from "./utils/constant"
-
-const script = document.createElement("script")
-script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapAPI}`
-document.body.appendChild(script)
+import Routing from "./routes"
 
 export const AppContext = createContext<any>({})
 
