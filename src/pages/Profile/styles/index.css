@@ -28,7 +28,7 @@
 }
 /* CUSTOM CLASSES */
 .ant-modal .ant-modal-footer .ant-btn {
-  @apply text-white;
+  @apply text-white bg-black;
   border: none;
 }
 .ant-modal .ant-modal-footer .ant-btn:hover {

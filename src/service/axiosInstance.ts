@@ -1,3 +1,4 @@
+import { getAccessTokenFromLocal } from "@/utils/localStorage"
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios"
 
 const axiosInstance: AxiosInstance = axios.create({
@@ -5,6 +6,7 @@ const axiosInstance: AxiosInstance = axios.create({
 })
 
 export const setTokenInterceptor = (token: string | null) => {
+  console.log(token)
   if (token) {
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`
   } else {
@@ -14,6 +16,10 @@ export const setTokenInterceptor = (token: string | null) => {
 
 axiosInstance.interceptors.request.use(
   (config: any) => {
+    const token = getAccessTokenFromLocal()
+    if (token) {
+      config.headers["Authorization"] = "Bearer " + token
+    }
     return config
   },
   (error: any) => {

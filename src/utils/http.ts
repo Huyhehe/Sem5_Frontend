@@ -10,12 +10,13 @@ export const signInAPI = async (user: {
 }) => {
   try {
     const res = await axiosInstance.post(`/auth/login/`, user)
-    setTokenInterceptor(res.data.accessToken)
-    setAccessTokenToLocal(res.data.accessToken)
-    setRefreshTokenToLocal(res.data.refreshToken)
+    console.log(res)
+    setTokenInterceptor(res.data.tokens.accessToken)
+    setAccessTokenToLocal(res.data.tokens.accessToken)
+    setRefreshTokenToLocal(res.data.tokens.refreshToken)
     return res.data
   } catch (error: any) {
-    throw new Error(error.response.data.error)
+    throw new Error(error.response.data.message)
   }
 }
 
@@ -27,7 +28,7 @@ export const signOutAPI = async (refreshToken: string) => {
     setTokenInterceptor(null)
     return res.data
   } catch (error: any) {
-    throw new Error(error.response.data.error)
+    throw new Error(error.response.data.message)
   }
 }
 
@@ -59,6 +60,14 @@ export const verifyEmailAPI = async (token: string) => {
 }
 
 // USER
+export const getAccount = async () => {
+  try {
+    const { data } = await axiosInstance.get(`${API_URL}/user/`)
+    return data
+  } catch (error: any) {
+    throw new Error(error)
+  }
+}
 export const getUserAPI = async (id: string) => {
   try {
     const res = await axiosInstance.get(`/users/get-user/${id}`)
@@ -271,14 +280,5 @@ export const deleteReviewAPI = async (id: string) => {
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.error)
-  }
-}
-
-export const getProvinces = async (endpoint: string) => {
-  try {
-    const res = await axios.get(endpoint)
-    return res.data
-  } catch (error: any) {
-    throw new Error("Network problems")
   }
 }

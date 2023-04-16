@@ -22,9 +22,7 @@ import { useContext, useEffect, useState } from "react"
 import { BsCloudUploadFill } from "react-icons/bs"
 import { useParams } from "react-router-dom"
 
-interface LocationReviewProps { }
-
-export default function LocationReviewPage({ ...props }: LocationReviewProps) {
+export default function LocationReviewPage() {
   const user = useUser()
   const { id } = useParams()
   const { setLoading } = useContext(AppContext)
@@ -45,9 +43,7 @@ export default function LocationReviewPage({ ...props }: LocationReviewProps) {
     price_level: 0,
     description: "",
   })
-  const [tripTypes, setTripTypes] = useState<{ id: string; name: string }[]>(
-    []
-  )
+  const [tripTypes, setTripTypes] = useState<{ id: string; name: string }[]>([])
 
   const uploadProps: UploadProps = {
     name: "file",
@@ -108,7 +104,7 @@ export default function LocationReviewPage({ ...props }: LocationReviewProps) {
           country={location.address.country}
           province={location.address.province}
           district={location.address.district}
-          street_address={location.address.street_address}
+          streetAddress={location.address.street_address}
         />
       </div>
       <Form onFinish={handleFormSubmit}>

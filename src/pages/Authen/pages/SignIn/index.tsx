@@ -1,11 +1,9 @@
 import { AppContext } from "@/App"
 import { signInAPI } from "@/utils/http"
-import {
-  setAccessTokenToLocal,
-  setRefreshTokenToLocal,
-  setUserToLocal,
-} from "@/utils/localStorage"
-import { Button, Form, Input } from "antd"
+import { setUserToLocal } from "@/utils/localStorage"
+import Button from "antd/es/button/button"
+import Form from "antd/es/form"
+import Input from "antd/es/input"
 import { useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
@@ -17,10 +15,8 @@ const SignInPage = () => {
   const handleSubmit = async (signInData: any) => {
     setLoading(true)
     try {
-      const { accessToken, refreshToken, ...user } = await signInAPI(signInData)
-      setUserToLocal(user)
-      setAccessTokenToLocal(accessToken)
-      setRefreshTokenToLocal(refreshToken)
+      const { user } = await signInAPI(signInData)
+      setUserToLocal({ ...user })
       setLoading(false)
 
       if (currentRoute) {
@@ -30,7 +26,6 @@ const SignInPage = () => {
         navigator("/")
       }
     } catch (error: any) {
-      console.log(error.message)
       setLoading(false)
       openNotification("error", {
         message: "Error",

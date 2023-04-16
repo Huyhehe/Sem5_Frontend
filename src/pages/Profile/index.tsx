@@ -1,28 +1,18 @@
 import { AppContext } from "@/App"
+import AddressSelectorGroup from "@/components/common/AddressSelectorGroup"
 import { LocationTypo } from "@/components/common/LocationTypo"
 import useUser from "@/hooks/useUser"
-import UserInfo from "@/interfaces/UserInfo"
-import getAllCountry from "@/utils/getAllCountry"
-import getAllDistrict from "@/utils/getAllDistrict"
-import getAllProvince from "@/utils/getAllProvince"
-import {
-  getUserAPI,
-  updateProfileImageAPI,
-  updateProfileInfoAPI,
-} from "@/utils/http"
+import { updateAccountInfo } from "@/service/api/user"
+import { UserInfoResponse } from "@/types/responses"
+import { getAccount, updateProfileImageAPI } from "@/utils/http"
 import { getFirstCharacterOfName } from "@/utils/reusable"
-import {
-  Form,
-  FormInstance,
-  Input,
-  message,
-  Modal,
-  Select,
-  Tooltip,
-  Upload,
-  UploadProps,
-} from "antd"
-import { useContext, useEffect, useRef, useState } from "react"
+import Form from "antd/es/form"
+import Input from "antd/es/input"
+import message from "antd/es/message"
+import Modal from "antd/es/modal"
+import Tooltip from "antd/es/tooltip"
+import Upload, { UploadProps } from "antd/es/upload"
+import { useContext, useEffect, useState } from "react"
 import { AiFillEdit, AiOutlinePlus } from "react-icons/ai"
 import { BsCalendar2Week, BsCloudUploadFill } from "react-icons/bs"
 import { HiOutlinePhotograph } from "react-icons/hi"
@@ -30,97 +20,108 @@ import { RiMapPinAddLine } from "react-icons/ri"
 import { TbEdit } from "react-icons/tb"
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import "./styles/index.css"
+import { checkValidParamForUpdateUser, convertUndefinedToNull } from "./utils"
 
 const { Dragger } = Upload
 
-const Profile = () => {
-  document.title = "TravelCare | Profile"
-  const links = [
-    {
-      name: "Activity feed",
-      to: "",
-    },
-    {
-      name: "Reviews",
-      to: "/my-reviews",
-    },
-    {
-      name: "Bookmarks",
-      to: "/bookmarks",
-    },
-    {
-      name: "Followers",
-      to: "/followers",
-    },
-    {
-      name: "Following",
-      to: "/following",
-    },
-  ]
+const links = [
+  {
+    name: "Activity feed",
+    to: "",
+  },
+  {
+    name: "Reviews",
+    to: "/my-reviews",
+  },
+  {
+    name: "Bookmarks",
+    to: "/bookmarks",
+  },
+  {
+    name: "Followers",
+    to: "/followers",
+  },
+  {
+    name: "Following",
+    to: "/following",
+  },
+]
 
-  const navigator = useNavigate()
-  const user = useUser()
-  const [userInfo, setUserInfo] = useState<UserInfo>({
+const initialUserInfo: UserInfoResponse = {
+  accountId: "",
+  account: {
     id: "",
     username: "",
-    email: "",
-    first_name: "",
-    last_name: "",
-    phone_number: "",
-    address: {
-      country: {
-        id: "",
-        name: "",
-      },
-      province: {
-        id: "",
-        name: "",
-      },
-      district: {
-        id: "",
-        name: "",
-      },
-      street_address: "",
+    createAt: "",
+  },
+  firstName: "",
+  lastName: "",
+  email: "",
+  phoneNumber: "",
+  profileImage: "",
+  coverImage: "",
+  about: "",
+  role: "",
+  isSale: true,
+  address: {
+    id: "",
+    country: {
+      id: "",
+      name: "",
+      description: "",
     },
-    profile_picture: "",
-  })
+    province: {
+      id: "",
+      name: "",
+      description: "",
+    },
+    district: {
+      id: "",
+      name: "",
+      description: "",
+    },
+    ward: {
+      id: "",
+      name: "",
+    },
+    streetAddress: "",
+  },
+}
+
+const Profile = () => {
+  document.title = "TravelCare | Profile"
+
+  const user = useUser()
+  const navigator = useNavigate()
+  const [userInfo, setUserInfo] = useState<UserInfoResponse>(initialUserInfo)
   const [openProfileModal, setOpenProfileModal] = useState<boolean>(false)
   const [openImageModal, setOpenImageModal] = useState<boolean>(false)
   const [image, setImage] = useState<any>(null)
-  const [stateAddress, setStateAddress] = useState<any>({
-    countries: [],
-    provinces: [],
-    districts: [],
-    street_addresses: [],
-  })
-  const [selectedAddress, setSelectedAddress] = useState<any>({
-    country: "",
-    province: "",
-    district: "",
-  })
-  const formRef = useRef<FormInstance>(null)
+  // const formRef = useRef<FormInstance>(null)
   const { setLoading } = useContext(AppContext)
+
+  const [form] = Form.useForm()
+
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await getUserAPI(user.id)
+        const response = await getAccount()
         setUserInfo(response)
-        setSelectedAddress({
-          country: response.address.country.id,
-          province: response.address.province.id,
-          district: response.address.district.id,
-        })
-      } catch (error) {
+      } catch (error: any) {
         console.log(error)
+        message.error(error)
       }
     }
     getUser()
   }, [])
 
   const getCreatedDate = (date: string) => {
-    return new Date(date)
-      .toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })
-      .replace(/\//g, "-")
+    return (
+      date !== "" &&
+      new Date(date)
+        .toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })
+        .replace(/\//g, "-")
+    )
   }
 
   const handleEditButtonClick = () => {
@@ -136,9 +137,9 @@ const Profile = () => {
       try {
         const formData = new FormData()
         formData.append("id", user.id)
-        formData.append("profile_picture", image)
+        formData.append("profileImage", image)
         const response = await updateProfileImageAPI(formData)
-        setUserInfo((prev) => ({ ...prev, profile_picture: response }))
+        setUserInfo((prev) => ({ ...prev, profileImage: response }))
         setOpenImageModal(false)
         setLoading(false)
         message.success("Image uploaded successfully")
@@ -148,24 +149,16 @@ const Profile = () => {
     }
   }
   const handleEditProfileSave = () => {
-    formRef.current?.submit()
+    form.submit()
   }
   const handleFormSubmit = async (values: any) => {
+    console.log(values)
     setLoading(true)
     try {
-      const res = await updateProfileInfoAPI({
-        ...values,
-        id: user.id,
-        country: selectedAddress.country,
-        province: selectedAddress.province,
-        district: selectedAddress.district,
-      })
+      const validValues = checkValidParamForUpdateUser(values, userInfo)
+      const reFormattedData = convertUndefinedToNull(validValues)
+      const res = await updateAccountInfo(reFormattedData)
       setUserInfo(res)
-      setSelectedAddress({
-        country: res.address.country.id,
-        province: res.address.province.id,
-        district: res.address.district.id,
-      })
 
       setLoading(false)
       message.success("Profile updated successfully")
@@ -186,24 +179,22 @@ const Profile = () => {
     },
   }
 
-  const { countries, provinces, districts } = stateAddress
-
   return (
     <div className="profile flex flex-col w-full gap-8">
       <div className="general-info-container flex flex-col shadow-custom px-4 rounded-md">
         <div className="main-display flex py-4">
           <div className="profile-picture-container">
-            {userInfo?.profile_picture ? (
+            {userInfo?.profileImage ? (
               <img
-                src={userInfo?.profile_picture}
+                src={userInfo?.profileImage}
                 alt="profile picture"
                 className="profile-picture"
               />
             ) : (
               <div className="profile-picture">
                 {getFirstCharacterOfName(
-                  userInfo?.first_name,
-                  userInfo?.last_name
+                  userInfo?.firstName,
+                  userInfo?.lastName
                 )}
               </div>
             )}
@@ -211,10 +202,10 @@ const Profile = () => {
           <div className="flex flex-col justify-between px-4">
             <div className="flex flex-col">
               <span className="text-2xl font-bold">
-                {userInfo?.first_name} {userInfo?.last_name}
+                {userInfo?.firstName} {userInfo?.lastName}
               </span>
               <span className="text-sm text-gray-500">
-                {"#" + userInfo?.username}
+                {"#" + userInfo?.account?.username}
               </span>
             </div>
             <div className="flex gap-4 xl:gap-8">
@@ -267,20 +258,27 @@ const Profile = () => {
             <h1 className="font-bold text-xl">Intro</h1>
             <div className="intro flex flex-col gap-2 p-3">
               <LocationTypo
-                country={userInfo.address.country.name}
-                province={userInfo.address.province.name}
-                district={userInfo.address.district.name}
+                extendClassName="font-medium"
+                country={userInfo.address?.country.name}
+                province={userInfo.address?.province.name}
+                district={userInfo.address?.district.name}
+                ward={userInfo.address?.ward.name}
+                streetAddress={userInfo.address?.streetAddress}
               />
-              <div className="flex gap-2 items-center">
-                <BsCalendar2Week />
+              <div className="flex gap-2 items-center font-medium">
+                <div>
+                  <BsCalendar2Week />
+                </div>
                 <span>{`Joined on ${
-                  getCreatedDate(userInfo?.create_at) || "1-11-1111"
+                  getCreatedDate(userInfo?.account?.createAt) || "?-??-????"
                 }`}</span>
               </div>
-              <div className="">
+              <div className="font-medium">
                 {userInfo?.about || (
                   <div className="cursor-pointer flex gap-2 items-center hover:text-gray-600">
-                    <AiOutlinePlus />
+                    <div>
+                      <AiOutlinePlus />
+                    </div>
                     <span>Write something about yourself</span>
                   </div>
                 )}
@@ -292,7 +290,7 @@ const Profile = () => {
             <div className="intro flex flex-col gap-2 p-3">
               <div className="flex gap-2 items-center cursor-pointer hover:text-gray-600">
                 <TbEdit />
-                <span>Review a place you've been to</span>
+                <span>Review a place you&lsquo;ve been to</span>
               </div>
               <div
                 className="flex gap-2 items-center cursor-pointer hover:text-gray-600"
@@ -328,17 +326,17 @@ const Profile = () => {
                   <HiOutlinePhotograph size={30} className="text-white" />
                   <span className="text-white">Upload a photo</span>
                 </div>
-                {userInfo?.profile_picture ? (
+                {userInfo?.profileImage ? (
                   <img
-                    src={userInfo?.profile_picture}
+                    src={userInfo?.profileImage}
                     alt="profile picture"
                     className="profile-picture"
                   />
                 ) : (
                   <div className="profile-picture">
                     {getFirstCharacterOfName(
-                      userInfo?.first_name,
-                      userInfo?.last_name
+                      userInfo?.firstName,
+                      userInfo?.lastName
                     )}
                   </div>
                 )}
@@ -346,10 +344,10 @@ const Profile = () => {
             </div>
           </div>
           <div className="modal-info-edit justify-self-stretch flex-grow mr-4">
-            <Form onFinish={(values) => handleFormSubmit(values)} ref={formRef}>
+            <Form onFinish={(values) => handleFormSubmit(values)} form={form}>
               <div className="flex gap-2">
                 <Form.Item
-                  name={"first_name"}
+                  name={"firstName"}
                   label="First name"
                   required
                   rules={[
@@ -358,12 +356,12 @@ const Profile = () => {
                       message: "Please input your first name!",
                     },
                   ]}
-                  initialValue={userInfo?.first_name || ""}
+                  initialValue={userInfo?.firstName || ""}
                 >
                   <Input allowClear placeholder="First name" />
                 </Form.Item>
                 <Form.Item
-                  name={"last_name"}
+                  name={"lastName"}
                   label="Last name"
                   required
                   rules={[
@@ -372,7 +370,7 @@ const Profile = () => {
                       message: "Please input your last name!",
                     },
                   ]}
-                  initialValue={userInfo?.last_name || ""}
+                  initialValue={userInfo?.lastName || ""}
                 >
                   <Input min={1} allowClear placeholder="Last name" />
                 </Form.Item>
@@ -381,83 +379,24 @@ const Profile = () => {
                 name={"username"}
                 label="Username"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.username || ""}
+                initialValue={userInfo?.account.username || ""}
               >
                 <Input allowClear placeholder="Username" />
               </Form.Item>
               <Form.Item
-                name={"phone_number"}
+                name={"phoneNumber"}
                 label="Phone number"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.phone_number || ""}
+                initialValue={userInfo?.phoneNumber || ""}
               >
                 <Input allowClear placeholder="Phone number" />
               </Form.Item>
+              <AddressSelectorGroup userInfo={userInfo} form={form} />
               <Form.Item
-                name={"country"}
-                label="Country"
-                labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.country.name}
-              >
-                <Select
-                  allowClear
-                  placeholder="Country"
-                  options={countries}
-                  onFocus={() => getAllCountry(stateAddress, setStateAddress)}
-                  onSelect={(value: any) => {
-                    setSelectedAddress({ ...selectedAddress, country: value })
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                name={"province"}
-                label="Province"
-                labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.province.name}
-              >
-                <Select
-                  allowClear
-                  placeholder="Province"
-                  options={provinces}
-                  onFocus={() =>
-                    getAllProvince(
-                      stateAddress,
-                      setStateAddress,
-                      selectedAddress.country
-                    )
-                  }
-                  onSelect={(value: any) => {
-                    setSelectedAddress({ ...selectedAddress, province: value })
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                name={"district"}
-                label="District"
-                labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.district.name}
-              >
-                <Select
-                  allowClear
-                  placeholder="District"
-                  options={districts}
-                  onFocus={() =>
-                    getAllDistrict(
-                      stateAddress,
-                      setStateAddress,
-                      selectedAddress.province
-                    )
-                  }
-                  onSelect={(value: any) => {
-                    setSelectedAddress({ ...selectedAddress, district: value })
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                name={"street_address"}
+                name={"streetAddress"}
                 label="Street address"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.street_address}
+                initialValue={userInfo?.address?.streetAddress}
               >
                 <Input allowClear placeholder="Street address" />
               </Form.Item>
