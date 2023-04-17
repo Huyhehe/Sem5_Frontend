@@ -1,3 +1,5 @@
+import { BaseAddress, WardResponse } from "@/types/responses"
+
 export const getRatingString = (rating: string) => {
   if (Number(rating) <= 2) {
     return "Bad"
@@ -118,4 +120,24 @@ export const currencyFormatter = (
 
 export const currencyParser = (value: string | undefined): number => {
   return Number(value?.replace(/\D/g, "")) || 0
+}
+
+export const convertDataForSelectOptions = (
+  data: (BaseAddress | WardResponse)[]
+) => {
+  return data.map((item) => ({
+    value: item.id,
+    label: item.name,
+  }))
+}
+
+export const convertDataForSelectOption = (
+  data: BaseAddress | WardResponse | null | undefined
+) => {
+  return data
+    ? {
+        value: data.id,
+        label: data.name,
+      }
+    : null
 }

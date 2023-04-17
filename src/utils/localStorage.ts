@@ -31,4 +31,5 @@ export const setUserToLocal = (user: User) => {
 export const signOutUser = () => {
   localStorage.removeItem("user")
   localStorage.removeItem("accessToken")
+  localStorage.removeItem("refreshToken")
 }
