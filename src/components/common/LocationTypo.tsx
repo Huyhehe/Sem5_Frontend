@@ -22,9 +22,12 @@ export const LocationTypo = ({
   extendClassName = "",
 }: LocationTypoProps) => {
   const renderAddress = () => {
-    return `${streetAddress && streetAddress + ","} ${ward && ward + ","} ${
-      district && district + ","
-    } ${province && province + ","} ${country && country}`
+    return `${streetAddress ? streetAddress + "," : ""} ${
+      ward ? ward + "," : ""
+    } ${district ? district + "," : ""} ${province ? province + "," : ""} ${
+      country ? country : ""
+    }
+    `
   }
 
   return (
