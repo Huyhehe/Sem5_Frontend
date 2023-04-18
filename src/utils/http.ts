@@ -10,7 +10,6 @@ export const signInAPI = async (user: {
 }) => {
   try {
     const res = await axiosInstance.post(`/auth/login/`, user)
-    console.log(res)
     setTokenInterceptor(res.data.tokens.accessToken)
     setAccessTokenToLocal(res.data.tokens.accessToken)
     setRefreshTokenToLocal(res.data.tokens.refreshToken)

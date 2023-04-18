@@ -152,7 +152,6 @@ const Profile = () => {
     form.submit()
   }
   const handleFormSubmit = async (values: any) => {
-    console.log(values)
     setLoading(true)
     try {
       const validValues = checkValidParamForUpdateUser(values, userInfo)
@@ -165,7 +164,11 @@ const Profile = () => {
       setOpenProfileModal(false)
     } catch (error: any) {
       setLoading(false)
+<<<<<<< Updated upstream
       message.error(error.response.data.message)
+=======
+      message.error(error.response.message)
+>>>>>>> Stashed changes
     }
   }
 
