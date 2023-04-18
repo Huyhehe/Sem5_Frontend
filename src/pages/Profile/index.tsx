@@ -150,8 +150,8 @@ const Profile = () => {
     form.submit()
   }
   const handleFormSubmit = async (values: any) => {
-    console.log(values)
     setLoading(true)
+
     try {
       const validValues = checkValidParamForUpdateUser(values, userInfo)
       const reFormattedData = convertUndefinedToNull(validValues)
@@ -163,7 +163,7 @@ const Profile = () => {
       setOpenProfileModal(false)
     } catch (error: any) {
       setLoading(false)
-      message.error(error.response.data.message)
+      // message.error(error.response.data.message)
     }
   }
 
@@ -342,7 +342,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="modal-info-edit justify-self-stretch flex-grow mr-4">
-            <Form onFinish={(values) => handleFormSubmit(values)} form={form}>
+            <Form onFinish={handleFormSubmit} form={form}>
               <div className="flex gap-2">
                 <Form.Item
                   name={"firstName"}
