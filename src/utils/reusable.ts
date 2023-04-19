@@ -141,3 +141,16 @@ export const convertDataForSelectOption = (
       }
     : null
 }
+
+export const checkStringContainNumberOrSpecialChar = (
+  str: string,
+  locale: "VN" | "EN"
+) => {
+  if (str && locale === "VN") {
+    return !/^[\p{L}'\s,-]+$/u.test(str)
+  }
+  if (str && locale === "EN") {
+    return /(\d|[^\w\s])/.test(str)
+  }
+  return false
+}
