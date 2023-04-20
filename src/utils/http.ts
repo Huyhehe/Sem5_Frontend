@@ -10,7 +10,6 @@ export const signInAPI = async (user: {
 }) => {
   try {
     const res = await axiosInstance.post(`/auth/login/`, user)
-    console.log(res)
     setTokenInterceptor(res.data.tokens.accessToken)
     setAccessTokenToLocal(res.data.tokens.accessToken)
     setRefreshTokenToLocal(res.data.tokens.refreshToken)
@@ -46,7 +45,7 @@ export const registerAPI = async (user: any) => {
     const res = await axios.post(`${API_URL}/auth/register/`, user)
     return res.data
   } catch (error: any) {
-    throw new Error(error.response.data.email[0])
+    throw new Error(error.response.data.message)
   }
 }
 
@@ -65,7 +64,7 @@ export const getAccount = async () => {
     const { data } = await axiosInstance.get(`${API_URL}/user/`)
     return data
   } catch (error: any) {
-    throw new Error(error)
+    throw new Error(error.response.data.message)
   }
 }
 export const getUserAPI = async (id: string) => {
