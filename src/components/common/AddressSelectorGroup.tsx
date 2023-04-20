@@ -247,7 +247,7 @@ const AddressSelectorGroup = ({
         name={"countryId"}
         label="Country"
         labelCol={{ span: 24 }}
-        initialValue={userInfo?.address?.country.name || null}
+        initialValue={userInfo?.address?.country?.name || null}
         required={required}
         message={required ? "Please select your country" : undefined}
       >
@@ -262,7 +262,7 @@ const AddressSelectorGroup = ({
         name={"provinceId"}
         label="Province"
         labelCol={{ span: 24 }}
-        initialValue={userInfo?.address?.province.name || null}
+        initialValue={userInfo?.address?.province?.name || null}
         required={required}
         message={required ? "Please select your province" : undefined}
       >
@@ -283,7 +283,7 @@ const AddressSelectorGroup = ({
         name={"districtId"}
         label="District"
         labelCol={{ span: 24 }}
-        initialValue={userInfo?.address?.district.name || null}
+        initialValue={userInfo?.address?.district?.name || null}
         required={required}
         message={required ? "Please select your district" : undefined}
       >
@@ -304,7 +304,7 @@ const AddressSelectorGroup = ({
         name={"wardId"}
         label="Ward"
         labelCol={{ span: 24 }}
-        initialValue={userInfo?.address?.ward.name || null}
+        initialValue={userInfo?.address?.ward?.name || null}
         required={required}
         message={required ? "Please select your ward" : undefined}
       >

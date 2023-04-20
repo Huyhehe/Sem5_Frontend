@@ -97,7 +97,6 @@ const Profile = () => {
   const [openProfileModal, setOpenProfileModal] = useState<boolean>(false)
   const [openImageModal, setOpenImageModal] = useState<boolean>(false)
   const [image, setImage] = useState<any>(null)
-  // const formRef = useRef<FormInstance>(null)
   const { setLoading } = useContext(AppContext)
 
   const [form] = Form.useForm()
@@ -125,7 +124,6 @@ const Profile = () => {
   }
 
   const handleEditButtonClick = () => {
-    // navigator("/edit-profile")
     setOpenProfileModal(true)
   }
   const handleEditImageClick = () => {
@@ -153,6 +151,7 @@ const Profile = () => {
   }
   const handleFormSubmit = async (values: any) => {
     setLoading(true)
+
     try {
       const validValues = checkValidParamForUpdateUser(values, userInfo)
       const reFormattedData = convertUndefinedToNull(validValues)
@@ -164,11 +163,7 @@ const Profile = () => {
       setOpenProfileModal(false)
     } catch (error: any) {
       setLoading(false)
-<<<<<<< Updated upstream
-      message.error(error.response.data.message)
-=======
       message.error(error.response.message)
->>>>>>> Stashed changes
     }
   }
 
@@ -262,11 +257,11 @@ const Profile = () => {
             <div className="intro flex flex-col gap-2 p-3">
               <LocationTypo
                 extendClassName="font-medium"
-                country={userInfo.address?.country.name}
-                province={userInfo.address?.province.name}
-                district={userInfo.address?.district.name}
-                ward={userInfo.address?.ward.name}
-                streetAddress={userInfo.address?.streetAddress}
+                country={userInfo?.address?.country?.name}
+                province={userInfo?.address?.province?.name}
+                district={userInfo?.address?.district?.name}
+                ward={userInfo?.address?.ward?.name}
+                streetAddress={userInfo?.address?.streetAddress}
               />
               <div className="flex gap-2 items-center font-medium">
                 <div>
@@ -347,7 +342,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="modal-info-edit justify-self-stretch flex-grow mr-4">
-            <Form onFinish={(values) => handleFormSubmit(values)} form={form}>
+            <Form onFinish={handleFormSubmit} form={form}>
               <div className="flex gap-2">
                 <Form.Item
                   name={"firstName"}
