@@ -163,7 +163,7 @@ const Profile = () => {
       setOpenProfileModal(false)
     } catch (error: any) {
       setLoading(false)
-      // message.error(error.response.data.message)
+      message.error(error.response.message)
     }
   }
 
