@@ -78,12 +78,20 @@ export const getUserAPI = async (id: string) => {
 export const updateProfileImageAPI = async (formData: FormData) => {
   try {
     const res = await axiosInstance.patch(
-      `/users/update-profile-picture/`,
+      `/user/update-profile-image/`,
       formData
     )
     return res.data
   } catch (error: any) {
-    throw new Error(error.response.data.messages[0].message)
+    throw new Error(error.response.data.message)
+  }
+}
+export const updateCoverImageAPI = async (formData: FormData) => {
+  try {
+    const res = await axiosInstance.patch(`/user/update-cover-image/`, formData)
+    return res.data
+  } catch (error: any) {
+    throw new Error(error.response.data.message)
   }
 }
 export const updateProfileInfoAPI = async (data: any) => {

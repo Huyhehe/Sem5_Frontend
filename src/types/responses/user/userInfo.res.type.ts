@@ -33,8 +33,8 @@ export type UserInfoResponse = {
   lastName: string
   email: string
   phoneNumber: string
-  profileImage: string
-  coverImage: string
+  profileImageUrl: string
+  coverImageUrl: string
   about: string
   role: string
   isSale: true
