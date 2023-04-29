@@ -7,6 +7,7 @@ import {
   signOutUser,
 } from "@/utils/localStorage"
 import axios, { AxiosInstance } from "axios"
+import { isAllowFormDataType } from "./utils"
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API,
@@ -26,6 +27,9 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = "Bearer " + token
       config.headers["Content-Type"] = "application/json"
+    }
+    if (isAllowFormDataType(config.url)) {
+      config.headers["Content-Type"] = "multipart/form-data"
     }
     return config
   },

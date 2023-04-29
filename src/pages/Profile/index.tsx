@@ -1,28 +1,42 @@
 import { AppContext } from "@/App"
 import AddressSelectorGroup from "@/components/common/AddressSelectorGroup"
 import { LocationTypo } from "@/components/common/LocationTypo"
-import useUser from "@/hooks/useUser"
 import { updateAccountInfo } from "@/service/api/user"
 import { UserInfoResponse } from "@/types/responses"
-import { getAccount, updateProfileImageAPI } from "@/utils/http"
+import {
+  getAccount,
+  updateCoverImageAPI,
+  updateProfileImageAPI,
+} from "@/utils/http"
 import { getFirstCharacterOfName } from "@/utils/reusable"
+import Button from "antd/es/button"
 import Form from "antd/es/form"
+import Image from "antd/es/image"
 import Input from "antd/es/input"
 import message from "antd/es/message"
 import Modal from "antd/es/modal"
 import Tooltip from "antd/es/tooltip"
 import Upload, { UploadProps } from "antd/es/upload"
 import { useContext, useEffect, useState } from "react"
-import { AiFillEdit, AiOutlinePlus } from "react-icons/ai"
-import { BsCalendar2Week, BsCloudUploadFill } from "react-icons/bs"
+import { AiFillEdit, AiOutlineCloudUpload, AiOutlinePlus } from "react-icons/ai"
+import { BsCalendar2Week } from "react-icons/bs"
 import { HiOutlinePhotograph } from "react-icons/hi"
+import { IoImages } from "react-icons/io5"
 import { RiMapPinAddLine } from "react-icons/ri"
 import { TbEdit } from "react-icons/tb"
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import "./styles/index.css"
-import { checkValidParamForUpdateUser, convertUndefinedToNull } from "./utils"
+import {
+  checkValidParamForUpdateUser,
+  convertUndefinedToNull,
+  getCreatedDate,
+  isAllowFileType,
+} from "./utils"
 
-const { Dragger } = Upload
+enum ImageType {
+  COVER = "cover",
+  PROFILE = "profile",
+}
 
 const links = [
   {
@@ -58,8 +72,8 @@ const initialUserInfo: UserInfoResponse = {
   lastName: "",
   email: "",
   phoneNumber: "",
-  profileImage: "",
-  coverImage: "",
+  profileImageUrl: "",
+  coverImageUrl: "",
   about: "",
   role: "",
   isSale: true,
@@ -91,14 +105,10 @@ const initialUserInfo: UserInfoResponse = {
 const Profile = () => {
   document.title = "TravelCare | Profile"
 
-  const user = useUser()
   const navigator = useNavigate()
   const [userInfo, setUserInfo] = useState<UserInfoResponse>(initialUserInfo)
   const [openProfileModal, setOpenProfileModal] = useState<boolean>(false)
-  const [openImageModal, setOpenImageModal] = useState<boolean>(false)
-  const [image, setImage] = useState<any>(null)
   const { setLoading } = useContext(AppContext)
-
   const [form] = Form.useForm()
 
   useEffect(() => {
@@ -107,48 +117,35 @@ const Profile = () => {
         const response = await getAccount()
         setUserInfo(response)
       } catch (error: any) {
-        console.log(error)
         message.error(error)
       }
     }
     getUser()
   }, [])
 
-  const getCreatedDate = (date: string) => {
-    return (
-      date !== "" &&
-      new Date(date)
-        .toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })
-        .replace(/\//g, "-")
-    )
-  }
-
-  const handleEditButtonClick = () => {
-    setOpenProfileModal(true)
-  }
-  const handleEditImageClick = () => {
-    setOpenImageModal(true)
-  }
-  const handleUploadImage = async () => {
+  const handleUploadImage = async (image: File, imageType: ImageType) => {
     if (image) {
-      setLoading(true)
       try {
+        setLoading(true)
         const formData = new FormData()
-        formData.append("id", user.id)
-        formData.append("profileImage", image)
-        const response = await updateProfileImageAPI(formData)
-        setUserInfo((prev) => ({ ...prev, profileImage: response }))
-        setOpenImageModal(false)
+        formData.append("image", image)
+        if (imageType === ImageType.PROFILE) {
+          const response = await updateProfileImageAPI(formData)
+          setUserInfo((prev) => ({ ...prev, profileImageUrl: response }))
+        } else {
+          const response = await updateCoverImageAPI(formData)
+          setUserInfo((prev) => ({ ...prev, coverImageUrl: response }))
+        }
         setLoading(false)
         message.success("Image uploaded successfully")
       } catch (error: any) {
-        message.error(error.response.data.message)
+        setLoading(false)
+        console.log(error)
+        message.error(error)
       }
     }
   }
-  const handleEditProfileSave = () => {
-    form.submit()
-  }
+
   const handleFormSubmit = async (values: any) => {
     setLoading(true)
 
@@ -167,26 +164,38 @@ const Profile = () => {
     }
   }
 
-  const props: UploadProps = {
-    name: "file",
+  const uploadProps: UploadProps = {
     listType: "picture",
     maxCount: 1,
-    beforeUpload(file: any) {
-      setImage(file)
+    beforeUpload() {
       return false
     },
+    showUploadList: false,
   }
 
   return (
-    <div className="profile flex flex-col w-full gap-8">
-      <div className="general-info-container flex flex-col shadow-custom px-4 rounded-md">
+    <div className="profile flex flex-col w-full mt-[15rem] gap-8 relative">
+      <div className="absolute left-[50%] -translate-x-1/2 bottom-[90%] w-[100vw] h-[20rem]">
+        {userInfo?.coverImageUrl ? (
+          <Image
+            wrapperClassName="w-full h-full"
+            className="w-full h-full object-cover"
+            src={userInfo?.coverImageUrl}
+          />
+        ) : (
+          <div className="w-full h-full flex justify-center items-center bg-[#cdcdcd]">
+            <IoImages size={150} className="text-white" />
+          </div>
+        )}
+      </div>
+      <div className="general-info-container flex flex-col shadow-custom px-4 rounded-md relative bg-white">
         <div className="main-display flex py-4">
           <div className="profile-picture-container">
-            {userInfo?.profileImage ? (
-              <img
-                src={userInfo?.profileImage}
+            {userInfo?.profileImageUrl ? (
+              <Image
+                src={userInfo?.profileImageUrl}
                 alt="profile picture"
-                className="profile-picture"
+                className="profile-picture aspect-square w-[8rem]"
               />
             ) : (
               <div className="profile-picture">
@@ -230,7 +239,9 @@ const Profile = () => {
               <AiFillEdit
                 size={30}
                 className="text-gray-400 hover:text-primary cursor-pointer"
-                onClick={handleEditButtonClick}
+                onClick={() => {
+                  setOpenProfileModal(true)
+                }}
               />
             </Tooltip>
           </div>
@@ -306,39 +317,74 @@ const Profile = () => {
           <Outlet context={{ userInfo, setUserInfo }} />
         </div>
       </div>
+
       <Modal
         open={openProfileModal}
         width={800}
         onCancel={() => setOpenProfileModal(false)}
-        onOk={handleEditProfileSave}
+        onOk={() => {
+          form.submit()
+        }}
         okText="Save"
+        className="translate-y-[5rem]"
       >
         <div className="main-modal-container flex">
-          <div className="modal-image-edit w-[30%]">
-            <div className="image-container">
-              <div className="image-mask">
-                <div
-                  className="image-mask-layer"
-                  onClick={handleEditImageClick}
-                >
-                  <HiOutlinePhotograph size={30} className="text-white" />
-                  <span className="text-white">Upload a photo</span>
-                </div>
-                {userInfo?.profileImage ? (
-                  <img
-                    src={userInfo?.profileImage}
-                    alt="profile picture"
-                    className="profile-picture"
-                  />
-                ) : (
-                  <div className="profile-picture">
-                    {getFirstCharacterOfName(
-                      userInfo?.firstName,
-                      userInfo?.lastName
-                    )}
+          <div className="modal-image-edit w-[30%] flex flex-col items-center pr-[1.5rem] box-border gap-2">
+            <Upload
+              {...uploadProps}
+              name="profile-image"
+              onChange={(info: any) => {
+                if (!isAllowFileType(info.file.type)) {
+                  return message.error(
+                    "File type is not supported, please try again with image file!"
+                  )
+                }
+                handleUploadImage(info.file, ImageType.PROFILE)
+              }}
+            >
+              <div className="image-container">
+                <div className="image-mask">
+                  <div className="image-mask-layer">
+                    <HiOutlinePhotograph size={30} className="text-white" />
+                    <span className="text-white">Upload a photo</span>
                   </div>
-                )}
+                  {userInfo?.profileImageUrl ? (
+                    <img
+                      src={userInfo?.profileImageUrl}
+                      alt="profile picture"
+                      className="profile-picture"
+                    />
+                  ) : (
+                    <div className="profile-picture">
+                      {getFirstCharacterOfName(
+                        userInfo?.firstName,
+                        userInfo?.lastName
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
+            </Upload>
+            <div className="flex justify-center">
+              <Upload
+                {...uploadProps}
+                name="cover-image"
+                onChange={(info: any) => {
+                  if (!isAllowFileType(info.file.type)) {
+                    return message.error(
+                      "File type is not supported, please try again with image file!"
+                    )
+                  }
+                  handleUploadImage(info.file, ImageType.COVER)
+                }}
+              >
+                <Button
+                  className="flex justify-center items-center gap-1"
+                  icon={<AiOutlineCloudUpload />}
+                >
+                  Update cover image
+                </Button>
+              </Upload>
             </div>
           </div>
           <div className="modal-info-edit justify-self-stretch flex-grow mr-4">
@@ -401,26 +447,6 @@ const Profile = () => {
             </Form>
           </div>
         </div>
-      </Modal>
-      <Modal
-        open={openImageModal}
-        width={700}
-        onCancel={() => setOpenImageModal(false)}
-        okText="Upload"
-        onOk={handleUploadImage}
-      >
-        <Dragger {...props}>
-          <div className="ant-upload-drag-icon flex justify-center">
-            <BsCloudUploadFill size={40} />
-          </div>
-          <p className="ant-upload-text">
-            Click or drag file to this area to upload
-          </p>
-          <p className="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibit from
-            uploading company data or other band files
-          </p>
-        </Dragger>
       </Modal>
     </div>
   )
