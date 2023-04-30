@@ -1,4 +1,4 @@
-import { BaseAddress, WardResponse } from "@/types/responses"
+import { BaseAddress, Category, WardResponse } from "@/types/responses"
 
 export const getRatingString = (rating: string) => {
   if (Number(rating) <= 2) {
@@ -122,9 +122,7 @@ export const currencyParser = (value: string | undefined): number => {
   return Number(value?.replace(/\D/g, "")) || 0
 }
 
-export const convertDataForSelectOptions = (
-  data: (BaseAddress | WardResponse)[]
-) => {
+export const convertDataForSelectOptions = <T extends Category>(data: T[]) => {
   return data.map((item) => ({
     value: item.id,
     label: item.name,
