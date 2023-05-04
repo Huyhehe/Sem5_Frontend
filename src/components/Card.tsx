@@ -1,7 +1,7 @@
+import { LogoDark } from "@/assets/images"
 import { useState } from "react"
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai"
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai"
 import { RiMoneyDollarCircleFill } from "react-icons/ri"
-import { example } from "../assets/images"
 import { getRatingString, toDouble } from "../utils/reusable"
 
 interface CardProps {
@@ -33,7 +33,7 @@ const Card = ({
       className="card-container relative flex flex-col box-border md:w-[250px] xl:w-[300px] h-[250px] bg-white rounded-[0.5rem] overflow-hidden border cursor-pointer hover:shadow-md"
     >
       <div className="card-image w-full h-[55%]">
-        <img src={example ?? img} className="w-full h-full object-cover" />
+        <img src={img || LogoDark} className="w-full h-full object-cover" />
       </div>
       <div className="card-content p-4 flex-grow flex flex-col">
         <h1 className="font-bold">{title}</h1>

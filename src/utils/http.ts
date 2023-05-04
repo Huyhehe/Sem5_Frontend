@@ -154,7 +154,7 @@ export const getAllDistrictAPI = async (province_id: string) => {
 // LOCATION
 export const createLocationAPI = async (data: any) => {
   try {
-    const res = await axiosInstance.post(`/locations/create-location/`, data)
+    const res = await axiosInstance.post("/locations/", data)
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.messages[0].message)
@@ -163,10 +163,10 @@ export const createLocationAPI = async (data: any) => {
 
 export const getAllCategoryAPI = async () => {
   try {
-    const res = await axiosInstance.get(`/locations/get-all-category/`)
+    const res = await axiosInstance.get(`/categories`)
     return res.data
   } catch (error: any) {
-    throw new Error(error.response.data.messages[0].message)
+    throw new Error(error.response.data.message)
   }
 }
 

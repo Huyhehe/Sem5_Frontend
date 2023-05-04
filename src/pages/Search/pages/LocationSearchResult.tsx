@@ -19,7 +19,7 @@ const SearchResult = ({ searchResult }: SearchResultProps) => {
   return (
     <>
       <div className="search-result-container flex flex-col rounded-lg overflow-hidden">
-        {searchResult.map((item, index) => (
+        {searchResult.map((item) => (
           <div
             key={item.id}
             className="search-result-item hover:bg-gray-200 cursor-pointer border-b last:border-0"

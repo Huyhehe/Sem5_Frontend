@@ -4,6 +4,7 @@ import { Rule } from "antd/es/form"
 
 interface IFormItem extends FormItemProps {
   message?: string
+  trim?: boolean
 }
 
 const trimValidator: Rule = {
@@ -19,9 +20,10 @@ const trimValidator: Rule = {
 
 const FormItem = ({
   message = "Please fill this field out",
-  required,
+  required = false,
   labelCol = { span: 24 },
   rules = [],
+  trim = false,
   children,
   ...props
 }: IFormItem) => {
@@ -33,7 +35,7 @@ const FormItem = ({
         {
           ...(required && { required: true, message }),
         },
-        { ...trimValidator },
+        { ...(trim && { ...trimValidator }) },
         ...rules,
       ]}
     >

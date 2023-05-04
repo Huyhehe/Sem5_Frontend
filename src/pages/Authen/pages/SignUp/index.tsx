@@ -56,6 +56,7 @@ const SignUpPage = () => {
           name={"email"}
           label="Email"
           required
+          trim
           colon={false}
           labelCol={{ span: 24 }}
           rules={[
@@ -78,6 +79,7 @@ const SignUpPage = () => {
             name={"firstName"}
             label="First Name"
             required
+            trim
             colon={false}
             className="flex justify-between"
             message="First name is required"
@@ -100,6 +102,7 @@ const SignUpPage = () => {
             name={"lastName"}
             label="Last Name"
             required
+            trim
             colon={false}
             className="flex justify-between w-[50%]"
             labelCol={{ span: 0 }}
@@ -123,6 +126,7 @@ const SignUpPage = () => {
           name={"username"}
           label="Username"
           required
+          trim
           colon={false}
           labelCol={{ span: 24 }}
           message="Username is required"
