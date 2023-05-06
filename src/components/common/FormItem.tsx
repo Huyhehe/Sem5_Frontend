@@ -1,3 +1,7 @@
+import {
+  validateStringInputForNumberOnly,
+  validateStringInputForTextOnly,
+} from "@/utils"
 import { Form } from "antd"
 import { FormItemProps } from "antd"
 import { Rule } from "antd/es/form"
@@ -5,6 +9,8 @@ import { Rule } from "antd/es/form"
 interface IFormItem extends FormItemProps {
   message?: string
   trim?: boolean
+  allowTextOnly?: boolean
+  allowNumberOnly?: boolean
 }
 
 const trimValidator: Rule = {
@@ -24,6 +30,8 @@ const FormItem = ({
   labelCol = { span: 24 },
   rules = [],
   trim = false,
+  allowTextOnly = false,
+  allowNumberOnly = false,
   children,
   ...props
 }: IFormItem) => {
@@ -36,6 +44,20 @@ const FormItem = ({
           ...(required && { required: true, message }),
         },
         { ...(trim && { ...trimValidator }) },
+        {
+          ...(allowTextOnly && {
+            ...validateStringInputForTextOnly(
+              "This field can't contain any number or special character"
+            ),
+          }),
+        },
+        {
+          ...(allowNumberOnly && {
+            ...validateStringInputForNumberOnly(
+              "This field can't contain any text or special character"
+            ),
+          }),
+        },
         ...rules,
       ]}
     >

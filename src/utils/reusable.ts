@@ -152,3 +152,7 @@ export const checkStringContainNumberOrSpecialChar = (
   }
   return false
 }
+
+export const checkStringContainTextOrSpecialChar = (str: string) => {
+  return !/^\d+$/.test(str)
+}
