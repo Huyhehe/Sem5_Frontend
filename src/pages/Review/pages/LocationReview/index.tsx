@@ -2,6 +2,8 @@ import { AppContext } from "@/App"
 import { LocationTypo } from "@/components/common/LocationTypo"
 import useUser from "@/hooks/useUser"
 import LocationReview from "@/interfaces/LocationReview"
+import { Location } from "@/interfaces/location"
+import { getLocation } from "@/service/api/location"
 import getAllTripType from "@/utils/getAllTripType"
 import {
   createImageReviewAPI,
@@ -22,32 +24,12 @@ import { useContext, useEffect, useState } from "react"
 import { BsCloudUploadFill } from "react-icons/bs"
 import { useParams } from "react-router-dom"
 
-interface LocationReviewProps { }
-
-export default function LocationReviewPage({ ...props }: LocationReviewProps) {
+export default function LocationReviewPage() {
   const user = useUser()
   const { id } = useParams()
   const { setLoading } = useContext(AppContext)
-  const [location, setLocation] = useState<LocationReview>({
-    id: "",
-    address: {
-      country: "",
-      province: "",
-      district: "",
-      street_address: "",
-    },
-    name: "",
-    rating: "",
-    category: {
-      id: "",
-      name: "",
-    },
-    price_level: 0,
-    description: "",
-  })
-  const [tripTypes, setTripTypes] = useState<{ id: string; name: string }[]>(
-    []
-  )
+  const [location, setLocation] = useState<Location | null>(null)
+  const [tripTypes, setTripTypes] = useState<{ id: string; name: string }[]>([])
 
   const uploadProps: UploadProps = {
     name: "file",
@@ -61,7 +43,7 @@ export default function LocationReviewPage({ ...props }: LocationReviewProps) {
     setLoading(true)
     const fetchData = async () => {
       try {
-        const location = await getLocationReviewById(id as string)
+        const location = await getLocation(id as string)
         setLocation(location)
         setLoading(false)
       } catch (error: any) {
@@ -100,15 +82,15 @@ export default function LocationReviewPage({ ...props }: LocationReviewProps) {
     }
   }
 
-  return (
+  return location ? (
     <div className="location-review px-[2rem]">
       <div className="location-review__header flex flex-col mb-4">
         <h1 className="text-2xl font-bold">{location.name}</h1>
         <LocationTypo
-          country={location.address.country}
-          province={location.address.province}
-          district={location.address.district}
-          street_address={location.address.street_address}
+          country={location.address.country.name}
+          province={location.address.province.name}
+          district={location.address.district.name}
+          streetAddress={location.address.streetAddress}
         />
       </div>
       <Form onFinish={handleFormSubmit}>
@@ -203,5 +185,5 @@ export default function LocationReviewPage({ ...props }: LocationReviewProps) {
         />
       </Form>
     </div>
-  )
+  ) : null
 }

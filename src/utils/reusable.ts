@@ -1,3 +1,5 @@
+import { BaseAddress, Category, WardResponse } from "@/types/responses"
+
 export const getRatingString = (rating: string) => {
   if (Number(rating) <= 2) {
     return "Bad"
@@ -118,4 +120,35 @@ export const currencyFormatter = (
 
 export const currencyParser = (value: string | undefined): number => {
   return Number(value?.replace(/\D/g, "")) || 0
+}
+
+export const convertDataForSelectOptions = <T extends Category>(data: T[]) => {
+  return data.map((item) => ({
+    value: item.id,
+    label: item.name,
+  }))
+}
+
+export const convertDataForSelectOption = (
+  data: BaseAddress | WardResponse | null | undefined
+) => {
+  return data
+    ? {
+        value: data.id,
+        label: data.name,
+      }
+    : null
+}
+
+export const checkStringContainNumberOrSpecialChar = (
+  str: string,
+  locale: "VN" | "EN"
+) => {
+  if (str && locale === "VN") {
+    return !/^[\p{L}'\s,-]+$/u.test(str)
+  }
+  if (str && locale === "EN") {
+    return /(\d|[^\w\s])/.test(str)
+  }
+  return false
 }

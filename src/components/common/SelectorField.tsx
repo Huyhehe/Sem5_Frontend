@@ -1,65 +1,25 @@
-import {
-  compareMatchingString,
-  convertToStringIdObjectArray,
-} from "@/utils/reusable"
-import { Select } from "antd"
+import { compareMatchingString } from "@/utils/reusable"
+import Select, { DefaultOptionType, SelectProps } from "antd/es/select"
 
-interface BaseEntity {
-  id?: string
-  name?: string
+interface SelectorFieldProps extends SelectProps {
+  options: Pick<DefaultOptionType, "label" | "value">[]
 }
 
-interface SelectorFieldProps<T> {
-  options: T[]
-  onChange?: (value: string) => void
-  onFocus?: () => void
-  placeholder: string
-  value?: string
-}
-
-const checkIsIdObjectArray = <T extends BaseEntity>(options: T[]) => {
-  return options.every((option) => "id" in option)
-}
-
-const extractOptions = <T extends BaseEntity>(options: T[]) => {
-  const convertedOptions = convertToStringIdObjectArray(options)
-  return (
-    checkIsIdObjectArray(convertedOptions) &&
-    convertedOptions?.map((option) => {
-      return {
-        label: option.name,
-        value: option.id,
-      }
-    })
-  )
-}
-
-const SelectorField = <T extends BaseEntity>({
-  options,
-  onChange,
-  placeholder,
-  value,
-  onFocus,
-  ...props
-}: SelectorFieldProps<T>) => {
+const SelectorField = ({ options, ...props }: SelectorFieldProps) => {
   return (
     <Select
       {...props}
       showSearch
       filterOption={(input, option) =>
-        compareMatchingString(option?.label ?? "", input)
+        compareMatchingString(String(option?.label) ?? "", input)
       }
       filterSort={(optionA, optionB) =>
-        (optionA?.label ?? "")
+        String(optionA?.label ?? "")
           .toLowerCase()
-          .localeCompare((optionB?.label ?? "").toLowerCase())
+          .localeCompare(String(optionB?.label ?? "").toLowerCase())
       }
-      value={value}
       allowClear
-      placeholder={placeholder}
-      options={extractOptions(options) || []}
-      onChange={onChange}
-      onFocus={onFocus}
+      options={options || []}
     />
   )
 }

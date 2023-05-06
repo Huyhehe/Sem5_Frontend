@@ -24,11 +24,16 @@ export const getRefreshTokenFromLocal = () => {
   return JSON.parse(localStorage?.getItem("refreshToken") || "null")
 }
 
+export const clearTokens = () => {
+  localStorage.removeItem("accessToken")
+  localStorage.removeItem("refreshToken")
+}
+
 export const setUserToLocal = (user: User) => {
   localStorage.setItem("user", JSON.stringify(user))
 }
 
 export const signOutUser = () => {
   localStorage.removeItem("user")
-  localStorage.removeItem("accessToken")
+  clearTokens()
 }

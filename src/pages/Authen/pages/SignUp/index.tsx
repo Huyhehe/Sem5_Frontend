@@ -1,9 +1,12 @@
 import { AppContext } from "@/App"
+import FormItem from "@/components/common/FormItem"
 import { registerAPI } from "@/utils/http"
 import { setEmailToLocal } from "@/utils/localStorage"
 import { Button, Form, Input } from "antd"
+import { omit } from "lodash"
 import { useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { validateStringInput } from "../../utils"
 
 const SignUpPage = () => {
   document.title = "TravelCare | Sign Up"
@@ -12,30 +15,22 @@ const SignUpPage = () => {
   const { setLoading, openNotification } = useContext(AppContext)
 
   const handleSubmit = async (newUser: any) => {
-    setLoading(true)
     try {
       const user = {
-        username: newUser.username,
-        email: newUser.email,
-        password: newUser.password,
-        first_name: newUser.firstName,
-        last_name: newUser.lastName,
-        phone_number: "",
-        country: "",
-        province: "",
-        district: "",
-        street_address: "",
-        redirect_link: "127.0.0.1:5173/login/email-verify",
+        ...omit(newUser, ["confirmPassword"]),
+        phoneNumber: null,
+        countryId: null,
+        provinceId: null,
+        districtId: null,
+        wardId: null,
+        streetAddress: null,
+        image: null,
       }
 
       const res = await registerAPI(user)
       if (res) {
         setEmailToLocal(newUser.email)
       }
-      // After done API
-      // if (flag) {
-      //   navigator("/login/verify")
-      // }
       setLoading(false)
       openNotification("success", {
         message: "Success",
@@ -44,7 +39,6 @@ const SignUpPage = () => {
       navigator("/login/verify")
     } catch (error: any) {
       setLoading(false)
-      console.log(error)
       openNotification("error", {
         message: "Error",
         description: `Something went wrong, it might be ${error.message}`,
@@ -58,22 +52,20 @@ const SignUpPage = () => {
         Sign Up
       </h1>
       <Form onFinish={handleSubmit} size="large">
-        <Form.Item
+        <FormItem
           name={"email"}
           label="Email"
           required
+          trim
           colon={false}
           labelCol={{ span: 24 }}
           rules={[
-            {
-              required: true,
-              message: "Please fill this field",
-            },
             {
               type: "email",
               message: "Please enter a valid email",
             },
           ]}
+          message="Email is required"
         >
           <Input
             type="email"
@@ -81,18 +73,22 @@ const SignUpPage = () => {
             allowClear
             className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
           />
-        </Form.Item>
-        <div className="flex gap-1 items-center pt-4">
-          <Form.Item
+        </FormItem>
+        <div className="flex gap-4 pt-4">
+          <FormItem
             name={"firstName"}
             label="First Name"
             required
+            trim
             colon={false}
-            className="flex justify-between w-[50%]"
+            className="flex justify-between"
+            message="First name is required"
+            labelCol={{ span: 0 }}
             rules={[
               {
-                required: true,
-                message: "Please fill this field",
+                ...validateStringInput(
+                  "A name can't contains any number or special character"
+                ),
               },
             ]}
           >
@@ -101,17 +97,21 @@ const SignUpPage = () => {
               allowClear
               className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
             />
-          </Form.Item>
-          <Form.Item
+          </FormItem>
+          <FormItem
             name={"lastName"}
             label="Last Name"
             required
+            trim
             colon={false}
             className="flex justify-between w-[50%]"
+            labelCol={{ span: 0 }}
+            message="Last name is required"
             rules={[
               {
-                required: true,
-                message: "Please fill this field",
+                ...validateStringInput(
+                  "A name can't contains any number or special character"
+                ),
               },
             ]}
           >
@@ -120,38 +120,31 @@ const SignUpPage = () => {
               allowClear
               className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
             />
-          </Form.Item>
+          </FormItem>
         </div>
-        <Form.Item
+        <FormItem
           name={"username"}
           label="Username"
           required
+          trim
           colon={false}
           labelCol={{ span: 24 }}
-          rules={[
-            {
-              required: true,
-              message: "Please fill this field",
-            },
-          ]}
+          message="Username is required"
         >
           <Input
             placeholder="Ex: Huyhehe"
             allowClear
             className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
           />
-        </Form.Item>
-        <Form.Item
+        </FormItem>
+        <FormItem
           name={"password"}
           label="Password"
           required
           colon={false}
           labelCol={{ span: 24 }}
+          message="Password is required"
           rules={[
-            {
-              required: true,
-              message: "Please fill this field",
-            },
             {
               min: 6,
               message: "Password must be at least 6 characters",
@@ -163,18 +156,15 @@ const SignUpPage = () => {
             allowClear
             className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
           />
-        </Form.Item>
-        <Form.Item
+        </FormItem>
+        <FormItem
           name={"confirmPassword"}
           label="Confirm Password"
           required
           colon={false}
           labelCol={{ span: 24 }}
+          message="Confirm password is required"
           rules={[
-            {
-              required: true,
-              message: "Please fill this field",
-            },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue("password") === value) {
@@ -192,7 +182,7 @@ const SignUpPage = () => {
             allowClear
             className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
           />
-        </Form.Item>
+        </FormItem>
         <div className="option-container flex gap-[0.5rem] justify-end">
           <span>Already have an account?</span>
           <Link

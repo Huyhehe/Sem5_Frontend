@@ -16,10 +16,15 @@
   @apply after:absolute after:bottom-0 after:left-0 after:w-full after:h-1 after:bg-black;
 }
 
+.profile-picture-container .ant-image-mask {
+  @apply rounded-full;
+}
+
 .image-mask {
   @apply relative;
   @apply w-fit;
 }
+
 .image-mask-layer {
   @apply absolute flex flex-col items-center justify-center;
   @apply w-full h-full rounded-full;
@@ -28,7 +33,7 @@
 }
 /* CUSTOM CLASSES */
 .ant-modal .ant-modal-footer .ant-btn {
-  @apply text-white;
+  @apply text-white bg-black;
   border: none;
 }
 .ant-modal .ant-modal-footer .ant-btn:hover {

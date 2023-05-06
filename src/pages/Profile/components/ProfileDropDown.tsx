@@ -18,7 +18,7 @@ const ProfileDropDown = ({
 }: ProfileDropDownProps) => {
   const items = userItems.map((item: Item, index: number) => {
     return {
-      key: index as any as string,
+      key: index,
       label: (
         <div className="flex gap-1 items-center" onClick={item.onClick}>
           {item.icon}

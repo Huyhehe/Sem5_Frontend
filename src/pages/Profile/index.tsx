@@ -1,209 +1,207 @@
 import { AppContext } from "@/App"
+import AddressSelectorGroup from "@/components/common/AddressSelectorGroup"
 import { LocationTypo } from "@/components/common/LocationTypo"
-import useUser from "@/hooks/useUser"
-import UserInfo from "@/interfaces/UserInfo"
-import getAllCountry from "@/utils/getAllCountry"
-import getAllDistrict from "@/utils/getAllDistrict"
-import getAllProvince from "@/utils/getAllProvince"
+import { updateAccountInfo } from "@/service/api/user"
+import { UserInfoResponse } from "@/types/responses"
 import {
-  getUserAPI,
+  getAccount,
+  updateCoverImageAPI,
   updateProfileImageAPI,
-  updateProfileInfoAPI,
 } from "@/utils/http"
 import { getFirstCharacterOfName } from "@/utils/reusable"
-import {
-  Form,
-  FormInstance,
-  Input,
-  message,
-  Modal,
-  Select,
-  Tooltip,
-  Upload,
-  UploadProps,
-} from "antd"
-import { useContext, useEffect, useRef, useState } from "react"
-import { AiFillEdit, AiOutlinePlus } from "react-icons/ai"
-import { BsCalendar2Week, BsCloudUploadFill } from "react-icons/bs"
+import Button from "antd/es/button"
+import Form from "antd/es/form"
+import Image from "antd/es/image"
+import Input from "antd/es/input"
+import message from "antd/es/message"
+import Modal from "antd/es/modal"
+import Tooltip from "antd/es/tooltip"
+import Upload, { UploadProps } from "antd/es/upload"
+import { useContext, useEffect, useState } from "react"
+import { AiFillEdit, AiOutlineCloudUpload, AiOutlinePlus } from "react-icons/ai"
+import { BsCalendar2Week } from "react-icons/bs"
 import { HiOutlinePhotograph } from "react-icons/hi"
+import { IoImages } from "react-icons/io5"
 import { RiMapPinAddLine } from "react-icons/ri"
 import { TbEdit } from "react-icons/tb"
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import "./styles/index.css"
+import {
+  checkValidParamForUpdateUser,
+  convertUndefinedToNull,
+  getCreatedDate,
+  isAllowFileType,
+} from "./utils"
 
-const { Dragger } = Upload
+enum ImageType {
+  COVER = "cover",
+  PROFILE = "profile",
+}
+
+const links = [
+  {
+    name: "Activity feed",
+    to: "",
+  },
+  {
+    name: "Reviews",
+    to: "/my-reviews",
+  },
+  {
+    name: "Bookmarks",
+    to: "/bookmarks",
+  },
+  {
+    name: "Followers",
+    to: "/followers",
+  },
+  {
+    name: "Following",
+    to: "/following",
+  },
+]
+
+const initialUserInfo: UserInfoResponse = {
+  accountId: "",
+  account: {
+    id: "",
+    username: "",
+    createAt: "",
+  },
+  firstName: "",
+  lastName: "",
+  email: "",
+  phoneNumber: "",
+  profileImageUrl: "",
+  coverImageUrl: "",
+  about: "",
+  role: "",
+  isSale: true,
+  address: {
+    id: "",
+    country: {
+      id: "",
+      name: "",
+      description: "",
+    },
+    province: {
+      id: "",
+      name: "",
+      description: "",
+    },
+    district: {
+      id: "",
+      name: "",
+      description: "",
+    },
+    ward: {
+      id: "",
+      name: "",
+    },
+    streetAddress: "",
+  },
+}
 
 const Profile = () => {
   document.title = "TravelCare | Profile"
-  const links = [
-    {
-      name: "Activity feed",
-      to: "",
-    },
-    {
-      name: "Reviews",
-      to: "/my-reviews",
-    },
-    {
-      name: "Bookmarks",
-      to: "/bookmarks",
-    },
-    {
-      name: "Followers",
-      to: "/followers",
-    },
-    {
-      name: "Following",
-      to: "/following",
-    },
-  ]
 
   const navigator = useNavigate()
-  const user = useUser()
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    id: "",
-    username: "",
-    email: "",
-    first_name: "",
-    last_name: "",
-    phone_number: "",
-    address: {
-      country: {
-        id: "",
-        name: "",
-      },
-      province: {
-        id: "",
-        name: "",
-      },
-      district: {
-        id: "",
-        name: "",
-      },
-      street_address: "",
-    },
-    profile_picture: "",
-  })
+  const [userInfo, setUserInfo] = useState<UserInfoResponse>(initialUserInfo)
   const [openProfileModal, setOpenProfileModal] = useState<boolean>(false)
-  const [openImageModal, setOpenImageModal] = useState<boolean>(false)
-  const [image, setImage] = useState<any>(null)
-  const [stateAddress, setStateAddress] = useState<any>({
-    countries: [],
-    provinces: [],
-    districts: [],
-    street_addresses: [],
-  })
-  const [selectedAddress, setSelectedAddress] = useState<any>({
-    country: "",
-    province: "",
-    district: "",
-  })
-  const formRef = useRef<FormInstance>(null)
   const { setLoading } = useContext(AppContext)
+  const [form] = Form.useForm()
+
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await getUserAPI(user.id)
+        const response = await getAccount()
         setUserInfo(response)
-        setSelectedAddress({
-          country: response.address.country.id,
-          province: response.address.province.id,
-          district: response.address.district.id,
-        })
-      } catch (error) {
-        console.log(error)
+      } catch (error: any) {
+        message.error(error)
       }
     }
     getUser()
   }, [])
 
-  const getCreatedDate = (date: string) => {
-    return new Date(date)
-      .toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })
-      .replace(/\//g, "-")
-  }
-
-  const handleEditButtonClick = () => {
-    // navigator("/edit-profile")
-    setOpenProfileModal(true)
-  }
-  const handleEditImageClick = () => {
-    setOpenImageModal(true)
-  }
-  const handleUploadImage = async () => {
+  const handleUploadImage = async (image: File, imageType: ImageType) => {
     if (image) {
-      setLoading(true)
       try {
+        setLoading(true)
         const formData = new FormData()
-        formData.append("id", user.id)
-        formData.append("profile_picture", image)
-        const response = await updateProfileImageAPI(formData)
-        setUserInfo((prev) => ({ ...prev, profile_picture: response }))
-        setOpenImageModal(false)
+        formData.append("image", image)
+        if (imageType === ImageType.PROFILE) {
+          const response = await updateProfileImageAPI(formData)
+          setUserInfo((prev) => ({ ...prev, profileImageUrl: response }))
+        } else {
+          const response = await updateCoverImageAPI(formData)
+          setUserInfo((prev) => ({ ...prev, coverImageUrl: response }))
+        }
         setLoading(false)
         message.success("Image uploaded successfully")
       } catch (error: any) {
-        message.error(error.response.data.message)
+        setLoading(false)
+        console.log(error)
+        message.error(error)
       }
     }
   }
-  const handleEditProfileSave = () => {
-    formRef.current?.submit()
-  }
+
   const handleFormSubmit = async (values: any) => {
     setLoading(true)
+
     try {
-      const res = await updateProfileInfoAPI({
-        ...values,
-        id: user.id,
-        country: selectedAddress.country,
-        province: selectedAddress.province,
-        district: selectedAddress.district,
-      })
+      const validValues = checkValidParamForUpdateUser(values, userInfo)
+      const reFormattedData = convertUndefinedToNull(validValues)
+      const res = await updateAccountInfo(reFormattedData)
       setUserInfo(res)
-      setSelectedAddress({
-        country: res.address.country.id,
-        province: res.address.province.id,
-        district: res.address.district.id,
-      })
 
       setLoading(false)
       message.success("Profile updated successfully")
       setOpenProfileModal(false)
     } catch (error: any) {
       setLoading(false)
-      message.error(error.response.data.message)
+      message.error(error.response.message)
     }
   }
 
-  const props: UploadProps = {
-    name: "file",
+  const uploadProps: UploadProps = {
     listType: "picture",
     maxCount: 1,
-    beforeUpload(file: any) {
-      setImage(file)
+    beforeUpload() {
       return false
     },
+    showUploadList: false,
   }
 
-  const { countries, provinces, districts } = stateAddress
-
   return (
-    <div className="profile flex flex-col w-full gap-8">
-      <div className="general-info-container flex flex-col shadow-custom px-4 rounded-md">
+    <div className="profile flex flex-col w-full mt-[15rem] gap-8 relative">
+      <div className="absolute left-[50%] -translate-x-1/2 bottom-[90%] w-[100vw] h-[20rem]">
+        {userInfo?.coverImageUrl ? (
+          <Image
+            wrapperClassName="w-full h-full"
+            className="w-full h-full object-cover"
+            src={userInfo?.coverImageUrl}
+          />
+        ) : (
+          <div className="w-full h-full flex justify-center items-center bg-[#cdcdcd]">
+            <IoImages size={150} className="text-white" />
+          </div>
+        )}
+      </div>
+      <div className="general-info-container flex flex-col shadow-custom px-4 rounded-md relative bg-white">
         <div className="main-display flex py-4">
           <div className="profile-picture-container">
-            {userInfo?.profile_picture ? (
-              <img
-                src={userInfo?.profile_picture}
+            {userInfo?.profileImageUrl ? (
+              <Image
+                src={userInfo?.profileImageUrl}
                 alt="profile picture"
-                className="profile-picture"
+                className="profile-picture aspect-square w-[8rem]"
               />
             ) : (
               <div className="profile-picture">
                 {getFirstCharacterOfName(
-                  userInfo?.first_name,
-                  userInfo?.last_name
+                  userInfo?.firstName,
+                  userInfo?.lastName
                 )}
               </div>
             )}
@@ -211,10 +209,10 @@ const Profile = () => {
           <div className="flex flex-col justify-between px-4">
             <div className="flex flex-col">
               <span className="text-2xl font-bold">
-                {userInfo?.first_name} {userInfo?.last_name}
+                {userInfo?.firstName} {userInfo?.lastName}
               </span>
               <span className="text-sm text-gray-500">
-                {"#" + userInfo?.username}
+                {"#" + userInfo?.account?.username}
               </span>
             </div>
             <div className="flex gap-4 xl:gap-8">
@@ -241,7 +239,9 @@ const Profile = () => {
               <AiFillEdit
                 size={30}
                 className="text-gray-400 hover:text-primary cursor-pointer"
-                onClick={handleEditButtonClick}
+                onClick={() => {
+                  setOpenProfileModal(true)
+                }}
               />
             </Tooltip>
           </div>
@@ -267,20 +267,27 @@ const Profile = () => {
             <h1 className="font-bold text-xl">Intro</h1>
             <div className="intro flex flex-col gap-2 p-3">
               <LocationTypo
-                country={userInfo.address.country.name}
-                province={userInfo.address.province.name}
-                district={userInfo.address.district.name}
+                extendClassName="font-medium"
+                country={userInfo?.address?.country?.name}
+                province={userInfo?.address?.province?.name}
+                district={userInfo?.address?.district?.name}
+                ward={userInfo?.address?.ward?.name}
+                streetAddress={userInfo?.address?.streetAddress}
               />
-              <div className="flex gap-2 items-center">
-                <BsCalendar2Week />
+              <div className="flex gap-2 items-center font-medium">
+                <div>
+                  <BsCalendar2Week />
+                </div>
                 <span>{`Joined on ${
-                  getCreatedDate(userInfo?.create_at) || "1-11-1111"
+                  getCreatedDate(userInfo?.account?.createAt) || "?-??-????"
                 }`}</span>
               </div>
-              <div className="">
+              <div className="font-medium">
                 {userInfo?.about || (
                   <div className="cursor-pointer flex gap-2 items-center hover:text-gray-600">
-                    <AiOutlinePlus />
+                    <div>
+                      <AiOutlinePlus />
+                    </div>
                     <span>Write something about yourself</span>
                   </div>
                 )}
@@ -292,7 +299,7 @@ const Profile = () => {
             <div className="intro flex flex-col gap-2 p-3">
               <div className="flex gap-2 items-center cursor-pointer hover:text-gray-600">
                 <TbEdit />
-                <span>Review a place you've been to</span>
+                <span>Review a place you&lsquo;ve been to</span>
               </div>
               <div
                 className="flex gap-2 items-center cursor-pointer hover:text-gray-600"
@@ -310,46 +317,81 @@ const Profile = () => {
           <Outlet context={{ userInfo, setUserInfo }} />
         </div>
       </div>
+
       <Modal
         open={openProfileModal}
         width={800}
         onCancel={() => setOpenProfileModal(false)}
-        onOk={handleEditProfileSave}
+        onOk={() => {
+          form.submit()
+        }}
         okText="Save"
+        className="translate-y-[5rem]"
       >
         <div className="main-modal-container flex">
-          <div className="modal-image-edit w-[30%]">
-            <div className="image-container">
-              <div className="image-mask">
-                <div
-                  className="image-mask-layer"
-                  onClick={handleEditImageClick}
-                >
-                  <HiOutlinePhotograph size={30} className="text-white" />
-                  <span className="text-white">Upload a photo</span>
-                </div>
-                {userInfo?.profile_picture ? (
-                  <img
-                    src={userInfo?.profile_picture}
-                    alt="profile picture"
-                    className="profile-picture"
-                  />
-                ) : (
-                  <div className="profile-picture">
-                    {getFirstCharacterOfName(
-                      userInfo?.first_name,
-                      userInfo?.last_name
-                    )}
+          <div className="modal-image-edit w-[30%] flex flex-col items-center pr-[1.5rem] box-border gap-2">
+            <Upload
+              {...uploadProps}
+              name="profile-image"
+              onChange={(info: any) => {
+                if (!isAllowFileType(info.file.type)) {
+                  return message.error(
+                    "File type is not supported, please try again with image file!"
+                  )
+                }
+                handleUploadImage(info.file, ImageType.PROFILE)
+              }}
+            >
+              <div className="image-container">
+                <div className="image-mask">
+                  <div className="image-mask-layer">
+                    <HiOutlinePhotograph size={30} className="text-white" />
+                    <span className="text-white">Upload a photo</span>
                   </div>
-                )}
+                  {userInfo?.profileImageUrl ? (
+                    <img
+                      src={userInfo?.profileImageUrl}
+                      alt="profile picture"
+                      className="profile-picture"
+                    />
+                  ) : (
+                    <div className="profile-picture">
+                      {getFirstCharacterOfName(
+                        userInfo?.firstName,
+                        userInfo?.lastName
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
+            </Upload>
+            <div className="flex justify-center">
+              <Upload
+                {...uploadProps}
+                name="cover-image"
+                onChange={(info: any) => {
+                  if (!isAllowFileType(info.file.type)) {
+                    return message.error(
+                      "File type is not supported, please try again with image file!"
+                    )
+                  }
+                  handleUploadImage(info.file, ImageType.COVER)
+                }}
+              >
+                <Button
+                  className="flex justify-center items-center gap-1"
+                  icon={<AiOutlineCloudUpload />}
+                >
+                  Update cover image
+                </Button>
+              </Upload>
             </div>
           </div>
           <div className="modal-info-edit justify-self-stretch flex-grow mr-4">
-            <Form onFinish={(values) => handleFormSubmit(values)} ref={formRef}>
+            <Form onFinish={handleFormSubmit} form={form}>
               <div className="flex gap-2">
                 <Form.Item
-                  name={"first_name"}
+                  name={"firstName"}
                   label="First name"
                   required
                   rules={[
@@ -358,12 +400,12 @@ const Profile = () => {
                       message: "Please input your first name!",
                     },
                   ]}
-                  initialValue={userInfo?.first_name || ""}
+                  initialValue={userInfo?.firstName || ""}
                 >
                   <Input allowClear placeholder="First name" />
                 </Form.Item>
                 <Form.Item
-                  name={"last_name"}
+                  name={"lastName"}
                   label="Last name"
                   required
                   rules={[
@@ -372,7 +414,7 @@ const Profile = () => {
                       message: "Please input your last name!",
                     },
                   ]}
-                  initialValue={userInfo?.last_name || ""}
+                  initialValue={userInfo?.lastName || ""}
                 >
                   <Input min={1} allowClear placeholder="Last name" />
                 </Form.Item>
@@ -381,109 +423,30 @@ const Profile = () => {
                 name={"username"}
                 label="Username"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.username || ""}
+                initialValue={userInfo?.account.username || ""}
               >
                 <Input allowClear placeholder="Username" />
               </Form.Item>
               <Form.Item
-                name={"phone_number"}
+                name={"phoneNumber"}
                 label="Phone number"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.phone_number || ""}
+                initialValue={userInfo?.phoneNumber || ""}
               >
                 <Input allowClear placeholder="Phone number" />
               </Form.Item>
+              <AddressSelectorGroup userInfo={userInfo} form={form} />
               <Form.Item
-                name={"country"}
-                label="Country"
-                labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.country.name}
-              >
-                <Select
-                  allowClear
-                  placeholder="Country"
-                  options={countries}
-                  onFocus={() => getAllCountry(stateAddress, setStateAddress)}
-                  onSelect={(value: any) => {
-                    setSelectedAddress({ ...selectedAddress, country: value })
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                name={"province"}
-                label="Province"
-                labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.province.name}
-              >
-                <Select
-                  allowClear
-                  placeholder="Province"
-                  options={provinces}
-                  onFocus={() =>
-                    getAllProvince(
-                      stateAddress,
-                      setStateAddress,
-                      selectedAddress.country
-                    )
-                  }
-                  onSelect={(value: any) => {
-                    setSelectedAddress({ ...selectedAddress, province: value })
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                name={"district"}
-                label="District"
-                labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.district.name}
-              >
-                <Select
-                  allowClear
-                  placeholder="District"
-                  options={districts}
-                  onFocus={() =>
-                    getAllDistrict(
-                      stateAddress,
-                      setStateAddress,
-                      selectedAddress.province
-                    )
-                  }
-                  onSelect={(value: any) => {
-                    setSelectedAddress({ ...selectedAddress, district: value })
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                name={"street_address"}
+                name={"streetAddress"}
                 label="Street address"
                 labelCol={{ span: 24 }}
-                initialValue={userInfo?.address.street_address}
+                initialValue={userInfo?.address?.streetAddress}
               >
                 <Input allowClear placeholder="Street address" />
               </Form.Item>
             </Form>
           </div>
         </div>
-      </Modal>
-      <Modal
-        open={openImageModal}
-        width={700}
-        onCancel={() => setOpenImageModal(false)}
-        okText="Upload"
-        onOk={handleUploadImage}
-      >
-        <Dragger {...props}>
-          <div className="ant-upload-drag-icon flex justify-center">
-            <BsCloudUploadFill size={40} />
-          </div>
-          <p className="ant-upload-text">
-            Click or drag file to this area to upload
-          </p>
-          <p className="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibit from
-            uploading company data or other band files
-          </p>
-        </Dragger>
       </Modal>
     </div>
   )

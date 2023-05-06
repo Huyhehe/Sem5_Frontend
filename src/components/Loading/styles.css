@@ -1,0 +1,7 @@
+.ant-spin-dot.ant-spin-dot-spin {
+  @apply text-[4rem];
+}
+
+.ant-spin-dot.ant-spin-dot-spin i {
+  @apply w-[2rem] h-[2rem];
+}
