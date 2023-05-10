@@ -40,7 +40,6 @@ const SearchResultById = () => {
     const fetchData = async () => {
       try {
         const location = await getLocation(String(id))
-        console.log(location)
         // const userReviews = await getAllUserReviewsByLocationId(String(id))
         setLocationReview(location)
         // setUserReviews(userReviews || [])
@@ -106,7 +105,7 @@ const SearchResultById = () => {
               </div>
               <div className="header-icons flex items-center">
                 <div
-                  className="p-2 border-[2px] text-love border-love rounded-full hover:text-white hover:border-white hover:bg-love cursor-pointer"
+                  className="bookmark p-2 border-[2px] text-love border-love rounded-full hover:text-white hover:border-white hover:bg-love cursor-pointer"
                   onClick={() => {
                     message.warning("This feature is not available yet")
                   }}
@@ -189,16 +188,16 @@ const SearchResultById = () => {
                 <button className="contribute-button">Upload a photo</button>
               </div>
             </div>
-            {/* <div>
-          <Tabs size="large">
-            <Tabs.TabPane tab="Reviews" key="tab1">
-              <UserReviewContainer userReviews={userReviews} />
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Q&A" key="tab2">
-              <div>Q&A feature is in development progress</div>
-            </Tabs.TabPane>
-          </Tabs>
-        </div> */}
+            <div>
+              <Tabs size="large">
+                <Tabs.TabPane tab="Reviews" key="tab1">
+                  <UserReviewContainer userReviews={userReviews} />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Q&A" key="tab2">
+                  <div>Q&A feature is in development progress</div>
+                </Tabs.TabPane>
+              </Tabs>
+            </div>
           </div>
         </div>
       )}

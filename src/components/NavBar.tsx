@@ -1,27 +1,9 @@
+import { navItems } from "@/utils/constant"
 import { Button, Space } from "antd"
 import { useState } from "react"
 import { AiOutlineMenu } from "react-icons/ai"
 import { NavLink, useNavigate } from "react-router-dom"
 import ResizedNavlinks from "./ResizedNavlinks"
-
-const navItems = [
-  {
-    title: "Home",
-    link: "/",
-  },
-  {
-    title: "Search",
-    link: "/search",
-  },
-  {
-    title: "Review",
-    link: "/review",
-  },
-  {
-    title: "About",
-    link: "/about",
-  },
-]
 
 const NavBar = () => {
   const navigator = useNavigate()
@@ -82,8 +64,9 @@ const NavBar = () => {
       </div>
 
       <div
-        className={`absolute md:hidden bg-white w-full top-full left-0 h-screen transition-all -z-10 box-border ${isHiddenNavbarOpen ? "open" : "close"
-          }`}
+        className={`absolute md:hidden bg-white w-full top-full left-0 h-screen transition-all -z-10 box-border ${
+          isHiddenNavbarOpen ? "open" : "close"
+        }`}
       >
         <ResizedNavlinks
           navItems={navItems}

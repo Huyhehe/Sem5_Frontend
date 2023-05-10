@@ -5,3 +5,29 @@ export const publicAPI = {
 export const mapBoxGlAPI = import.meta.env.VITE_MAP_BOX_GL_KEY
 
 export const API_URL = import.meta.env.VITE_API
+
+export const navItems = [
+  {
+    title: "Home",
+    link: "/",
+  },
+  {
+    title: "Search",
+    link: "/search",
+  },
+  {
+    title: "Booking",
+    link: "/booking",
+  },
+  {
+    title: "About",
+    link: "/about",
+  },
+]
+
+export const notificationColor = {
+  success: "#f1ffea",
+  error: "#feeced",
+  warning: "#fff7e6",
+  info: "#e6f7ff",
+}

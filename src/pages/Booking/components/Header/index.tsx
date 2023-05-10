@@ -1,22 +1,46 @@
-import CustomDropdown from "@/components/common/CustomDropdown"
 import { DateRagePicker } from "@/components/common/DateRagePicker"
 import MapBox from "@/components/common/MapBox"
 import TypographyTitle from "@/components/common/TypographyTitle"
 import { RangePickerTypes } from "@/utils/enum"
-import { Col, Row } from "antd"
+import { AutoComplete, Button, Col, Input, Row } from "antd"
 import type { Dayjs as DayjsType } from "dayjs"
 import Dayjs from "dayjs"
+import { useFormik } from "formik"
 import { useEffect, useState } from "react"
+import { AiOutlineSearch } from "react-icons/ai"
 import HotelFilterDropdown from "./components/HotelFilterDropdown"
+import "../../styles.css"
+import { useNavigate, useSearchParams } from "react-router-dom"
 
-interface HeaderProps {
-  title?: string
-}
-
-const Header = ({ title = "" }: HeaderProps) => {
-  const [startDate, setStartDate] = useState<DayjsType>(Dayjs())
-  const [endDate, setEndDate] = useState<DayjsType>(Dayjs().add(1, "day"))
+const Header = () => {
+  const navigator = useNavigate()
+  const [searchParams] = useSearchParams()
+  const { location, start, end, room, person } = Object.fromEntries(
+    searchParams.entries()
+  )
+  const [startDate, setStartDate] = useState<DayjsType>(Dayjs(start) || Dayjs())
+  const [endDate, setEndDate] = useState<DayjsType>(
+    Dayjs(end) || Dayjs().add(1, "day")
+  )
   const [rangePickerType, setRangePickerType] = useState<RangePickerTypes>()
+  const { values, setFieldValue, handleSubmit } = useFormik({
+    initialValues: {
+      room: room || 1,
+      person: person || 2,
+      dayRange: [startDate, endDate],
+      location: location || "",
+    },
+    onSubmit: (values) => {
+      console.log(values)
+      navigator(
+        `/hotels?location=${values.location}&start=${values.dayRange[0].format(
+          "YYYY-MM-DD"
+        )}&end=${values.dayRange[1].format("YYYY-MM-DD")}&room=${
+          values.room
+        }&person=${values.person}`
+      )
+    },
+  })
 
   useEffect(() => {
     if (
@@ -41,50 +65,85 @@ const Header = ({ title = "" }: HeaderProps) => {
   return (
     <Row className="mb-8 min-h-[12.5vh]" justify="space-between">
       <Col span={6} className="bg-blue-400/20">
-        <MapBox address={title} />
+        <MapBox address={location} />
       </Col>
       <Col span={17} className="flex flex-col gap-6">
         <Row>
           <TypographyTitle
-            text={`${title} Hotels and Places to stay`}
+            text={`${location} Hotels and Places to stay`}
             level={2}
           />
         </Row>
-        <Row justify="space-between">
-          <Col span={16}>
-            <DateRagePicker
-              size="large"
-              className="w-full h-[3rem]"
-              inputReadOnly
-              allowClear={false}
-              disabledDate={(date) => {
-                if (rangePickerType === RangePickerTypes.START) {
-                  return date.isBefore(new Date(), "day")
-                } else if (rangePickerType === RangePickerTypes.END) {
-                  if (startDate) {
-                    return date.isBefore(new Date())
+        <form>
+          <Row justify="space-between">
+            <Col span={9}>
+              <AutoComplete
+                className="w-full h-full"
+                onChange={(value) => {
+                  setFieldValue("location", value)
+                }}
+                value={values.location}
+              >
+                <Input
+                  className="w-full h-full text-xl border-[2px] focus:border-black shadow-none hover:border-black"
+                  placeholder="Where to stay?"
+                />
+              </AutoComplete>
+            </Col>
+            <Col span={7}>
+              <DateRagePicker
+                name="dayRange"
+                size="large"
+                className="w-full h-[3rem] cursor-pointer border-[2px] hover:border-black"
+                inputReadOnly
+                allowClear={false}
+                disabledDate={(date) => {
+                  if (rangePickerType === RangePickerTypes.START) {
+                    return date.isBefore(new Date(), "day")
+                  } else if (rangePickerType === RangePickerTypes.END) {
+                    if (startDate) {
+                      return date.isBefore(new Date())
+                    }
                   }
-                }
-                return date.isBefore(new Date(), "day")
-              }}
-              onCalendarChange={(dates, _, info) => {
-                if (info.range === "start") {
-                  setStartDate(Dayjs(dates?.[0]))
-                }
-                if (info.range === "end") {
-                  setEndDate(Dayjs(dates?.[1]))
-                }
-              }}
-              onFocus={(e) => {
-                setRangePickerType(e.target.placeholder as RangePickerTypes)
-              }}
-              value={[startDate, endDate]}
-            />
-          </Col>
-          <Col span={7}>
-            <CustomDropdown Dropdown={HotelFilterDropdown} />
-          </Col>
-        </Row>
+                  return date.isBefore(new Date(), "day")
+                }}
+                onCalendarChange={(dates, _, info) => {
+                  if (info.range === "start") {
+                    setStartDate(Dayjs(dates?.[0]))
+                    setFieldValue("dayRange", [Dayjs(dates?.[0]), endDate])
+                  }
+                  if (info.range === "end") {
+                    setEndDate(Dayjs(dates?.[1]))
+                    setFieldValue("dayRange", [startDate, Dayjs(dates?.[1])])
+                  }
+                }}
+                onFocus={(e) => {
+                  setRangePickerType(e.target.placeholder as RangePickerTypes)
+                }}
+                value={[startDate, endDate]}
+              />
+            </Col>
+            <Col span={6}>
+              <HotelFilterDropdown
+                room={Number(room)}
+                person={Number(person)}
+                onUpdate={(value) => {
+                  setFieldValue("room", value.room)
+                  setFieldValue("person", value.person)
+                }}
+              />
+            </Col>
+            <Col span={1}>
+              <Button
+                type="primary"
+                shape="round"
+                icon={<AiOutlineSearch size={25} />}
+                className="h-full"
+                onClick={() => handleSubmit()}
+              />
+            </Col>
+          </Row>
+        </form>
       </Col>
     </Row>
   )

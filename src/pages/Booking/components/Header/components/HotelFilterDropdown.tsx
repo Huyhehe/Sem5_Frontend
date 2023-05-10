@@ -13,10 +13,20 @@ interface FilterState {
   person: number
 }
 
-const HotelFilterDropdown = () => {
+interface HotelFilterDropdownProps {
+  room?: number
+  person?: number
+  onUpdate: (values: FilterState) => void
+}
+
+const HotelFilterDropdown = ({
+  room: initRoom,
+  person: initPerson,
+  onUpdate,
+}: HotelFilterDropdownProps) => {
   const [hotelFilterState, setHotelFilterState] = useState<FilterState>({
-    room: 1,
-    person: 1,
+    room: initRoom || 1,
+    person: initPerson || 2,
   })
   const [isOpen, setIsOpen] = useState(false)
   const { room, person } = hotelFilterState
@@ -37,6 +47,7 @@ const HotelFilterDropdown = () => {
     onSubmit: (values) => {
       setIsOpen(false)
       setHotelFilterState(values)
+      onUpdate(values)
     },
   })
 
@@ -68,6 +79,7 @@ const HotelFilterDropdown = () => {
                 icon={<IoBedOutline size={25} />}
                 value={values.room}
                 min={1}
+                max={10}
               />
               <CountBox
                 onChange={(value) =>
@@ -77,6 +89,7 @@ const HotelFilterDropdown = () => {
                 icon={<IoPeopleOutline size={25} />}
                 value={values.person}
                 min={1}
+                max={10}
               />
               <Button
                 className="text-white border-none rounded-[5px] bg-black"
