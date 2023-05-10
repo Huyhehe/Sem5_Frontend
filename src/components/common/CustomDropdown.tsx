@@ -1,10 +1,13 @@
 import { DropDownProps } from "antd"
 
 export type CustomDropdownProps = {
-  Dropdown: React.FC<DropDownProps>
+  dropdown: React.FC<DropDownProps>
 } & DropDownProps
 
-const CustomDropdown = ({ Dropdown, ...props }: CustomDropdownProps) => {
+const CustomDropdown = ({
+  dropdown: Dropdown,
+  ...props
+}: CustomDropdownProps) => {
   return (
     <>
       <Dropdown {...props} />
