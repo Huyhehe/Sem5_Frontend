@@ -1,4 +1,4 @@
-import { mapBoxGlAPI } from "@/utils/constant"
+import { getGeocodeAutoCompleteAPI } from "@/utils/http"
 import { useEffect, useState } from "react"
 
 const useCoord = (address: string) => {
@@ -8,14 +8,8 @@ const useCoord = (address: string) => {
   })
 
   const getCoord = async (address: string) => {
-    const response = await fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-        address
-      )}.json?access_token=${mapBoxGlAPI}`
-    )
-    const data = await response.json()
-    const { center } = data.features[0]
-    const [longitude, latitude] = center
+    const response = await getGeocodeAutoCompleteAPI(address)
+    const { lon: longitude, lat: latitude } = response.results?.[0]
     setCoord({ latitude, longitude })
   }
 

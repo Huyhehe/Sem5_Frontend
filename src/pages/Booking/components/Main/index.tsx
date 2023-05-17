@@ -1,17 +1,30 @@
-import { Hotel } from "@/assets/data/hotel"
-import { Space } from "antd"
+import { Hotel, hotelList } from "@/assets/data/hotel"
+import Space from "antd/es/space"
 import HotelCard from "./components/HotelCard"
+import SkeletonHotelCard from "./components/SkeletonHotelCard"
+import { useEffect, useState } from "react"
 
-interface MainContainerProps {
-  data: Hotel[]
-}
-
-const MainContainer = ({ data }: MainContainerProps) => {
+const MainContainer = () => {
+  const [data, setData] = useState<Hotel[] | null>(null)
+  useEffect(() => {
+    setTimeout(() => {
+      setData(hotelList)
+    }, 3000)
+  }, [])
   return (
     <Space direction="vertical" className="w-full" size={10}>
-      {data?.map((hotel: Hotel, index) => {
-        return <HotelCard key={index} {...hotel} />
-      })}
+      {data ? (
+        data.map((hotel, index) => {
+          return <HotelCard key={index} {...hotel} />
+        })
+      ) : (
+        <>
+          <SkeletonHotelCard />
+          <SkeletonHotelCard />
+          <SkeletonHotelCard />
+          <SkeletonHotelCard />
+        </>
+      )}
     </Space>
   )
 }

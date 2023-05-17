@@ -1,6 +1,8 @@
 import axios from "axios"
 import axiosInstance, { setTokenInterceptor } from "@/service/axiosInstance"
 import { setAccessTokenToLocal, setRefreshTokenToLocal } from "./localStorage"
+import { autofillAPI } from "./constant"
+import { GeocodeAutocompleteResponse } from "@/types/responses"
 
 const API_URL = import.meta.env.VITE_API
 // AUTH
@@ -287,5 +289,20 @@ export const deleteReviewAPI = async (id: string) => {
     return res.data
   } catch (error: any) {
     throw new Error(error.response.data.error)
+  }
+}
+
+export const getGeocodeAutoCompleteAPI = async (
+  location: string
+): Promise<GeocodeAutocompleteResponse> => {
+  try {
+    const res = await axios.get(
+      `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(
+        location
+      )}&format=json&apiKey=${autofillAPI}&lang=vi`
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error)
   }
 }

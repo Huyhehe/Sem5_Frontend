@@ -1,4 +1,3 @@
-import { hotelList } from "@/assets/data/hotel"
 import { Col, Row, Space } from "antd"
 import { default as HeaderContainer } from "./components/Header"
 import MainContainer from "./components/Main"
@@ -14,7 +13,7 @@ const Booking = () => {
           <Space direction="vertical">Sider</Space>
         </Col>
         <Col span={17}>
-          <MainContainer data={hotelList} />
+          <MainContainer />
         </Col>
       </Row>
     </Col>
