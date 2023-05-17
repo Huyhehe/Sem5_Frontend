@@ -115,11 +115,11 @@ const SearchResultById = () => {
               </div>
             </div>
             <LocationTypo
-              country={locationReview.address?.country.name}
-              province={locationReview.address?.province.name}
-              district={locationReview.address?.district.name}
-              ward={locationReview.address?.ward.name}
-              streetAddress={locationReview.address.streetAddress}
+              country={locationReview.address?.country?.name}
+              province={locationReview.address?.province?.name}
+              district={locationReview.address?.district?.name}
+              ward={locationReview.address?.ward?.name}
+              streetAddress={locationReview.address?.streetAddress}
             />
             <div className="content-rating-wrapper">
               <div className="content-rating">
