@@ -2,15 +2,15 @@ import { DateRagePicker } from "@/components/common/DateRagePicker"
 import MapBox from "@/components/common/MapBox"
 import TypographyTitle from "@/components/common/TypographyTitle"
 import { RangePickerTypes } from "@/utils/enum"
-import { AutoComplete, Button, Col, Input, Row } from "antd"
+import { getGeocodeAutoCompleteAPI } from "@/utils/http"
+import { AutoComplete, Col, Input, Row } from "antd"
 import type { Dayjs as DayjsType } from "dayjs"
 import Dayjs from "dayjs"
 import { useFormik } from "formik"
 import { useEffect, useState } from "react"
-import { AiOutlineSearch } from "react-icons/ai"
-import HotelFilterDropdown from "./components/HotelFilterDropdown"
-import "../../styles.css"
 import { useNavigate, useSearchParams } from "react-router-dom"
+import "../../styles.css"
+import HotelFilterDropdown from "./components/HotelFilterDropdown"
 
 const Header = () => {
   const navigator = useNavigate()
@@ -18,11 +18,14 @@ const Header = () => {
   const { location, start, end, room, person } = Object.fromEntries(
     searchParams.entries()
   )
-  const [startDate, setStartDate] = useState<DayjsType>(Dayjs(start) || Dayjs())
+  const [startDate, setStartDate] = useState<DayjsType>(Dayjs(start))
   const [endDate, setEndDate] = useState<DayjsType>(
-    Dayjs(end) || Dayjs().add(1, "day")
+    end ? Dayjs(end) : Dayjs(start).add(1, "day")
   )
   const [rangePickerType, setRangePickerType] = useState<RangePickerTypes>()
+  const [locationOptions, setLocationOptions] = useState<
+    { value: string; label: string }[]
+  >([])
   const { values, setFieldValue, handleSubmit } = useFormik({
     initialValues: {
       room: room || 1,
@@ -31,7 +34,6 @@ const Header = () => {
       location: location || "",
     },
     onSubmit: (values) => {
-      console.log(values)
       navigator(
         `/hotels?location=${values.location}&start=${values.dayRange[0].format(
           "YYYY-MM-DD"
@@ -62,6 +64,23 @@ const Header = () => {
     }
   }, [endDate])
 
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
+      try {
+        const res = await getGeocodeAutoCompleteAPI(values.location)
+        const options = res.results?.map((result) => ({
+          value: result.formatted,
+          label: result.formatted,
+        }))
+        setLocationOptions(options || [])
+      } catch (error) {
+        console.log(error)
+      }
+    }, 500)
+
+    return () => clearTimeout(timeout)
+  }, [values.location])
+
   return (
     <Row className="mb-8 min-h-[12.5vh]" justify="space-between">
       <Col span={6} className="bg-blue-400/20">
@@ -70,19 +89,26 @@ const Header = () => {
       <Col span={17} className="flex flex-col gap-6">
         <Row>
           <TypographyTitle
-            text={`${location} Hotels and Places to stay`}
+            text={`Hotels and Places to stay ${
+              location ? `in ${location}` : ""
+            }`}
             level={2}
           />
         </Row>
         <form>
           <Row justify="space-between">
-            <Col span={9}>
+            <Col span={10}>
               <AutoComplete
                 className="w-full h-full"
                 onChange={(value) => {
                   setFieldValue("location", value)
                 }}
                 value={values.location}
+                options={locationOptions}
+                onSelect={(value) => {
+                  setFieldValue("location", value)
+                  handleSubmit()
+                }}
               >
                 <Input
                   className="w-full h-full text-xl border-[2px] focus:border-black shadow-none hover:border-black"
@@ -116,6 +142,7 @@ const Header = () => {
                     setEndDate(Dayjs(dates?.[1]))
                     setFieldValue("dayRange", [startDate, Dayjs(dates?.[1])])
                   }
+                  handleSubmit()
                 }}
                 onFocus={(e) => {
                   setRangePickerType(e.target.placeholder as RangePickerTypes)
@@ -130,16 +157,8 @@ const Header = () => {
                 onUpdate={(value) => {
                   setFieldValue("room", value.room)
                   setFieldValue("person", value.person)
+                  handleSubmit()
                 }}
-              />
-            </Col>
-            <Col span={1}>
-              <Button
-                type="primary"
-                shape="round"
-                icon={<AiOutlineSearch size={25} />}
-                className="h-full"
-                onClick={() => handleSubmit()}
               />
             </Col>
           </Row>
