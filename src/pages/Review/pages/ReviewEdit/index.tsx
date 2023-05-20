@@ -5,5 +5,5 @@ export default function ReviewEdit() {
     <div>
       <Outlet />
     </div>
-  );
+  )
 }
