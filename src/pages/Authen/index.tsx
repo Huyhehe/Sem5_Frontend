@@ -1,11 +1,9 @@
-import { useState } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import { coverX2 } from "../../assets/images/index"
 import "./styles.css"
 
 const AuthenPage = () => {
   const navigator = useNavigate()
-  const [email, setEmail] = useState<string | null>(null)
 
   return (
     <div className="authen-container flex 2xl:py-[2rem] py-[1rem] px-[1rem] sm:px-[7rem]">

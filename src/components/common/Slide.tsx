@@ -41,7 +41,6 @@ const Slide = ({
   slidesToShow = 4,
   dots = false,
   autoplay = false,
-  pauseOnHover = true,
   responsive = defaultResponsive,
   isShowArrow = true,
   wrapperClass = "",

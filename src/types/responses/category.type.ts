@@ -1,4 +1,3 @@
-export interface Category {
-  id: string
-  name: string
-}
+import { SelectType } from "./common"
+
+export type Category = SelectType

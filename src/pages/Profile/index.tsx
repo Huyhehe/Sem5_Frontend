@@ -1,5 +1,6 @@
 import { AppContext } from "@/App"
 import AddressSelectorGroup from "@/components/common/AddressSelectorGroup"
+import FormItem from "@/components/common/FormItem"
 import { LocationTypo } from "@/components/common/LocationTypo"
 import { updateAccountInfo } from "@/service/api/user"
 import { UserInfoResponse } from "@/types/responses"
@@ -28,11 +29,9 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import "./styles/index.css"
 import {
   checkValidParamForUpdateUser,
-  convertUndefinedToNull,
   getCreatedDate,
   isAllowFileType,
 } from "./utils"
-import FormItem from "@/components/common/FormItem"
 
 enum ImageType {
   COVER = "cover",
@@ -151,8 +150,7 @@ const Profile = () => {
 
     try {
       const validValues = checkValidParamForUpdateUser(values, userInfo)
-      const reFormattedData = convertUndefinedToNull(validValues)
-      const res = await updateAccountInfo(reFormattedData)
+      const res = await updateAccountInfo(validValues)
       setUserInfo(res)
 
       setLoading(false)
@@ -423,15 +421,12 @@ const Profile = () => {
                   <Input min={1} allowClear placeholder="Last name" />
                 </FormItem>
               </div>
-              <FormItem
-                name={"username"}
-                label="Username"
-                initialValue={userInfo?.account.username || ""}
-                required
-                trim
-                allowTextOnly
-              >
-                <Input allowClear placeholder="Username" />
+              <FormItem label="Username">
+                <Input
+                  placeholder="Username"
+                  disabled
+                  value={userInfo?.account.username || ""}
+                />
               </FormItem>
               <FormItem
                 name={"phoneNumber"}
