@@ -1,5 +1,3 @@
-import UserReview from "./UserReview"
-
 interface Category {
   id: string
   name: string

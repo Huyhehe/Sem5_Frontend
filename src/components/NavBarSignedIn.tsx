@@ -1,11 +1,12 @@
 import { AppContext } from "@/App"
+import ProfileDropDown from "@/pages/Profile/components/ProfileDropDown"
+import { navItems } from "@/utils/constant"
 import { signOutAPI } from "@/utils/http"
 import { getRefreshTokenFromLocal, signOutUser } from "@/utils/localStorage"
 import { useContext, useState } from "react"
 import { AiOutlineMenu, AiOutlineProfile } from "react-icons/ai"
 import { FiLogOut } from "react-icons/fi"
 import { NavLink, useNavigate } from "react-router-dom"
-import ProfileDropDown from "@/pages/Profile/components/ProfileDropDown"
 import ResizedNavlinks from "./ResizedNavlinks"
 
 interface NavBarProps {
@@ -16,24 +17,7 @@ const NavBar = ({ user }: NavBarProps) => {
   const navigator = useNavigate()
   const [isHiddenNavbarOpen, setIsHiddenNavbarOpen] = useState<boolean>(false)
   const { setCurrentRoute } = useContext(AppContext)
-  const navItems = [
-    {
-      title: "Home",
-      link: "/",
-    },
-    {
-      title: "Search",
-      link: "/search",
-    },
-    {
-      title: "Review",
-      link: "/review",
-    },
-    {
-      title: "About",
-      link: "/about",
-    },
-  ]
+
   const { setLoading } = useContext(AppContext)
   const handleSignOut = async () => {
     setLoading(true)

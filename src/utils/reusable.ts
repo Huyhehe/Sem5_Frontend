@@ -1,4 +1,5 @@
-import { BaseAddress, Category, WardResponse } from "@/types/responses"
+import { BaseAddress, WardResponse } from "@/types/responses"
+import { SelectType } from "@/types/responses/common"
 
 export const getRatingString = (rating: string) => {
   if (Number(rating) <= 2) {
@@ -122,7 +123,9 @@ export const currencyParser = (value: string | undefined): number => {
   return Number(value?.replace(/\D/g, "")) || 0
 }
 
-export const convertDataForSelectOptions = <T extends Category>(data: T[]) => {
+export const convertDataForSelectOptions = <T extends SelectType>(
+  data: T[]
+) => {
   return data.map((item) => ({
     value: item.id,
     label: item.name,
@@ -151,4 +154,8 @@ export const checkStringContainNumberOrSpecialChar = (
     return /(\d|[^\w\s])/.test(str)
   }
   return false
+}
+
+export const checkStringContainTextOrSpecialChar = (str: string) => {
+  return !/^\d+$/.test(str)
 }

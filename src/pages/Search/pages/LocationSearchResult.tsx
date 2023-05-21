@@ -1,18 +1,18 @@
 import { Empty } from "antd"
 import SearchCard from "../components/SearchCard"
 
-import LocationReview from "@/interfaces/LocationReview"
+import { LocationsResponse } from "@/types/responses/location"
 import { useNavigate } from "react-router-dom"
 
 interface SearchResultProps {
-  searchResult: LocationReview[]
+  searchResult: LocationsResponse
 }
 
 const SearchResult = ({ searchResult }: SearchResultProps) => {
   document.title = "TravelCare | Search"
 
   const navigator = useNavigate()
-  const handleOnCardClick = (id: number) => {
+  const handleOnCardClick = (id: string) => {
     navigator(`/search/${id}`)
   }
 
@@ -26,7 +26,7 @@ const SearchResult = ({ searchResult }: SearchResultProps) => {
           >
             <SearchCard
               item={item}
-              onClickFunc={() => handleOnCardClick(item.id as any as number)}
+              onClickFunc={() => handleOnCardClick(item.id)}
             />
           </div>
         ))}

@@ -1,5 +1,6 @@
 import { AppContext } from "@/App"
 import AddressSelectorGroup from "@/components/common/AddressSelectorGroup"
+import FormItem from "@/components/common/FormItem"
 import { LocationTypo } from "@/components/common/LocationTypo"
 import { updateAccountInfo } from "@/service/api/user"
 import { UserInfoResponse } from "@/types/responses"
@@ -28,7 +29,6 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import "./styles/index.css"
 import {
   checkValidParamForUpdateUser,
-  convertUndefinedToNull,
   getCreatedDate,
   isAllowFileType,
 } from "./utils"
@@ -140,7 +140,6 @@ const Profile = () => {
         message.success("Image uploaded successfully")
       } catch (error: any) {
         setLoading(false)
-        console.log(error)
         message.error(error)
       }
     }
@@ -151,8 +150,7 @@ const Profile = () => {
 
     try {
       const validValues = checkValidParamForUpdateUser(values, userInfo)
-      const reFormattedData = convertUndefinedToNull(validValues)
-      const res = await updateAccountInfo(reFormattedData)
+      const res = await updateAccountInfo(validValues)
       setUserInfo(res)
 
       setLoading(false)
@@ -390,60 +388,63 @@ const Profile = () => {
           <div className="modal-info-edit justify-self-stretch flex-grow mr-4">
             <Form onFinish={handleFormSubmit} form={form}>
               <div className="flex gap-2">
-                <Form.Item
+                <FormItem
                   name={"firstName"}
                   label="First name"
+                  initialValue={userInfo?.firstName || ""}
                   required
+                  trim
+                  allowTextOnly
                   rules={[
                     {
                       required: true,
                       message: "Please input your first name!",
                     },
                   ]}
-                  initialValue={userInfo?.firstName || ""}
                 >
                   <Input allowClear placeholder="First name" />
-                </Form.Item>
-                <Form.Item
+                </FormItem>
+                <FormItem
                   name={"lastName"}
                   label="Last name"
+                  initialValue={userInfo?.lastName || ""}
                   required
+                  trim
+                  allowTextOnly
                   rules={[
                     {
                       required: true,
                       message: "Please input your last name!",
                     },
                   ]}
-                  initialValue={userInfo?.lastName || ""}
                 >
                   <Input min={1} allowClear placeholder="Last name" />
-                </Form.Item>
+                </FormItem>
               </div>
-              <Form.Item
-                name={"username"}
-                label="Username"
-                labelCol={{ span: 24 }}
-                initialValue={userInfo?.account.username || ""}
-              >
-                <Input allowClear placeholder="Username" />
-              </Form.Item>
-              <Form.Item
+              <FormItem label="Username">
+                <Input
+                  placeholder="Username"
+                  disabled
+                  value={userInfo?.account.username || ""}
+                />
+              </FormItem>
+              <FormItem
                 name={"phoneNumber"}
                 label="Phone number"
-                labelCol={{ span: 24 }}
                 initialValue={userInfo?.phoneNumber || ""}
+                trim
+                allowNumberOnly
               >
                 <Input allowClear placeholder="Phone number" />
-              </Form.Item>
+              </FormItem>
               <AddressSelectorGroup userInfo={userInfo} form={form} />
-              <Form.Item
+              <FormItem
                 name={"streetAddress"}
                 label="Street address"
-                labelCol={{ span: 24 }}
                 initialValue={userInfo?.address?.streetAddress}
               >
                 <Input allowClear placeholder="Street address" />
-              </Form.Item>
+              </FormItem>
             </Form>
           </div>
         </div>

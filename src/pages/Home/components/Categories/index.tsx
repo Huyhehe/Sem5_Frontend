@@ -1,12 +1,15 @@
 import { BiHotel, BiRestaurant } from "react-icons/bi"
 import { MdCardTravel, MdMoreVert } from "react-icons/md"
 import { RiEarthFill, RiScalesFill } from "react-icons/ri"
-import CategoryItem from "./CategoryItem"
+import CategoryItem, { CategoryItemProps } from "./CategoryItem"
 
-const categories = [
+const categories: CategoryItemProps[] = [
   {
     icon: <BiHotel className="group-hover:text-white" size={22} />,
     title: "Hotels",
+    onClick: () => {
+      window.location.href = "/hotels"
+    },
   },
   {
     icon: <RiScalesFill className="group-hover:text-white" size={22} />,
@@ -27,7 +30,7 @@ const categories = [
   {
     icon: <MdMoreVert className="group-hover:text-white" size={22} />,
     title: "More",
-    children: [
+    subCategories: [
       {
         text: "Add a Place",
         url: "",
@@ -67,9 +70,17 @@ const categories = [
 function Categories() {
   return (
     <div className="w-full flex items-center gap-x-3 ">
-      {categories?.map((item, index: number) => (
-        <CategoryItem key={index} data={item} />
-      ))}
+      {categories?.map(
+        ({ title, icon, subCategories, onClick }, index: number) => (
+          <CategoryItem
+            key={index}
+            title={title}
+            icon={icon}
+            subCategories={subCategories}
+            onClick={onClick}
+          />
+        )
+      )}
     </div>
   )
 }

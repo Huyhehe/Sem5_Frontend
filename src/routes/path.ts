@@ -1,7 +1,7 @@
 export const HOME_PATH = "/"
 export const ABOUT_PATH = "/about"
 export const ADD_LOCATION_PATH = "/location-add"
-export const BOOKING_PATH = "/booking"
+export const BOOKING_PATH = "/hotels"
 
 export const SEARCH_PATH = {
   DEFAULT: "/search",

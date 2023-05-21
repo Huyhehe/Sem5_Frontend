@@ -1,25 +1,50 @@
+import { AppContext } from "@/App"
 import AddressSelectorGroup from "@/components/common/AddressSelectorGroup"
 import FormItem from "@/components/common/FormItem"
 import InputField from "@/components/common/InputField"
 import SelectorField from "@/components/common/SelectorField"
-import { Category } from "@/types/responses"
+import { getHotelAmenities, getHotelStyles } from "@/service/api/hotel"
 import { createLocationAPI, getAllCategoryAPI } from "@/utils/http"
+import { getAccessTokenFromLocal } from "@/utils/localStorage"
+import { trimmedObject } from "@/utils/reusable"
 import {
-  convertDataForSelectOptions,
-  currencyFormatter,
-  currencyParser,
-  trimmedObject,
-} from "@/utils/reusable"
-import { Form, Input, InputNumber, Upload, UploadProps, message } from "antd"
-import { useEffect, useState } from "react"
+  Form,
+  Input,
+  Radio,
+  Rate,
+  Upload,
+  UploadProps,
+  message,
+  notification,
+} from "antd"
+import { useContext, useState } from "react"
 import { BsCloudUploadFill } from "react-icons/bs"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const { Dragger } = Upload
 
+interface FormValues {
+  name: string
+  categories: string[]
+  isHotel: boolean
+  countryId: string
+  provinceId: string
+  districtId: string
+  wardId: string
+  streetAddress: string
+  priceLevel: number
+  description: string
+  images: any
+}
+
 export default function AddLocation() {
+  const { setLoading, setCurrentRoute, openNotification } =
+    useContext(AppContext)
+  const currentLocation = useLocation()
+  const navigator = useNavigate()
   const [form] = Form.useForm()
-  const [categories, setCategories] = useState([])
   const [, setImages] = useState<any[]>([])
+  const [isHotel, setIsHotel] = useState(false)
   const uploadProps: UploadProps = {
     name: "file",
     listType: "picture",
@@ -29,44 +54,64 @@ export default function AddLocation() {
     },
   }
 
-  useEffect(() => {
-    const fetchCategories = async () => {
+  const validateValidUser = (
+    helperText = "Something has to be checked again"
+  ) => {
+    const accessToken = getAccessTokenFromLocal()
+    setCurrentRoute(currentLocation.pathname)
+    if (!accessToken) {
+      openNotification("warning", {
+        message: "Warning",
+        description: (
+          <div className="flex flex-col">
+            <span>{helperText}</span>
+            <span
+              className="font-bold underline cursor-pointer"
+              onClick={() => {
+                navigator("/login/signIn")
+                notification.destroy()
+              }}
+            >
+              Sign in
+            </span>
+          </div>
+        ),
+      })
+      return false
+    }
+    return true
+  }
+
+  const handleSubmit = async (values: FormValues) => {
+    if (validateValidUser("You have to sign in to add location!")) {
       try {
-        const res = await getAllCategoryAPI()
-        const convertedData = convertDataForSelectOptions<Category>(res)
-        setCategories(convertedData as never)
+        setLoading(true)
+        const formData = new FormData()
+        const { images, description, ...rest } = values
+        for (const file of images?.fileList) {
+          formData.append("images", file.originFileObj)
+        }
+
+        const data = trimmedObject({
+          ...rest,
+          description: description || "",
+          isHotel: String(isHotel),
+        })
+
+        Object.keys(data).forEach((key) => {
+          formData.append(key, data[key])
+        })
+
+        await createLocationAPI(formData)
+
+        setLoading(false)
+        message.success("This location has been raised successfully!")
+        form.resetFields()
       } catch (error: any) {
+        setLoading(false)
         message.error(error)
       }
     }
-
-    fetchCategories()
-  }, [])
-
-  const handleSubmit = async (values: any) => {
-    try {
-      const formData = new FormData()
-      const { rating, images, description, ...rest } = values
-      for (const file of images.fileList) {
-        formData.append("images", file.originFileObj)
-      }
-
-      const data = trimmedObject({
-        ...rest,
-        description: description || "",
-        rating: rating && String(rating),
-      })
-
-      Object.keys(data).forEach((key) => {
-        formData.append(key, data[key])
-      })
-      await createLocationAPI(formData)
-      message.success("This location has been raised successfully!")
-    } catch (error: any) {
-      message.error(error)
-    }
-
-    form.resetFields()
   }
 
   return (
@@ -95,10 +140,69 @@ export default function AddLocation() {
         >
           <SelectorField
             placeholder="Category"
-            options={categories}
             mode="multiple"
+            fetchOptions={getAllCategoryAPI}
           />
         </Form.Item>
+        <Form.Item name={"isHotel"} label="Location type">
+          <Radio.Group
+            defaultValue={false}
+            onChange={({ target: { value } }) => {
+              setIsHotel(value)
+            }}
+          >
+            <Radio value={false}>Normal location</Radio>
+            <Radio value={true}>Hotel</Radio>
+          </Radio.Group>
+        </Form.Item>
+        {isHotel && (
+          <>
+            <Form.Item name={"hotelClass"} label="Hotel class">
+              <Rate />
+            </Form.Item>
+            <Form.Item
+              name={"hotelStyleIds"}
+              label="Hotel style"
+              labelCol={{ span: 24 }}
+            >
+              <SelectorField
+                placeholder="Hotel style"
+                mode="multiple"
+                fetchOptions={getHotelStyles}
+              />
+            </Form.Item>
+            <Form.Item
+              name={"propertyAmenities"}
+              label="Amenities"
+              labelCol={{ span: 24 }}
+            >
+              <SelectorField
+                placeholder="Amenities"
+                mode="multiple"
+                fetchOptions={getHotelAmenities}
+              />
+            </Form.Item>
+            <FormItem
+              name={"phoneNumber"}
+              label="Hotel phone number"
+              allowNumberOnly
+            >
+              <InputField maxLength={10} placeholder="0999 xxx xxx" />
+            </FormItem>
+            <FormItem
+              name={"email"}
+              label="Hotel Email"
+              rules={[
+                {
+                  type: "email",
+                  message: "Please enter a valid email!",
+                },
+              ]}
+            >
+              <InputField placeholder="abcHotel@gmail.com" />
+            </FormItem>
+          </>
+        )}
         <AddressSelectorGroup form={form} required />
         <FormItem
           name={"streetAddress"}
@@ -108,16 +212,6 @@ export default function AddLocation() {
         >
           <Input placeholder="Street Address" />
         </FormItem>
-        <Form.Item name={"priceLevel"} label="Price Level" initialValue={0}>
-          <InputNumber
-            placeholder="Price Level"
-            addonBefore="VND"
-            className="w-full"
-            min={0}
-            formatter={(value) => currencyFormatter(value || 0)}
-            parser={currencyParser}
-          />
-        </Form.Item>
         <FormItem name={"description"} label="Description">
           <Input.TextArea placeholder="Description" />
         </FormItem>
