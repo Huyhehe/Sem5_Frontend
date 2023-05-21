@@ -71,9 +71,7 @@ const Home = () => {
 
   return (
     <div className="homePage-container flex flex-col gap-[2rem] w-full pb-10">
-      <div>
-        <Categories />
-      </div>
+      <Categories />
       <div className="search-container relative z-10">
         <Search />
         <img src={searchBg} alt="search-background" />
