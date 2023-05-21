@@ -33,7 +33,7 @@ const categories: CategoryItemProps[] = [
     subCategories: [
       {
         text: "Add a Place",
-        url: "",
+        url: "/location-add",
       },
       {
         text: "Airlines",
