@@ -40,14 +40,11 @@ export const removeAccent = (str: string) => {
 
 export const getDateTimeFormatted = (
   date: string,
-  options: any = {
+  options: Intl.DateTimeFormatOptions | undefined = {
     timeZone: "UTC",
     day: "numeric",
     month: "long",
     year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
   }
 ) => {
   return new Date(date).toLocaleString("en-US", options)

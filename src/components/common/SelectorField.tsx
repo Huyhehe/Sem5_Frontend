@@ -49,7 +49,7 @@ const SelectorField = ({
           .localeCompare(String(optionB?.label ?? "").toLowerCase())
       }
       allowClear
-      options={defaultOptions || options || []}
+      options={defaultOptions || options}
     />
   )
 }

@@ -32,7 +32,6 @@ interface FormValues {
   districtId: string
   wardId: string
   streetAddress: string
-  priceLevel: number
   description: string
   images: any
 }

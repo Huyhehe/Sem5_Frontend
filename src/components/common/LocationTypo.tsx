@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 import { FaLocationArrow } from "react-icons/fa"
 
 interface LocationTypoProps {
@@ -7,6 +8,7 @@ interface LocationTypoProps {
   ward?: string | undefined | null
   streetAddress?: string
   extendClassName?: string
+  prefix?: ReactNode
 }
 
 const checkEmptyAddress = (value: (string | null)[]) => {
@@ -20,6 +22,7 @@ export const LocationTypo = ({
   ward = "",
   streetAddress = "",
   extendClassName = "",
+  prefix = <FaLocationArrow />,
 }: LocationTypoProps) => {
   const renderAddress = () => {
     return `${streetAddress ? streetAddress + "," : ""} ${
@@ -32,9 +35,7 @@ export const LocationTypo = ({
 
   return (
     <div className={`flex gap-2 items-center ${extendClassName}`}>
-      <div>
-        <FaLocationArrow />
-      </div>
+      <div>{prefix}</div>
       {!checkEmptyAddress([
         country,
         province,
