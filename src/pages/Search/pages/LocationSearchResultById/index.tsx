@@ -1,17 +1,11 @@
 import { AppContext } from "@/App"
 import { LocationTypo } from "@/components/common/LocationTypo"
 import Slide from "@/components/common/Slide"
-import CustomSlide from "@/components/CustomSlide"
-import useUser from "@/hooks/useUser"
-import LocationReview from "@/interfaces/LocationReview"
-import {
-  getAllImageByLocationIdAPI,
-  getAllUserReviewsByLocationId,
-  getLocationReviewById,
-} from "@/utils/http"
+import { getLocation } from "@/service/api/location"
+import { SingleLocationResponse } from "@/types/responses/location"
 import { getAccessTokenFromLocal } from "@/utils/localStorage"
 import { toDouble } from "@/utils/reusable"
-import { Image, message, notification, Tabs } from "antd"
+import { Image, Tabs, message, notification } from "antd"
 import { useContext, useEffect, useState } from "react"
 import { AiFillStar, AiOutlineHeart } from "react-icons/ai"
 import { BsDot } from "react-icons/bs"
@@ -19,19 +13,10 @@ import { HiOutlineChevronDown } from "react-icons/hi"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import UserReviewContainer from "./components/UserReviewContainer"
 import "./styles/styles.css"
-import { Location } from "@/interfaces/location"
-import { getLocation } from "@/service/api/location"
-import {
-  LocationsResponse,
-  SingleLocationResponse,
-} from "@/types/responses/location"
 
 const SearchResultById = () => {
-  const user = useUser()
   const { id } = useParams()
-  const [locationReview, setLocationReview] =
-    useState<SingleLocationResponse | null>(null)
-  const [userReviews, setUserReviews] = useState<any>([])
+  const [location, setLocation] = useState<SingleLocationResponse | null>(null)
   const { openNotification, setCurrentRoute } = useContext(AppContext)
   const navigator = useNavigate()
   const currentLocation = useLocation()
@@ -40,9 +25,7 @@ const SearchResultById = () => {
     const fetchData = async () => {
       try {
         const location = await getLocation(String(id))
-        // const userReviews = await getAllUserReviewsByLocationId(String(id))
-        setLocationReview(location)
-        // setUserReviews(userReviews || [])
+        setLocation(location)
         document.title = location.name
       } catch (error) {
         console.log(error)
@@ -51,7 +34,7 @@ const SearchResultById = () => {
     fetchData()
   }, [id])
 
-  const checkUserIsValid = (
+  const validateValidUser = (
     helperText = "Something has to be checked again"
   ) => {
     const accessToken = getAccessTokenFromLocal()
@@ -79,22 +62,20 @@ const SearchResultById = () => {
     return true
   }
   const handleReviewButtonClick = () => {
-    if (checkUserIsValid("You need to sign in to review this location")) {
+    if (validateValidUser("You need to sign in to review this location")) {
       navigator(`/review/${id}`)
     }
   }
 
   return (
     <>
-      {locationReview && (
+      {location && (
         <div className="location-search-result-by-Id pb-8 px-8 md:px-0 flex flex-col gap-8">
           <div className="content-container">
             <div className="content-header">
               <div className="flex flex-col">
-                <h1 className="text-[2.5rem] font-bold">
-                  {locationReview?.name}
-                </h1>
-                {locationReview?.categories?.map((category) => {
+                <h1 className="text-[2.5rem] font-bold">{location?.name}</h1>
+                {location?.categories?.map((category) => {
                   return (
                     <span className="font-bold text-gray-500" key={category.id}>
                       {"#"}
@@ -115,17 +96,17 @@ const SearchResultById = () => {
               </div>
             </div>
             <LocationTypo
-              country={locationReview.address?.country?.name}
-              province={locationReview.address?.province?.name}
-              district={locationReview.address?.district?.name}
-              ward={locationReview.address?.ward?.name}
-              streetAddress={locationReview.address?.streetAddress}
+              country={location.address?.country?.name}
+              province={location.address?.province?.name}
+              district={location.address?.district?.name}
+              ward={location.address?.ward?.name}
+              streetAddress={location.address?.streetAddress}
             />
             <div className="content-rating-wrapper">
               <div className="content-rating">
                 <AiFillStar className="star-icon text-gold" size={25} />
                 <span className="content-rating_text font-bold">
-                  {toDouble(locationReview?.rating || "0")}
+                  {toDouble(location?.rating || "0")}
                 </span>
               </div>
               <BsDot size={30} />
@@ -140,7 +121,7 @@ const SearchResultById = () => {
               <div className="main-about">
                 <h1 className="text-[1.5rem] font-bold mb-4">About</h1>
                 <div className="about-paragraph">
-                  <p>{locationReview?.description}</p>
+                  <p>{location?.description}</p>
                   <div className="paragraph-more">
                     <span>Read more</span>
                     <HiOutlineChevronDown />
@@ -149,8 +130,8 @@ const SearchResultById = () => {
               </div>
               <div className="main-images">
                 <Slide slidesToShow={1} autoplay>
-                  {locationReview.locationImages?.length > 0 ? (
-                    locationReview.locationImages?.map((image) => (
+                  {location.locationImages?.length > 0 ? (
+                    location.locationImages?.map((image) => (
                       <div
                         className="w-[673px] flex justify-center items-center"
                         key={image.id}
@@ -191,7 +172,7 @@ const SearchResultById = () => {
             <div>
               <Tabs size="large">
                 <Tabs.TabPane tab="Reviews" key="tab1">
-                  <UserReviewContainer userReviews={userReviews} />
+                  <UserReviewContainer locationId={location.id} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Q&A" key="tab2">
                   <div>Q&A feature is in development progress</div>

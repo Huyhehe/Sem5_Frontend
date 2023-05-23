@@ -8,9 +8,10 @@ import { AiOutlineMenu, AiOutlineProfile } from "react-icons/ai"
 import { FiLogOut } from "react-icons/fi"
 import { NavLink, useNavigate } from "react-router-dom"
 import ResizedNavlinks from "./ResizedNavlinks"
+import { SignInResponseUser } from "@/types/responses"
 
 interface NavBarProps {
-  user: any
+  user: SignInResponseUser
 }
 
 const NavBar = ({ user }: NavBarProps) => {
@@ -83,7 +84,10 @@ const NavBar = ({ user }: NavBarProps) => {
         })}
       </div>
       <div className="user-dropdown hidden md:flex">
-        <ProfileDropDown mainDisplay={user.username} userItems={userItems} />
+        <ProfileDropDown
+          mainDisplay={user.account.username}
+          userItems={userItems}
+        />
       </div>
       <div
         className="flex md:hidden cursor-pointer"

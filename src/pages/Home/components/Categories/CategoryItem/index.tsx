@@ -1,4 +1,5 @@
 import { ReactNode, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 interface SubCategories {
   text: string
@@ -19,6 +20,7 @@ function CategoryItem({
   onClick,
 }: CategoryItemProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const navigator = useNavigate()
 
   const handleOnClick = () => {
     if (!subCategories) {
@@ -42,8 +44,9 @@ function CategoryItem({
                 <div
                   className="py-4 px-6 hover:bg-[#f2f2f7] transition-all"
                   key={idx}
+                  onClick={() => navigator(item.url)}
                 >
-                  <a href={item?.url}>{item?.text}</a>
+                  {item?.text}
                 </div>
               ))}
             </div>

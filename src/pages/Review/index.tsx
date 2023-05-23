@@ -1,8 +1,6 @@
 import { Outlet } from "react-router-dom"
 
-interface ReviewProps { }
-
-export default function Review({ ...props }: ReviewProps) {
+export default function Review() {
   document.title = "TravelCare | Review"
   return (
     <div className="w-full">
