@@ -1,11 +1,11 @@
 import { Empty } from "antd"
 import SearchCard from "../components/SearchCard"
 
-import { LocationsResponse } from "@/types/responses/location"
+import { LocationsResponseData } from "@/types/responses/location"
 import { useNavigate } from "react-router-dom"
 
 interface SearchResultProps {
-  searchResult: LocationsResponse
+  searchResult: LocationsResponseData
 }
 
 const SearchResult = ({ searchResult }: SearchResultProps) => {
