@@ -1,6 +1,6 @@
 import { AppContext } from "@/App"
 import { getPagingLocation } from "@/service/api/location"
-import { LocationsResponse } from "@/types/responses/location"
+import { LocationsResponseData } from "@/types/responses/location"
 import { useContext, useEffect, useState } from "react"
 import { Outlet, useParams, useSearchParams } from "react-router-dom"
 import Search from "../../components/Search/Search"
@@ -10,7 +10,7 @@ import "./styles.css"
 const SearchPage = () => {
   const [queryString] = useSearchParams()
   const { id } = useParams()
-  const [searchResult, setSearchResult] = useState<LocationsResponse>([])
+  const [searchResult, setSearchResult] = useState<LocationsResponseData>([])
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { setLoading } = useContext<any>(AppContext)
 
@@ -18,12 +18,12 @@ const SearchPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true)
-        const response = await getPagingLocation({
+        const { data, pagination } = await getPagingLocation({
           searchString: queryString.get("data") || "",
         })
 
         setLoading(false)
-        setSearchResult(response)
+        setSearchResult(data)
       } catch (error) {
         console.log(error)
       }

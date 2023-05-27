@@ -2,7 +2,7 @@ import { LogoDark } from "@/assets/images"
 import { useState } from "react"
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai"
 import { RiMoneyDollarCircleFill } from "react-icons/ri"
-import { getRatingString, toDouble } from "../utils/reusable"
+import { getRatingString, toDouble } from "../../utils/reusable"
 
 interface CardProps {
   img?: string
