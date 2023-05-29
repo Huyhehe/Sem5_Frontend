@@ -4,7 +4,7 @@ import Slide from "@/components/common/Slide"
 import { getLocation } from "@/service/api/location"
 import { SingleLocationResponse } from "@/types/responses/location"
 import { getAccessTokenFromLocal } from "@/utils/localStorage"
-import { toDouble } from "@/utils/reusable"
+import { toDouble, wordTransformByQuantity } from "@/utils/reusable"
 import { Image, Tabs, message, notification } from "antd"
 import { useContext, useEffect, useState } from "react"
 import { AiFillStar, AiOutlineHeart } from "react-icons/ai"
@@ -26,7 +26,7 @@ const SearchResultById = () => {
       try {
         const location = await getLocation(String(id))
         setLocation(location)
-        document.title = location.name
+        document.title = location.data.name
       } catch (error) {
         console.log(error)
       }
@@ -74,8 +74,10 @@ const SearchResultById = () => {
           <div className="content-container">
             <div className="content-header">
               <div className="flex flex-col">
-                <h1 className="text-[2.5rem] font-bold">{location?.name}</h1>
-                {location?.categories?.map((category) => {
+                <h1 className="text-[2.5rem] font-bold">
+                  {location?.data?.name}
+                </h1>
+                {location?.data?.categories?.map((category) => {
                   return (
                     <span className="font-bold text-gray-500" key={category.id}>
                       {"#"}
@@ -96,32 +98,38 @@ const SearchResultById = () => {
               </div>
             </div>
             <LocationTypo
-              country={location.address?.country?.name}
-              province={location.address?.province?.name}
-              district={location.address?.district?.name}
-              ward={location.address?.ward?.name}
-              streetAddress={location.address?.streetAddress}
+              country={location.data?.address?.country?.name}
+              province={location.data?.address?.province?.name}
+              district={location.data?.address?.district?.name}
+              ward={location.data?.address?.ward?.name}
+              streetAddress={location.data?.address?.streetAddress}
             />
             <div className="content-rating-wrapper">
               <div className="content-rating">
                 <AiFillStar className="star-icon text-gold" size={25} />
                 <span className="content-rating_text font-bold">
-                  {toDouble(location?.rating || "0")}
+                  {toDouble(location?.data?.rating || "0")}
                 </span>
               </div>
               <BsDot size={30} />
               <div className="content-details">
-                {/* <span className="content-rating_text">
-              Rated by <span className="font-bold">{userReviews.length}</span>{" "}
-              people
-            </span> */}
+                <span className="content-rating_text">
+                  Rated by{" "}
+                  <span className="font-bold">
+                    {location.data?.reviewCount}
+                  </span>
+                  {` ${wordTransformByQuantity(
+                    "person",
+                    location.data?.reviewCount || 0
+                  )}`}
+                </span>
               </div>
             </div>
             <div className="content-main flex gap-[2rem]">
               <div className="main-about">
                 <h1 className="text-[1.5rem] font-bold mb-4">About</h1>
                 <div className="about-paragraph">
-                  <p>{location?.description}</p>
+                  <p>{location?.data?.description}</p>
                   <div className="paragraph-more">
                     <span>Read more</span>
                     <HiOutlineChevronDown />
@@ -130,14 +138,14 @@ const SearchResultById = () => {
               </div>
               <div className="main-images">
                 <Slide slidesToShow={1} autoplay>
-                  {location.locationImages?.length > 0 ? (
-                    location.locationImages?.map((image) => (
+                  {location.imageUrlLocation?.length > 0 ? (
+                    location.imageUrlLocation?.map((image) => (
                       <div
                         className="w-[673px] flex justify-center items-center"
-                        key={image.id}
+                        key={image}
                       >
                         <Image
-                          src={image.imageUrl}
+                          src={image}
                           className="object-contain aspect-[16/9]"
                         />
                       </div>
@@ -172,7 +180,7 @@ const SearchResultById = () => {
             <div>
               <Tabs size="large">
                 <Tabs.TabPane tab="Reviews" key="tab1">
-                  <UserReviewContainer locationId={location.id} />
+                  <UserReviewContainer locationId={location.data?.id} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Q&A" key="tab2">
                   <div>Q&A feature is in development progress</div>

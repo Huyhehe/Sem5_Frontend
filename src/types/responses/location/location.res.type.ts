@@ -1,3 +1,6 @@
 import { Location } from "@/interfaces/location"
 
-export type SingleLocationResponse = Location
+export type SingleLocationResponse = {
+  data: Location
+  imageUrlLocation: string[]
+}

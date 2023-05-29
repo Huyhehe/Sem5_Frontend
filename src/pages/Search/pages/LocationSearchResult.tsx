@@ -1,17 +1,41 @@
-import { Empty } from "antd"
+import Empty from "antd/es/empty"
 import SearchCard from "../components/SearchCard"
 
 import { LocationsResponseData } from "@/types/responses/location"
 import { useNavigate } from "react-router-dom"
+import { useContext, useEffect, useState } from "react"
+import { AppContext } from "@/App"
+import { getPagingLocation } from "@/service/api/location"
 
 interface SearchResultProps {
-  searchResult: LocationsResponseData
+  queryString: URLSearchParams
 }
 
-const SearchResult = ({ searchResult }: SearchResultProps) => {
+const SearchResult = ({ queryString }: SearchResultProps) => {
   document.title = "TravelCare | Search"
 
   const navigator = useNavigate()
+  const [searchResult, setSearchResult] = useState<LocationsResponseData>([])
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { setLoading } = useContext<any>(AppContext)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+        const { data } = await getPagingLocation({
+          searchString: queryString.get("data") || "",
+        })
+
+        setLoading(false)
+        setSearchResult(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchData()
+  }, [queryString])
+
   const handleOnCardClick = (id: string) => {
     navigator(`/search/${id}`)
   }

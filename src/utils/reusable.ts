@@ -51,7 +51,18 @@ export const getDateTimeFormatted = (
 }
 
 export const wordTransformByQuantity = (word: string, value: number) => {
-  return value > 1 ? word + "s" : word
+  switch (word) {
+    case "day":
+      return value > 1 ? "days" : "day"
+    case "night":
+      return value > 1 ? "nights" : "night"
+    case "person":
+      return value > 1 ? "people" : "person"
+    case "child":
+      return value > 1 ? "children" : "child"
+    default:
+      return value > 1 ? word + "s" : word
+  }
 }
 
 export const convertSnakeToCamelObjectArray = <T extends Record<string, any>>(

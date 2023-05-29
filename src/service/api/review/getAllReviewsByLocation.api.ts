@@ -3,7 +3,7 @@ import { ReviewsByLocationResponse } from "@/types/responses"
 
 export const getAllReviewsByLocation = async (
   locationId: string
-): Promise<ReviewsByLocationResponse[]> => {
+): Promise<ReviewsByLocationResponse> => {
   try {
     const response = await axiosInstance.get(
       `/review/get-reviews-by-location/${locationId}`

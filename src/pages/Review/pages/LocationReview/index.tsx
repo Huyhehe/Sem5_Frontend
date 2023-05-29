@@ -1,9 +1,9 @@
 import { AppContext } from "@/App"
 import { LocationTypo } from "@/components/common/LocationTypo"
 import SelectorField from "@/components/common/SelectorField"
-import useUser from "@/hooks/useUser"
 import { Location } from "@/interfaces/location"
 import { getLocation } from "@/service/api/location"
+import { createLocationReview } from "@/service/api/review"
 import { getTripTypes } from "@/service/api/review/getTripTypes.api"
 import { DatePicker, Form, Input, message, Rate, UploadProps } from "antd"
 import Dragger from "antd/lib/upload/Dragger"
@@ -13,7 +13,6 @@ import { useContext, useEffect, useState } from "react"
 import { BsCloudUploadFill } from "react-icons/bs"
 import { useParams } from "react-router-dom"
 import Fallback from "../Fallback"
-import { createLocationReview } from "@/service/api/review"
 
 export interface ReviewFormValues {
   locationId: string
@@ -44,7 +43,7 @@ export default function LocationReviewPage() {
     const fetchData = async () => {
       try {
         const location = await getLocation(id as string)
-        setLocation(location)
+        setLocation(location.data)
         setLoading(false)
       } catch (error: any) {
         setLoading(false)

@@ -1,6 +1,7 @@
 import { ReviewCardInProfile } from "@/components/ReviewCardInProfile"
-import UserReview from "@/interfaces/UserReview"
-import { getAllReviewByUserIdAPI } from "@/utils/http"
+import { UserReview } from "@/interfaces/review"
+import { getAllReviewByCurrentUser } from "@/service/api/review"
+
 import { useEffect, useState } from "react"
 import { useOutletContext } from "react-router-dom"
 
@@ -8,10 +9,16 @@ export default function MyReviews() {
   const { userInfo } = useOutletContext<any>()
 
   const [reviews, setReviews] = useState<UserReview[]>([])
+
+  const updateReviews = (reviewId: string) => {
+    setReviews((prev) => {
+      return prev.filter((item) => item.id !== reviewId)
+    })
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const reviews = await getAllReviewByUserIdAPI(userInfo.id)
+        const reviews = await getAllReviewByCurrentUser()
         setReviews(reviews)
       } catch (error: any) {
         console.log(error)
@@ -27,7 +34,7 @@ export default function MyReviews() {
           <ReviewCardInProfile
             key={index}
             review={review}
-            setReview={setReviews}
+            updateReviews={updateReviews}
           />
         )
       })}

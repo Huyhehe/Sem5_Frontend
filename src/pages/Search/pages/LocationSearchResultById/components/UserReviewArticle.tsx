@@ -2,7 +2,7 @@ import { AppContext } from "@/App"
 import { LocationTypo } from "@/components/common/LocationTypo"
 import RatePoint from "@/components/common/RatePoint"
 import useUser from "@/hooks/useUser"
-import { ReviewsByLocationResponse } from "@/types/responses"
+import { UserReview } from "@/interfaces/review"
 import { getAccessTokenFromLocal } from "@/utils/localStorage"
 import {
   getAddressStringWithoutStreetAddress,
@@ -14,7 +14,7 @@ import { AiFillEdit, AiFillLike, AiOutlineLike } from "react-icons/ai"
 import { useLocation, useNavigate } from "react-router-dom"
 
 interface UserReviewArticleProps {
-  userReview: ReviewsByLocationResponse
+  userReview: UserReview
   searchQueryString: string
 }
 
