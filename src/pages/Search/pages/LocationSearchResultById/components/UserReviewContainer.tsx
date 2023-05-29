@@ -1,6 +1,6 @@
-import { getAllReviewsByLocation } from "@/service/api/review/getAllReviewsByLocation.api"
+import { getAllReviewsByLocation } from "@/service/api/review"
 import { ReviewsByLocationResponse } from "@/types/responses"
-import { Input } from "antd"
+import Input from "antd/es/input"
 import { useEffect, useState } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import UserReviewArticle from "./UserReviewArticle"
@@ -12,13 +12,10 @@ interface UserReviewContainerProps {
 const UserReviewContainer = ({ locationId }: UserReviewContainerProps) => {
   let searchTimeout: string | number | NodeJS.Timeout | undefined
 
-  const [userReviews, setUserReviews] = useState<ReviewsByLocationResponse[]>(
-    []
-  )
+  const [userReviews, setUserReviews] = useState<ReviewsByLocationResponse>([])
   const [searchString, setSearchString] = useState<string>("")
-  const [filteredUserReviews, setFilteredUserReviews] = useState<
-    ReviewsByLocationResponse[]
-  >([...userReviews])
+  const [filteredUserReviews, setFilteredUserReviews] =
+    useState<ReviewsByLocationResponse>([...userReviews])
 
   useEffect(() => {
     setFilteredUserReviews(userReviews)
