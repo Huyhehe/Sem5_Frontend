@@ -1,7 +1,8 @@
 import { AppContext } from "@/App"
+import { LocationTypo } from "@/components/common/LocationTypo"
 import RatePoint from "@/components/common/RatePoint"
 import useUser from "@/hooks/useUser"
-import UserReview from "@/interfaces/UserReview"
+import { UserReview } from "@/interfaces/review"
 import { getAccessTokenFromLocal } from "@/utils/localStorage"
 import {
   getAddressStringWithoutStreetAddress,
@@ -47,57 +48,70 @@ const UserReviewArticle = ({
     return result
   }
   const handleLikeClick = () => {
-    const accessToken = getAccessTokenFromLocal()
-    setCurrentRoute(currentLocation.pathname)
-    if (!accessToken) {
-      openNotification("warning", {
-        message: "Warning",
-        description: (
-          <div className="flex flex-col">
-            <span>You need to sign in to like this review</span>
-            <span
-              className="font-bold underline cursor-pointer"
-              onClick={() => {
-                navigator("/login/signIn")
-                notification.destroy()
-              }}
-            >
-              Sign in
-            </span>
-          </div>
-        ),
-      })
-    } else {
-      setIsLiked(!isLiked)
-    }
+    // const accessToken = getAccessTokenFromLocal()
+    // setCurrentRoute(currentLocation.pathname)
+    // if (!accessToken) {
+    //   openNotification("warning", {
+    //     message: "Warning",
+    //     description: (
+    //       <div className="flex flex-col">
+    //         <span>You need to sign in to like this review</span>
+    //         <span
+    //           className="font-bold underline cursor-pointer"
+    //           onClick={() => {
+    //             navigator("/login/signIn")
+    //             notification.destroy()
+    //           }}
+    //         >
+    //           Sign in
+    //         </span>
+    //       </div>
+    //     ),
+    //   })
+    // } else {
+    //   setIsLiked(!isLiked)
+    // }
+    openNotification("warning", {
+      message: "Warning",
+      description:
+        "This feature is not available yet, we're trying to bring it to you as soon as possible",
+    })
   }
   const handleEditButtonClick = () => {
-    if (userReview.user.account.id !== user.id) {
-      openNotification("warning", {
-        message: "Warning",
-        description: "You cannot edit this review",
-      })
-    } else {
-      navigator(`/review/edit/${userReview.id}`)
-    }
+    // if (userReview.user.accountId !== user?.accountId) {
+    //   openNotification("warning", {
+    //     message: "Warning",
+    //     description: "You cannot edit this review",
+    //   })
+    // } else {
+    //   navigator(`/review/edit/${userReview.id}`)
+    // }
+    openNotification("warning", {
+      message: "Warning",
+      description:
+        "This feature is not available yet, we're trying to bring it to you as soon as possible",
+    })
   }
   return (
-    <div className="UserReviewArticle flex flex-col gap-4">
+    <div className="UserReviewArticle flex flex-col gap-3">
       <header className="flex justify-between">
         <div className="user-box flex gap-1 items-center">
           <img
-            src={userReview.user.profile_picture}
+            src={userReview.user.profileImageUrl}
             className="rounded-full w-[50px] aspect-square scale-[80%]"
           />
           <div className="flex flex-col">
             <span className="text-[1rem] font-bold">
               {highLightText(
-                userReview.user.account.username,
+                `${userReview.user.firstName} ${userReview.user.lastName}`,
                 searchQueryString
               )}
             </span>
             <span className="text-[0.8rem] text-gray-500">
-              {getAddressStringWithoutStreetAddress(userReview.user.address)}
+              {highLightText(
+                userReview.user.account.username,
+                searchQueryString
+              )}
             </span>
           </div>
         </div>
@@ -140,10 +154,10 @@ const UserReviewArticle = ({
         </span>
         <p>{highLightText(userReview.content, searchQueryString)}</p>
         <div className="w-[150px] flex justify-center items-center">
-          {userReview.images && (
+          {userReview.reviewImages.length > 0 && (
             <Image
               preview={{ visible: false }}
-              src={userReview.images[0]?.image}
+              src={userReview.reviewImages[0]?.imageUrl}
               className="object-contain aspect-[16/9]"
               onClick={() => setGroupVisible(true)}
             />
@@ -155,26 +169,41 @@ const UserReviewArticle = ({
                 onVisibleChange: (vis) => setGroupVisible(vis),
               }}
             >
-              {userReview.images?.map((image, index) => {
-                return <Image key={index} src={image.image} />
+              {userReview.reviewImages?.map((image) => {
+                return <Image key={image.imageKey} src={image.imageUrl} />
               })}
             </Image.PreviewGroup>
           </div>
         </div>
       </main>
-      <footer className="flex flex-col">
-        <span className="text-[0.75rem] text-gray-500">
-          Visited on{" "}
-          {getDateTimeFormatted(userReview.trip_time, {
-            timeZone: "UTC",
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}
-        </span>
-        <span className="text-[0.75rem] text-gray-500">
-          Written on {getDateTimeFormatted(userReview.review_date)}
-        </span>
+      <footer className="flex justify-between items-end">
+        <div className="flex flex-col">
+          <span className="text-[0.75rem] text-gray-500">
+            Visited{" "}
+            {getDateTimeFormatted(userReview.tripTime, {
+              timeZone: "UTC",
+              month: "long",
+              year: "numeric",
+            })}
+          </span>
+          <span className="text-[0.75rem] text-gray-500">
+            Written {getDateTimeFormatted(userReview.reviewAt)}
+          </span>
+        </div>
+        <div className="flex flex-col text-right">
+          <span className="font-bold">{`#${userReview.tripType.name}`}</span>
+          {userReview.user?.address?.country && (
+            <LocationTypo
+              extendClassName="text-[0.8rem] text-gray-500 gap-1"
+              country={userReview.user?.address?.country?.name}
+              province={userReview.user?.address?.province?.name}
+              district={userReview.user?.address?.district?.name}
+              ward={userReview.user?.address?.ward?.name}
+              streetAddress={userReview.user?.address?.streetAddress}
+              prefix="From"
+            />
+          )}
+        </div>
       </footer>
     </div>
   )

@@ -4,15 +4,37 @@ import {
   getProvinces,
 } from "@/service/api/addresss"
 import { getWards } from "@/service/api/addresss/getWards.api"
-import { UserInfoResponse } from "@/types/responses"
 import { FormInstance } from "antd/es/form"
 import message from "antd/es/message"
 import { useEffect, useState } from "react"
 import FormItem from "./FormItem"
 import SelectorField from "./SelectorField"
 
+interface Address {
+  id: string
+  country: {
+    id: string
+    name: string
+    description: string
+  }
+  province: {
+    id: string
+    name: string
+    description: string
+  }
+  district: {
+    id: string
+    name: string
+    description: string
+  }
+  ward: {
+    id: string
+    name: string
+  }
+  streetAddress: string
+}
 interface AddressSelectorGroupProps {
-  userInfo?: UserInfoResponse
+  defaultValue?: Address | null
   form: FormInstance
   required?: boolean
 }
@@ -44,14 +66,14 @@ const extractDataToIdNameProps = (data: any) => {
 }
 
 const AddressSelectorGroup = ({
-  userInfo,
+  defaultValue,
   form,
   required = false,
 }: AddressSelectorGroupProps) => {
   const [locationState, setLocationState] =
     useState<LocationState>(initialLocationState)
   const [defaultLocations, setDefaultLocations] = useState({
-    ...userInfo?.address,
+    ...defaultValue,
   })
 
   const { countries, provinces, districts, wards } = locationState
@@ -247,7 +269,7 @@ const AddressSelectorGroup = ({
         name={"countryId"}
         label="Country"
         labelCol={{ span: 24 }}
-        initialValue={userInfo?.address?.country?.name || null}
+        initialValue={defaultValue?.country?.name || null}
         required={required}
         message={required ? "Please select your country" : undefined}
       >
@@ -262,7 +284,7 @@ const AddressSelectorGroup = ({
         name={"provinceId"}
         label="Province"
         labelCol={{ span: 24 }}
-        initialValue={userInfo?.address?.province?.name || null}
+        initialValue={defaultValue?.province?.name || null}
         required={required}
         message={required ? "Please select your province" : undefined}
       >
@@ -283,7 +305,7 @@ const AddressSelectorGroup = ({
         name={"districtId"}
         label="District"
         labelCol={{ span: 24 }}
-        initialValue={userInfo?.address?.district?.name || null}
+        initialValue={defaultValue?.district?.name || null}
         required={required}
         message={required ? "Please select your district" : undefined}
       >
@@ -304,7 +326,7 @@ const AddressSelectorGroup = ({
         name={"wardId"}
         label="Ward"
         labelCol={{ span: 24 }}
-        initialValue={userInfo?.address?.ward?.name || null}
+        initialValue={defaultValue?.ward?.name || null}
         required={required}
         message={required ? "Please select your ward" : undefined}
       >

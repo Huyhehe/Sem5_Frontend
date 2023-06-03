@@ -1,6 +1,6 @@
 import { AppContext } from "@/App"
 import useUser from "@/hooks/useUser"
-import UserReview from "@/interfaces/UserReview"
+import { UserReview } from "@/interfaces/review"
 import getAllTripType from "@/utils/getAllTripType"
 import {
   createImageReviewAPI,
@@ -25,7 +25,7 @@ import { BsCloudUploadFill } from "react-icons/bs"
 import { MdDelete } from "react-icons/md"
 import { useParams } from "react-router-dom"
 
-export default function EditPage  ()  {
+export default function EditPage() {
   const { id } = useParams()
   const user = useUser()
   const { setLoading } = useContext(AppContext)
@@ -135,7 +135,7 @@ export default function EditPage  ()  {
             rules={[
               { required: true, message: "Please input your trip type!" },
             ]}
-            initialValue={userReview?.trip_type.id || ""}
+            initialValue={userReview?.tripType.id || ""}
           >
             <Select
               allowClear
@@ -167,10 +167,10 @@ export default function EditPage  ()  {
                 message: "Please input trip time!",
               },
             ]}
-            initialValue={dayjs(userReview.trip_time)}
+            initialValue={dayjs(userReview.tripTime)}
           >
             <DatePicker
-              defaultValue={dayjs(userReview.trip_time)}
+              defaultValue={dayjs(userReview.tripTime)}
               format={"DD-MM-YYYY"}
             />
           </Form.Item>

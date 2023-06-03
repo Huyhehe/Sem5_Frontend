@@ -1,5 +1,5 @@
 import { AppContext } from "@/App"
-import { signInAPI } from "@/utils/http"
+import { signInAPI } from "@/service/api/authen"
 import { setUserToLocal } from "@/utils/localStorage"
 import Button from "antd/es/button/button"
 import Form from "antd/es/form"
@@ -16,7 +16,7 @@ const SignInPage = () => {
     setLoading(true)
     try {
       const { user } = await signInAPI(signInData)
-      setUserToLocal({ ...user })
+      setUserToLocal(user)
       setLoading(false)
 
       if (currentRoute) {
@@ -53,7 +53,7 @@ const SignInPage = () => {
           ]}
         >
           <Input
-            placeholder="Ex: Huyhehe@gmail.com"
+            placeholder="Ex: abc123@gmail.com"
             allowClear
             className="rounded-md hover:border-primary focus-within:border-primary shadow-none"
           />

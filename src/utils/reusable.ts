@@ -40,21 +40,29 @@ export const removeAccent = (str: string) => {
 
 export const getDateTimeFormatted = (
   date: string,
-  options: any = {
+  options: Intl.DateTimeFormatOptions | undefined = {
     timeZone: "UTC",
     day: "numeric",
     month: "long",
     year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
   }
 ) => {
   return new Date(date).toLocaleString("en-US", options)
 }
 
 export const wordTransformByQuantity = (word: string, value: number) => {
-  return value > 1 ? word + "s" : word
+  switch (word) {
+    case "day":
+      return value > 1 ? "days" : "day"
+    case "night":
+      return value > 1 ? "nights" : "night"
+    case "person":
+      return value > 1 ? "people" : "person"
+    case "child":
+      return value > 1 ? "children" : "child"
+    default:
+      return value > 1 ? word + "s" : word
+  }
 }
 
 export const convertSnakeToCamelObjectArray = <T extends Record<string, any>>(

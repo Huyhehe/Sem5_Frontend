@@ -1,21 +1,29 @@
-import { Hotel, hotelList } from "@/assets/data/hotel"
 import Space from "antd/es/space"
 import HotelCard from "./components/HotelCard"
 import SkeletonHotelCard from "./components/SkeletonHotelCard"
 import { useEffect, useState } from "react"
+import { getPagingHotel } from "@/service/api/hotel"
+import { Hotel } from "@/interfaces/hotel"
 
 const MainContainer = () => {
-  const [data, setData] = useState<Hotel[] | null>(null)
+  const [hotels, setHotels] = useState<Hotel[]>([])
   useEffect(() => {
-    setTimeout(() => {
-      setData(hotelList)
-    }, 3000)
+    const fetchData = async () => {
+      try {
+        const { data } = await getPagingHotel()
+        setHotels(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchData()
   }, [])
+
   return (
     <Space direction="vertical" className="w-full" size={10}>
-      {data ? (
-        data.map((hotel, index) => {
-          return <HotelCard key={index} {...hotel} />
+      {hotels?.length ? (
+        hotels.map((hotel, index) => {
+          return <HotelCard key={index} hotel={hotel} />
         })
       ) : (
         <>

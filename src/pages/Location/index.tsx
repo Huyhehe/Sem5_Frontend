@@ -32,7 +32,6 @@ interface FormValues {
   districtId: string
   wardId: string
   streetAddress: string
-  priceLevel: number
   description: string
   images: any
 }
@@ -88,8 +87,10 @@ export default function AddLocation() {
         setLoading(true)
         const formData = new FormData()
         const { images, description, ...rest } = values
-        for (const file of images?.fileList) {
-          formData.append("images", file.originFileObj)
+        if (images?.fileList?.length > 0) {
+          for (const file of images?.fileList) {
+            formData.append("images", file.originFileObj)
+          }
         }
 
         const data = trimmedObject({
@@ -99,7 +100,9 @@ export default function AddLocation() {
         })
 
         Object.keys(data).forEach((key) => {
-          formData.append(key, data[key])
+          if (data[key]) {
+            formData.append(key, data[key])
+          }
         })
 
         await createLocationAPI(formData)

@@ -1,4 +1,4 @@
-import User from "@/interfaces/User"
+import { SignInResponseUser } from "@/types/responses"
 
 export const getEmailFromLocal = () => {
   return JSON.parse(localStorage?.getItem("email") || "null")
@@ -29,7 +29,7 @@ export const clearTokens = () => {
   localStorage.removeItem("refreshToken")
 }
 
-export const setUserToLocal = (user: User) => {
+export const setUserToLocal = (user: SignInResponseUser) => {
   localStorage.setItem("user", JSON.stringify(user))
 }
 

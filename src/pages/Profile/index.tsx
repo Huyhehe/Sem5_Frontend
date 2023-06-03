@@ -16,9 +16,10 @@ import Image from "antd/es/image"
 import Input from "antd/es/input"
 import message from "antd/es/message"
 import Modal from "antd/es/modal"
+import Spin from "antd/es/spin"
 import Tooltip from "antd/es/tooltip"
 import Upload, { UploadProps } from "antd/es/upload"
-import { useContext, useEffect, useState } from "react"
+import { Suspense, useContext, useEffect, useState } from "react"
 import { AiFillEdit, AiOutlineCloudUpload, AiOutlinePlus } from "react-icons/ai"
 import { BsCalendar2Week } from "react-icons/bs"
 import { HiOutlinePhotograph } from "react-icons/hi"
@@ -59,6 +60,10 @@ const links = [
     name: "Following",
     to: "/following",
   },
+  {
+    name: "Business",
+    to: "/business",
+  },
 ]
 
 const initialUserInfo: UserInfoResponse = {
@@ -76,7 +81,7 @@ const initialUserInfo: UserInfoResponse = {
   coverImageUrl: "",
   about: "",
   role: "",
-  isSale: true,
+  isSale: false,
   address: {
     id: "",
     country: {
@@ -312,7 +317,15 @@ const Profile = () => {
           </div>
         </div>
         <div className="detail-info-right flex-grow">
-          <Outlet context={{ userInfo, setUserInfo }} />
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center w-full h-full">
+                <Spin size="small" />
+              </div>
+            }
+          >
+            <Outlet context={{ userInfo, setUserInfo }} />
+          </Suspense>
         </div>
       </div>
 
@@ -344,7 +357,11 @@ const Profile = () => {
                 <div className="image-mask">
                   <div className="image-mask-layer">
                     <HiOutlinePhotograph size={30} className="text-white" />
-                    <span className="text-white">Upload a photo</span>
+                    <span className="text-white">
+                      {userInfo.profileImageUrl
+                        ? "Update avatar"
+                        : "Upload a photo"}
+                    </span>
                   </div>
                   {userInfo?.profileImageUrl ? (
                     <img
@@ -437,7 +454,10 @@ const Profile = () => {
               >
                 <Input allowClear placeholder="Phone number" />
               </FormItem>
-              <AddressSelectorGroup userInfo={userInfo} form={form} />
+              <AddressSelectorGroup
+                defaultValue={userInfo.address}
+                form={form}
+              />
               <FormItem
                 name={"streetAddress"}
                 label="Street address"

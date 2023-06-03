@@ -1,40 +1,63 @@
-import UserReview from "@/interfaces/UserReview"
-import { Input } from "antd"
+import { getAllReviewsByLocation } from "@/service/api/review"
+import { ReviewsByLocationResponse } from "@/types/responses"
+import Input from "antd/es/input"
 import { useEffect, useState } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import UserReviewArticle from "./UserReviewArticle"
 
 interface UserReviewContainerProps {
-  userReviews: UserReview[]
+  locationId: string
 }
 
-const UserReviewContainer = ({ userReviews }: UserReviewContainerProps) => {
-  let searchTimeout: any
+const UserReviewContainer = ({ locationId }: UserReviewContainerProps) => {
+  let searchTimeout: string | number | NodeJS.Timeout | undefined
 
-  const [searchQueryString, setSearchQueryString] = useState("")
-  const [filteredUserReviews, setFilteredUserReviews] = useState<UserReview[]>([
-    ...userReviews,
-  ])
+  const [userReviews, setUserReviews] = useState<ReviewsByLocationResponse>([])
+  const [searchString, setSearchString] = useState<string>("")
+  const [filteredUserReviews, setFilteredUserReviews] =
+    useState<ReviewsByLocationResponse>([...userReviews])
+
   useEffect(() => {
     setFilteredUserReviews(userReviews)
   }, [userReviews])
 
-  const handleOnChangeSearchInput = (e: any) => {
-    const value = e.target.value.trim()
+  const handleOnChangeSearchInput = (searchValue: string) => {
     clearTimeout(searchTimeout)
     searchTimeout = setTimeout(() => {
       const filteredUserReviewsRes = userReviews.filter(
         (userReview) =>
-          userReview.title.toLowerCase().includes(value.toLowerCase()) ||
-          userReview.content.toLowerCase().includes(value.toLowerCase()) ||
+          userReview.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+          userReview.content
+            .toLowerCase()
+            .includes(searchValue.toLowerCase()) ||
           userReview.user.account.username
             .toLowerCase()
-            .includes(value.toLowerCase())
+            .includes(searchValue.toLowerCase()) ||
+          userReview.user.firstName
+            .toLowerCase()
+            .includes(searchValue.toLowerCase()) ||
+          userReview.user.lastName
+            .toLowerCase()
+            .includes(searchValue.toLowerCase())
       )
       setFilteredUserReviews(filteredUserReviewsRes)
-      setSearchQueryString(value)
+      setSearchString(searchValue)
     }, 500)
   }
+
+  useEffect(() => {
+    if (locationId) {
+      const fetchData = async () => {
+        try {
+          const reviews = await getAllReviewsByLocation(locationId)
+          setUserReviews(reviews)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      fetchData()
+    }
+  }, [locationId])
   return (
     <div className="review-container">
       <div className="flex flex-col items-center">
@@ -50,7 +73,7 @@ const UserReviewContainer = ({ userReviews }: UserReviewContainerProps) => {
               />
             }
             allowClear
-            onChange={handleOnChangeSearchInput}
+            onChange={(e) => handleOnChangeSearchInput(e.target.value.trim())}
           />
         </div>
         <div className="review-content-box w-full">
@@ -59,7 +82,7 @@ const UserReviewContainer = ({ userReviews }: UserReviewContainerProps) => {
               <div key={index} className="py-8 border-b">
                 <UserReviewArticle
                   userReview={review}
-                  searchQueryString={searchQueryString}
+                  searchQueryString={searchString}
                 />
               </div>
             )

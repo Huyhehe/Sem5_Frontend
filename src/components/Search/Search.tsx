@@ -1,5 +1,5 @@
 import { getPagingLocation } from "@/service/api/location"
-import { LocationsResponse } from "@/types/responses/location"
+import { LocationsResponseData } from "@/types/responses/location"
 import { Form, Input } from "antd"
 import { useLayoutEffect, useRef, useState } from "react"
 import { BiSearch } from "react-icons/bi"
@@ -18,7 +18,7 @@ const Search = ({ defaultValue }: SearchProps) => {
   const inputRef = useRef<any>(null)
   const [isFocusing, setIsFocusing] = useState<boolean>(false)
   const [searchString, setSearchString] = useState(defaultValue || "")
-  const [searchResult, setSearchResult] = useState<LocationsResponse>([])
+  const [searchResult, setSearchResult] = useState<LocationsResponseData>([])
   const navigator = useNavigate()
 
   // useEffect(() => {
@@ -67,8 +67,8 @@ const Search = ({ defaultValue }: SearchProps) => {
   useLayoutEffect(() => {
     const timeout = setTimeout(async () => {
       try {
-        const result = await getPagingLocation({ searchString })
-        setSearchResult(result)
+        const { data } = await getPagingLocation({ searchString })
+        setSearchResult(data)
       } catch (error) {
         console.log(error)
       }
