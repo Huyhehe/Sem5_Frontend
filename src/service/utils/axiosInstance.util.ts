@@ -6,5 +6,7 @@ export const isAllowFormDataType = (requestURL: string) => {
     "/review/create-review",
     "/review/update-review",
   ]
-  return allowedURLs.includes(requestURL)
+  return allowedURLs.some((url) => {
+    return requestURL.includes(url)
+  })
 }

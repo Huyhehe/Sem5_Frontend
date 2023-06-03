@@ -26,7 +26,7 @@ const SearchResultById = () => {
       try {
         const location = await getLocation(String(id))
         setLocation(location)
-        document.title = location.data.name
+        document.title = location.name
       } catch (error) {
         console.log(error)
       }
@@ -74,10 +74,8 @@ const SearchResultById = () => {
           <div className="content-container">
             <div className="content-header">
               <div className="flex flex-col">
-                <h1 className="text-[2.5rem] font-bold">
-                  {location?.data?.name}
-                </h1>
-                {location?.data?.categories?.map((category) => {
+                <h1 className="text-[2.5rem] font-bold">{location?.name}</h1>
+                {location?.categories?.map((category) => {
                   return (
                     <span className="font-bold text-gray-500" key={category.id}>
                       {"#"}
@@ -98,29 +96,27 @@ const SearchResultById = () => {
               </div>
             </div>
             <LocationTypo
-              country={location.data?.address?.country?.name}
-              province={location.data?.address?.province?.name}
-              district={location.data?.address?.district?.name}
-              ward={location.data?.address?.ward?.name}
-              streetAddress={location.data?.address?.streetAddress}
+              country={location.address?.country?.name}
+              province={location.address?.province?.name}
+              district={location.address?.district?.name}
+              ward={location.address?.ward?.name}
+              streetAddress={location.address?.streetAddress}
             />
             <div className="content-rating-wrapper">
               <div className="content-rating">
                 <AiFillStar className="star-icon text-gold" size={25} />
                 <span className="content-rating_text font-bold">
-                  {toDouble(location?.data?.rating || "0")}
+                  {toDouble(location?.rating || "0")}
                 </span>
               </div>
               <BsDot size={30} />
               <div className="content-details">
                 <span className="content-rating_text">
                   Rated by{" "}
-                  <span className="font-bold">
-                    {location.data?.reviewCount}
-                  </span>
+                  <span className="font-bold">{location.reviewCount}</span>
                   {` ${wordTransformByQuantity(
                     "person",
-                    location.data?.reviewCount || 0
+                    location.reviewCount || 0
                   )}`}
                 </span>
               </div>
@@ -129,7 +125,7 @@ const SearchResultById = () => {
               <div className="main-about">
                 <h1 className="text-[1.5rem] font-bold mb-4">About</h1>
                 <div className="about-paragraph">
-                  <p>{location?.data?.description}</p>
+                  <p>{location?.description}</p>
                   <div className="paragraph-more">
                     <span>Read more</span>
                     <HiOutlineChevronDown />
@@ -138,8 +134,8 @@ const SearchResultById = () => {
               </div>
               <div className="main-images">
                 <Slide slidesToShow={1} autoplay>
-                  {location.imageUrlLocation?.length > 0 ? (
-                    location.imageUrlLocation?.map((image) => (
+                  {location.imageUrlLocations?.length > 0 ? (
+                    location.imageUrlLocations?.map((image) => (
                       <div
                         className="w-[673px] flex justify-center items-center"
                         key={image}
@@ -180,7 +176,7 @@ const SearchResultById = () => {
             <div>
               <Tabs size="large">
                 <Tabs.TabPane tab="Reviews" key="tab1">
-                  <UserReviewContainer locationId={location.data?.id} />
+                  <UserReviewContainer locationId={location.id} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Q&A" key="tab2">
                   <div>Q&A feature is in development progress</div>

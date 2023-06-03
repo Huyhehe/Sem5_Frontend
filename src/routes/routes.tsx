@@ -1,13 +1,13 @@
 import AuthLayout from "@/layouts/AuthLayout"
 import UnAuthLayout from "@/layouts/UnAuthLayout"
 import { lazy } from "react"
-import { createBrowserRouter, Outlet } from "react-router-dom"
+import { createBrowserRouter, Outlet, RouteObject } from "react-router-dom"
 import {
   ABOUT_PATH,
   ACCEPT_ALL_PATH,
   ADD_LOCATION_PATH,
   AUTHEN_PATH,
-  BOOKING_PATH,
+  HOTEL_PATH,
   HOME_PATH,
   PROFILE_PATH,
   REVIEW_PATH,
@@ -44,6 +44,7 @@ const ActivityFeedPage = lazy(
   () => import("../pages/Profile/pages/activity-feed")
 )
 const MyReviewsPage = lazy(() => import("../pages/Profile/pages/my-reviews"))
+const Business = lazy(() => import("../pages/Profile/pages/business"))
 
 const AddLocationPage = lazy(() => import("../pages/Location"))
 
@@ -58,7 +59,17 @@ const EditPage = lazy(
 
 const BookingPage = lazy(() => import("../pages/Booking"))
 
-const routes = [
+const HotelAddingPage = lazy(
+  () => import("../pages/Booking/hotels/hotel-adding")
+)
+const GeneralInfo = lazy(
+  () => import("../pages/Booking/hotels/hotel-adding/GeneralInfo")
+)
+const CreateHotelRooms = lazy(
+  () => import("../pages/Booking/hotels/hotel-adding/CreateHotelRooms")
+)
+
+const routes: RouteObject[] = [
   {
     path: HOME_PATH,
     element: (
@@ -161,6 +172,10 @@ const routes = [
         path: PROFILE_PATH.FOLLOWING,
         element: <div>Following</div>,
       },
+      {
+        path: PROFILE_PATH.BUSINESS,
+        element: <Business />,
+      },
     ],
   },
   {
@@ -198,13 +213,34 @@ const routes = [
   },
 
   {
-    path: BOOKING_PATH,
+    path: HOTEL_PATH.DEFAULT,
     element: (
       <AuthLayout>
-        <BookingPage />
+        <Outlet />
       </AuthLayout>
     ),
+    children: [
+      {
+        index: true,
+        element: <BookingPage />,
+      },
+      {
+        path: HOTEL_PATH.HOTEL_ADD.DEFAULT,
+        element: <HotelAddingPage />,
+        children: [
+          {
+            path: HOTEL_PATH.HOTEL_ADD.GENERAL_INFO,
+            element: <GeneralInfo />,
+          },
+          {
+            path: HOTEL_PATH.HOTEL_ADD.ROOMS,
+            element: <CreateHotelRooms />,
+          },
+        ],
+      },
+    ],
   },
+
   {
     path: ACCEPT_ALL_PATH,
     element: <NotFoundPage />,

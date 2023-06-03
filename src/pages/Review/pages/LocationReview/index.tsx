@@ -43,7 +43,7 @@ export default function LocationReviewPage() {
     const fetchData = async () => {
       try {
         const location = await getLocation(id as string)
-        setLocation(location.data)
+        setLocation(location)
         setLoading(false)
       } catch (error: any) {
         setLoading(false)
