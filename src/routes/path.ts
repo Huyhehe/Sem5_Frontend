@@ -1,7 +1,6 @@
 export const HOME_PATH = "/"
 export const ABOUT_PATH = "/about"
 export const ADD_LOCATION_PATH = "/location-add"
-export const BOOKING_PATH = "/hotels"
 
 export const SEARCH_PATH = {
   DEFAULT: "/search",
@@ -25,6 +24,7 @@ export const PROFILE_PATH = {
   BOOKMARKS: "bookmarks",
   FOLLOWERS: "followers",
   FOLLOWING: "following",
+  BUSINESS: "business",
 }
 export const REVIEW_PATH = {
   DEFAULT: "/review",
@@ -32,6 +32,18 @@ export const REVIEW_PATH = {
   EDIT: {
     DEFAULT: "edit",
     EDIT_PAGE: ":id",
+  },
+}
+
+export const HOTEL_PATH = {
+  DEFAULT: "/hotels",
+  HOTEL_PAGE: ":id",
+  HOTEL_ADD: {
+    DEFAULT: "create-hotel",
+    GENERAL_INFO: "general-info",
+    ROOMS: "create-rooms",
+    AMENITIES: "amenities",
+    PHOTOS: "photos",
   },
 }
 

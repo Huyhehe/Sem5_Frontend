@@ -37,6 +37,6 @@ export type UserInfoResponse = {
   coverImageUrl: string
   about: string
   role: string
-  isSale: true
+  isSale: boolean
   address?: Address | null
 }

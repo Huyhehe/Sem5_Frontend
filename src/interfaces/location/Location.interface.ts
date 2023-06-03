@@ -1,5 +1,6 @@
 import { Category } from "@/types/responses"
 import { Country, Province, District, Ward } from "../location"
+import { Hotel } from "../hotel"
 
 interface LocationImage {
   id: string
@@ -28,4 +29,5 @@ export interface Location {
   categories: Category[]
   address: Address
   reviews: string[]
+  hotel: Omit<Hotel, "location"> | null
 }

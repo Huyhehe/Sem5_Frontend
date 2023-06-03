@@ -60,6 +60,10 @@ const links = [
     name: "Following",
     to: "/following",
   },
+  {
+    name: "Business",
+    to: "/business",
+  },
 ]
 
 const initialUserInfo: UserInfoResponse = {
@@ -77,7 +81,7 @@ const initialUserInfo: UserInfoResponse = {
   coverImageUrl: "",
   about: "",
   role: "",
-  isSale: true,
+  isSale: false,
   address: {
     id: "",
     country: {
@@ -450,7 +454,10 @@ const Profile = () => {
               >
                 <Input allowClear placeholder="Phone number" />
               </FormItem>
-              <AddressSelectorGroup userInfo={userInfo} form={form} />
+              <AddressSelectorGroup
+                defaultValue={userInfo.address}
+                form={form}
+              />
               <FormItem
                 name={"streetAddress"}
                 label="Street address"
