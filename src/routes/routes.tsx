@@ -9,6 +9,7 @@ import {
   AUTHEN_PATH,
   HOTEL_PATH,
   HOME_PATH,
+  HOTEL_BOOKING_PATH,
   PROFILE_PATH,
   REVIEW_PATH,
   SEARCH_PATH,
@@ -69,7 +70,9 @@ const CreateHotelRooms = lazy(
   () => import("../pages/Booking/hotels/hotel-adding/CreateHotelRooms")
 )
 
-const routes: RouteObject[] = [
+const HotelBookingPage = lazy(() => import("../pages/HotelBooking"))
+
+const routes = [
   {
     path: HOME_PATH,
     element: (
@@ -241,6 +244,12 @@ const routes: RouteObject[] = [
     ],
   },
 
+  {
+    path: HOTEL_BOOKING_PATH.DEFAULT,
+    element: <AuthLayout>
+      <HotelBookingPage />
+    </AuthLayout>,
+  },
   {
     path: ACCEPT_ALL_PATH,
     element: <NotFoundPage />,
