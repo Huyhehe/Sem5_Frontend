@@ -13,6 +13,7 @@ import {
   REVIEW_PATH,
   SEARCH_PATH,
 } from "./path"
+import ImagesAdd from "@/pages/Booking/hotels/hotel-adding/ImagesAdd"
 
 const NotFoundPage = lazy(() => import("../pages/404"))
 
@@ -67,6 +68,9 @@ const GeneralInfo = lazy(
 )
 const CreateHotelRooms = lazy(
   () => import("../pages/Booking/hotels/hotel-adding/CreateHotelRooms")
+)
+const ConfirmPublish = lazy(
+  () => import("../pages/Booking/hotels/hotel-adding/ConfirmPublish")
 )
 
 const routes: RouteObject[] = [
@@ -235,6 +239,14 @@ const routes: RouteObject[] = [
           {
             path: HOTEL_PATH.HOTEL_ADD.ROOMS,
             element: <CreateHotelRooms />,
+          },
+          {
+            path: HOTEL_PATH.HOTEL_ADD.IMAGES,
+            element: <ImagesAdd />,
+          },
+          {
+            path: HOTEL_PATH.HOTEL_ADD.CONFIRM,
+            element: <ConfirmPublish />,
           },
         ],
       },

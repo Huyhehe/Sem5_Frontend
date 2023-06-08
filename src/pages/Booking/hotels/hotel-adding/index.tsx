@@ -19,6 +19,7 @@ const HotelAdding = () => {
     }
     if (
       !queryString.get("id") &&
+      window.location.pathname.includes("/hotels/create-hotel/") &&
       !window.location.pathname.includes("/hotels/create-hotel/general-info")
     ) {
       navigator("/hotels/create-hotel/general-info")
@@ -76,12 +77,32 @@ const HotelAdding = () => {
             description: "Create rooms",
           },
           {
-            title: "Step 3",
+            title: (
+              <TypographyText
+                text="Step 3"
+                onClick={() =>
+                  nextStep(
+                    `/hotels/create-hotel/images?id=${queryString.get("id")}`
+                  )
+                }
+                className="cursor-pointer hover:text-secondary"
+              />
+            ),
             description: "Images",
           },
           {
-            title: "Step 4",
-            description: "Payment method",
+            title: (
+              <TypographyText
+                text="Step 4"
+                onClick={() =>
+                  nextStep(
+                    `/hotels/create-hotel/confirm?id=${queryString.get("id")}`
+                  )
+                }
+                className="cursor-pointer hover:text-secondary"
+              />
+            ),
+            description: "Overview & Publish",
           },
         ]}
       />

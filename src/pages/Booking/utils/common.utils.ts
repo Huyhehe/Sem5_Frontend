@@ -18,3 +18,26 @@ export const checkValidParamForUpdateHotelGeneralInfo = (
   }
   return { ...params }
 }
+
+export const freeCancellationPeriodOptions = [
+  {
+    label: "Before 1 day",
+    value: 1,
+  },
+  {
+    label: "Before 2 days",
+    value: 2,
+  },
+  {
+    label: "Before 3 days",
+    value: 3,
+  },
+  {
+    label: "Before 5 days",
+    value: 5,
+  },
+  {
+    label: "Before 7 days",
+    value: 7,
+  },
+]
