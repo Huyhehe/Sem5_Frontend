@@ -42,8 +42,8 @@ export const HOTEL_PATH = {
     DEFAULT: "create-hotel",
     GENERAL_INFO: "general-info",
     ROOMS: "create-rooms",
-    AMENITIES: "amenities",
-    PHOTOS: "photos",
+    IMAGES: "images",
+    CONFIRM: "confirm",
   },
 }
 

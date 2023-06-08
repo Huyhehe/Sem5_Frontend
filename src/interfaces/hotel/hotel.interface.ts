@@ -1,5 +1,6 @@
 import { HotelAmenity, HotelStyle } from "@/types/responses/hotel"
 import { Address, Location } from "../location"
+import { HotelRoom } from "./room.interface"
 
 export interface Hotel {
   id: string
@@ -11,4 +12,5 @@ export interface Hotel {
   address: Address
   hotelStyles: HotelStyle[]
   propertyAmenities: HotelAmenity[]
+  rooms: HotelRoom[]
 }

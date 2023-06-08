@@ -68,7 +68,7 @@ const HotelCard = ({
             <div className="flex flex-col">
               {shortenAmenities(propertyAmenities, 5)?.map(
                 (propertyAmenity) => {
-                  const { id, name, iconUrl } = propertyAmenity
+                  const { id, name, icon } = propertyAmenity
                   // return Website && label === "Website" ? (
                   //   <a
                   //     href={Website}
@@ -88,7 +88,7 @@ const HotelCard = ({
                   // )
                   return (
                     <div key={id} className="flex gap-1 items-center">
-                      {iconUrl && <img src={iconUrl} />}
+                      {icon && <img src={icon} />}
                       <TypographyText text={name} className="text-gray-500" />
                     </div>
                   )

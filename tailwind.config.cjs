@@ -11,6 +11,9 @@ module.exports = {
         fade: "#857e7f",
         coral: "#e1999f",
         gold: "#f6c177",
+        base: "#1890ff",
+        dollar: "#009111",
+        error: "#ff4d4f",
       },
       screens: {
         mobile: { max: "480px" },

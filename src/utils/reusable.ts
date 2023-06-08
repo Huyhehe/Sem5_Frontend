@@ -52,10 +52,6 @@ export const getDateTimeFormatted = (
 
 export const wordTransformByQuantity = (word: string, value: number) => {
   switch (word) {
-    case "day":
-      return value > 1 ? "days" : "day"
-    case "night":
-      return value > 1 ? "nights" : "night"
     case "person":
       return value > 1 ? "people" : "person"
     case "child":
