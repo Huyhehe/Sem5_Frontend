@@ -86,16 +86,21 @@ const GeneralInfoAddForm = ({ updateCurrentStep }: GeneralInfoAddFormProps) => {
             formData.append(key, data[key])
           }
         })
-        const { id: hotelId } = await createLocationAPI(formData)
+        const createdLocation = await createLocationAPI(formData)
         setLoading(false)
         message.success(
           "Your changes have been saved! Let head to the next step!!!"
         )
         setTimeout(() => {
-          navigator(`/hotels/create-hotel/general-info?id=${hotelId}`, {
-            replace: true,
-          })
-          navigator(`/hotels/create-hotel/create-rooms?id=${hotelId}`)
+          navigator(
+            `/hotels/create-hotel/general-info?id=${createdLocation?.hotel?.id}`,
+            {
+              replace: true,
+            }
+          )
+          navigator(
+            `/hotels/create-hotel/create-rooms?id=${createdLocation?.hotel?.id}`
+          )
         }, 1000)
       } catch (error: any) {
         setLoading(false)

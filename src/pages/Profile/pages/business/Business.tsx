@@ -80,7 +80,7 @@ const Business = () => {
                       switch (hotel?.statusRegisterProgress) {
                         case 0.25: {
                           navigator(
-                            `/hotels/create-hotel/create-room?id=${hotel.id}`
+                            `/hotels/create-hotel/create-rooms?id=${hotel.id}`
                           )
                           break
                         }
