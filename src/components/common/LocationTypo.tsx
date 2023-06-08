@@ -8,6 +8,7 @@ interface LocationTypoProps {
   ward?: string | undefined | null
   streetAddress?: string
   extendClassName?: string
+  textClassName?: string
   prefix?: ReactNode
 }
 
@@ -21,6 +22,7 @@ export const LocationTypo = ({
   district = "",
   ward = "",
   streetAddress = "",
+  textClassName = "",
   extendClassName = "",
   prefix = <FaLocationArrow />,
 }: LocationTypoProps) => {
@@ -35,7 +37,7 @@ export const LocationTypo = ({
 
   return (
     <div className={`flex gap-2 items-center ${extendClassName}`}>
-      <div>{prefix}</div>
+      {prefix && <div>{prefix}</div>}
       {!checkEmptyAddress([
         country,
         province,
@@ -43,9 +45,9 @@ export const LocationTypo = ({
         ward,
         streetAddress,
       ]) ? (
-        <span>{renderAddress()}</span>
+        <span className={textClassName}>{renderAddress()}</span>
       ) : (
-        <span>Update your address</span>
+        <span className={textClassName}>Update your address</span>
       )}
     </div>
   )
