@@ -29,6 +29,7 @@ import { HotelRoomsRequest } from "@/types/requests"
 import { currencyFormatter, currencyParser } from "@/utils/reusable"
 import { freeCancellationPeriodOptions } from "../../utils"
 import ImageUploadContainer from "@/components/common/ImageUploadContainer"
+import TypographyText from "@/components/common/TypographyText"
 
 const CreateHotelRooms = () => {
   const [queryString] = useSearchParams()
@@ -37,7 +38,7 @@ const CreateHotelRooms = () => {
   const [pendingRooms, setPendingRooms] = useState<HotelRoomsResponse>([])
   const [editingRoom, setEditingRoom] = useState<HotelRoom>()
   const [isOpenModal, setIsOpenModal] = useState(false)
-  const [isFreeCancellation, setIsFreeCancellation] = useState(true)
+  const [isFreeCancellation, setIsFreeCancellation] = useState(false)
   const [form] = Form.useForm<HotelRoomsRequest>()
 
   const fetchHotelRooms = async () => {
@@ -117,7 +118,16 @@ const CreateHotelRooms = () => {
 
   const handleUploadImage = async (images: any[]) => {
     try {
-      await uploadRoomImages(String(editingRoom?.id), images)
+      const updatedData = await uploadRoomImages(
+        String(editingRoom?.id),
+        images
+      )
+      setEditingRoom((prev: any) => {
+        return {
+          ...prev,
+          roomImages: updatedData.roomImages,
+        }
+      })
       message.success("Upload image successfully")
       fetchHotelRooms()
     } catch (error: any) {
@@ -128,7 +138,16 @@ const CreateHotelRooms = () => {
 
   const handleRemoveImage = async (imageId: string) => {
     try {
-      await removeRoomImages(String(editingRoom?.id), imageId)
+      const updatedData = await removeRoomImages(
+        String(editingRoom?.id),
+        imageId
+      )
+      setEditingRoom((prev: any) => {
+        return {
+          ...prev,
+          roomImages: updatedData.roomImages,
+        }
+      })
       message.success("Remove image successfully")
       fetchHotelRooms()
     } catch (error: any) {
@@ -139,17 +158,18 @@ const CreateHotelRooms = () => {
 
   return (
     <div>
-      {pendingRooms.length < 0 ? (
-        <>
+      {pendingRooms.length < 1 ? (
+        <div className="flex flex-col items-center gap-2">
+          <TypographyText text="Add rooms is required" />
           <Button
             onClick={() => {
               setEditingRoom(undefined)
               setIsOpenModal(true)
             }}
           >
-            Add another room
+            Add room
           </Button>
-        </>
+        </div>
       ) : (
         <>
           {pendingRooms.map((room) => {
@@ -404,11 +424,14 @@ const CreateHotelRooms = () => {
               )}
             </Form.List>
           </Form>
-          <ImageUploadContainer
-            currentImages={editingRoom?.roomImages}
-            upload={handleUploadImage}
-            removeImage={handleRemoveImage}
-          />
+          {editingRoom?.id && (
+            <ImageUploadContainer
+              currentImages={editingRoom?.roomImages}
+              upload={handleUploadImage}
+              removeImage={handleRemoveImage}
+              submitText="Upload"
+            />
+          )}
         </div>
       </Modal>
     </div>

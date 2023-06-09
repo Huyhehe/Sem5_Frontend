@@ -1,4 +1,3 @@
-import { Location } from "@/interfaces/location"
 import axiosInstance from "@/service/axiosInstance"
 
 export const createLocationAPI = async (data: any) => {
@@ -17,6 +16,35 @@ export const updateLocationAPI = async (
   try {
     const { data } = await axiosInstance.patch(
       `/locations/${locationId}`,
+      formData
+    )
+    return data
+  } catch (error: any) {
+    throw new Error(error.response.data.message)
+  }
+}
+
+export const removeLocationImageAPI = async (
+  locationId: string,
+  imageId: string
+) => {
+  try {
+    const { data } = await axiosInstance.delete(
+      `/locations/delete-location-image/${locationId}/${imageId}`
+    )
+    return data
+  } catch (error: any) {
+    throw new Error(error.response.data.message)
+  }
+}
+
+export const uploadLocationImageAPI = async (
+  locationId: string,
+  formData: any
+) => {
+  try {
+    const { data } = await axiosInstance.patch(
+      `/locations/upload-location-image/${locationId}`,
       formData
     )
     return data
