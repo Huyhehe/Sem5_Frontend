@@ -1,30 +1,43 @@
 import { DateRagePicker } from '@/components/common/DateRagePicker'
+import GuessQuantity from '@/components/common/GuessQuantity'
+import HotelFilterDropdown from '@/pages/Booking/components/Header/components/HotelFilterDropdown'
+import { getVndPrice } from '@/pages/Booking/components/Header/utils/helpers.utils'
+import { IRoom } from '@/types/responses/hotel/hotelBooking.res.type'
 import { RangePickerTypes } from '@/utils/enum'
-import { useState } from 'react'
 import type { Dayjs as DayjsType } from "dayjs"
 import Dayjs from "dayjs"
-import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useFormik } from 'formik'
-import HotelFilterDropdown from '@/pages/Booking/components/Header/components/HotelFilterDropdown'
-import { HotelBookingPriceImage } from '@/assets/images'
-import { getVndPrice } from '@/pages/Booking/components/Header/utils/helpers.utils'
-import { IoIosArrowDown } from 'react-icons/io'
-import { IoIosArrowUp } from 'react-icons/io'
+import { useState, useContext } from 'react'
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { HotelBookingContext } from '../..'
+interface IViewPriceProps {
+    rooms: IRoom[]
+}
+interface IPriceDetailProps {
+    room: IRoom
+    startDate: DayjsType
+    endDate: DayjsType
+    roomNumber: number
+    personNumber: number
+}
+function ViewPrice({ rooms }: IViewPriceProps) {
 
-function ViewPrice() {
     const navigator = useNavigate()
     const [searchParams] = useSearchParams()
+
     const { start, end, room, person } = Object.fromEntries(
         searchParams.entries()
     )
+
+    const [isShowMore, setIsShowMore] = useState(false)
     const [startDate, setStartDate] = useState<DayjsType>(Dayjs(start))
     const [endDate, setEndDate] = useState<DayjsType>(
         end ? Dayjs(end) : Dayjs(start).add(1, "day")
     )
     const [rangePickerType, setRangePickerType] = useState<RangePickerTypes>()
-    const [isViewAllDeal, setIsViewAllDeal] = useState(false)
 
-    const { setFieldValue, handleSubmit } = useFormik({
+    const { setFieldValue, handleSubmit, values } = useFormik({
         initialValues: {
             room: room || 1,
             person: person || 2,
@@ -42,7 +55,7 @@ function ViewPrice() {
     })
 
     const onToggleViewAllDeal = () => {
-        setIsViewAllDeal(prev => !prev)
+        setIsShowMore(prev => !prev)
     }
 
     return (
@@ -97,20 +110,24 @@ function ViewPrice() {
             </div>
 
             <div className='mt-4'>
-                <PriceDetail />
-                <PriceDetail />
-                <PriceDetail />
+                {rooms && rooms?.map((item, index: number) => {
+                    if (index > 1 && !isShowMore) return <></>
+                    return <PriceDetail
+                        key={index}
+                        room={item}
+                        startDate={startDate}
+                        endDate={endDate}
+                        roomNumber={Number(values?.room)}
+                        personNumber={Number(values?.person)}
+                    />
+                }
+                )}
             </div>
-
-            {isViewAllDeal && <>
-                <PriceDetail />
-                <PriceDetail />
-            </>}
 
             <div className='mt-6'>
                 <div className='w-fit flex items-center gap-x-1' onClick={onToggleViewAllDeal}>
-                    <button className='font-medium underline'> {isViewAllDeal ? "Collapse deals" : "View all deals"}</button>
-                    {isViewAllDeal ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                    <button className='font-medium underline'> {isShowMore && rooms?.length > 2 ? "Collapse deals" : "View all deals"}</button>
+                    {isShowMore && rooms?.length > 2 ? <IoIosArrowUp /> : <IoIosArrowDown />}
                 </div>
                 <p className='mt-6 text-sm tracking-wider'>Prices are the average nightly price provided by our partners and may not include all taxes and fees. Taxes and fees that are shown are estimates only. Please see our partners for more details.</p>
             </div>
@@ -118,21 +135,27 @@ function ViewPrice() {
     )
 }
 
-const PriceDetail = () => {
+const PriceDetail = ({ room, startDate, endDate, roomNumber, personNumber }: IPriceDetailProps) => {
+    const context = useContext(HotelBookingContext)
+
     return <div className='py-4 border-t border-[#ccc]/30'>
         <div className='grid grid-cols-10'>
             <div className='col-span-2'>
-                <img src={HotelBookingPriceImage} className="w-24 h-10 object-contain" />
+                <span className='font-medium'>Room available:</span>
+                <span className='ml-1'>{room?.availableRooms}</span>
             </div>
             <div className='col-span-4 flex flex-col gap-y-2 items-center justify-center'>
-                <span className='text-[#525252]/80 text-sm'>Fully refundable before 06/30/23</span>
-                <span className='text-[#525252]/80 text-sm'>Fully refundable before 06/30/23</span>
+                <GuessQuantity quantity={room?.sleeps} />
             </div>
             <div className='col-span-2'>
-                <span className='text-black text-2xl font-medium flex items-center justify-center'>{getVndPrice(3532468)}</span>
+                <span className='text-black text-2xl font-medium flex items-center justify-center'>{getVndPrice(room?.price)}</span>
             </div>
             <div className='col-span-2 flex items-center justify-end'>
-                <button className='bg-[#f2b203] rounded-[100px] font-medium px-6 py-3 hover:bg-[#f2b203]/60'>View deal</button>
+                <button className='bg-[#f2b203] rounded-[100px] font-medium px-6 py-3 hover:bg-[#f2b203]/60'
+                    onClick={() => context?.onViewDetailDeal(room?.id, startDate, endDate, roomNumber, personNumber)}
+                >
+                    View deal
+                </button>
             </div>
         </div>
     </div>

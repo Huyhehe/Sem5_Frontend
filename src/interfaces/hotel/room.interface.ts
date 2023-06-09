@@ -11,6 +11,7 @@ export interface RoomType {
   name: string
   numberOfBeds: number
   typeOfBed: string
+  icon?: string
 }
 
 export interface RoomFeature {

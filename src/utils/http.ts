@@ -3,6 +3,7 @@ import axiosInstance, { setTokenInterceptor } from "@/service/axiosInstance"
 import { setAccessTokenToLocal, setRefreshTokenToLocal } from "./localStorage"
 import { autofillAPI } from "./constant"
 import { GeocodeAutocompleteResponse } from "@/types/responses"
+import { IHotelBooking } from "@/types/responses/hotel/hotelBooking.res.type"
 
 const API_URL = import.meta.env.VITE_API
 // AUTH
@@ -283,6 +284,17 @@ export const getGeocodeAutoCompleteAPI = async (
         location
       )}&format=json&apiKey=${autofillAPI}&lang=vi`
     )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error)
+  }
+}
+
+export const getHotelBookingById = async (
+  id: string
+): Promise<IHotelBooking> => {
+  try {
+    const res = await axios.get(`${API_URL}/hotels/${id}`)
     return res.data
   } catch (error: any) {
     throw new Error(error)

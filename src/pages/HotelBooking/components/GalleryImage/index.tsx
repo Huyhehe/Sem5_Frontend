@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react"
 
@@ -11,11 +11,26 @@ import "swiper/css/thumbs"
 
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 
-export default function GalleryImage() {
+interface IGalleryImageProps {
+    imageUrlLocations: string[]
+}
+
+export default function GalleryImage({ imageUrlLocations }: IGalleryImageProps) {
     const navigationPrevRef = useRef(null)
     const navigationNextRef = useRef(null)
+
+    const [image, setImage] = useState("")
+
+    useEffect(() => {
+        setImage(imageUrlLocations?.[0])
+    }, [imageUrlLocations])
+
     return (
         <>
+            <div className="w-full h-[550px]">
+                <img src={image} alt="img location" className="w-full h-full object-cover" />
+            </div>
+
             <div className="relative">
                 <Swiper
                     navigation={{
@@ -23,12 +38,15 @@ export default function GalleryImage() {
                         nextEl: navigationNextRef.current,
                     }}
                     spaceBetween={10}
+                    slidesPerView={4}
+                    freeMode={true}
+                    watchSlidesProgress={true}
                     modules={[FreeMode, Navigation, Thumbs]}
-                    className="mySwiper2 w-full h-[550px] rounded-md "
+                    className="mySwiper mt-4 rounded-md h-[150px]"
                 >
-                    {new Array(10).fill('').map((_, index: number) =>
+                    {imageUrlLocations && imageUrlLocations?.map((url: string, index: number) =>
                         <SwiperSlide key={index}>
-                            <img src="https://d3lf10b5gahyby.cloudfront.net/campaignitinerary/sun-siyam-iru-fushi-maldives-resort.jpg" className="rounded-md w-full h-full object-cover" />
+                            <img src={url} className="rounded-md w-full h-full object-cover cursor-pointer" onClick={() => setImage(url)} />
                         </SwiperSlide>
                     )}
                 </Swiper>
@@ -43,32 +61,6 @@ export default function GalleryImage() {
                     <AiOutlineArrowRight size={22} color="white" className="group-hover:text-black" />
                 </div>
             </div>
-
-            <Swiper
-                spaceBetween={10}
-                slidesPerView={4}
-                freeMode={true}
-                watchSlidesProgress={true}
-                modules={[FreeMode, Navigation, Thumbs]}
-                className="mySwiper mt-4 rounded-md "
-            >
-                <SwiperSlide className="h-[120px]">
-                    <img src="https://maldivestourism.in/wp-content/uploads/delhi-to-maldives-tour-packages-all-inclusive-cost-deals-itinerary.jpg" className="rounded-md" />
-                </SwiperSlide>
-                <SwiperSlide className="h-[120px]">
-                    <img src="https://maldivestourism.in/wp-content/uploads/delhi-to-maldives-tour-packages-all-inclusive-cost-deals-itinerary.jpg" className="rounded-md" />
-                </SwiperSlide>
-                <SwiperSlide className="h-[120px]">
-                    <img src="https://maldivestourism.in/wp-content/uploads/delhi-to-maldives-tour-packages-all-inclusive-cost-deals-itinerary.jpg" className="rounded-md" />
-                </SwiperSlide>
-                <SwiperSlide className="h-[120px]">
-                    <img src="https://maldivestourism.in/wp-content/uploads/delhi-to-maldives-tour-packages-all-inclusive-cost-deals-itinerary.jpg" className="rounded-md" />
-                </SwiperSlide>
-                <SwiperSlide className="h-[120px]">
-                    <img src="https://maldivestourism.in/wp-content/uploads/delhi-to-maldives-tour-packages-all-inclusive-cost-deals-itinerary.jpg" className="rounded-md" />
-                </SwiperSlide>
-            </Swiper>
-
         </>
     )
 }

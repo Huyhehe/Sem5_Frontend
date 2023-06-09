@@ -100,7 +100,7 @@ const routes = [
     path: ABOUT_PATH,
     element: (
       <AuthLayout>
-        <AboutPage />
+        {/* <AboutPage /> */}
       </AuthLayout>
     ),
   },
@@ -257,7 +257,7 @@ const routes = [
   },
 
   {
-    path: HOTEL_BOOKING_PATH.DEFAULT,
+    path: HOTEL_BOOKING_PATH.DEFAULT + "/:id",
     element: <AuthLayout>
       <HotelBookingPage />
     </AuthLayout>,
