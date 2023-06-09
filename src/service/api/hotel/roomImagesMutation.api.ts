@@ -1,9 +1,6 @@
 import axiosInstance from "@/service/axiosInstance"
 
-export const uploadRoomImages = async (
-  roomId: string,
-  images: any[]
-): Promise<void> => {
+export const uploadRoomImages = async (roomId: string, images: any[]) => {
   try {
     const formData = new FormData()
     images.forEach((image) => {
@@ -19,10 +16,7 @@ export const uploadRoomImages = async (
   }
 }
 
-export const removeRoomImages = async (
-  roomId: string,
-  imageId: string
-): Promise<void> => {
+export const removeRoomImages = async (roomId: string, imageId: string) => {
   try {
     const { data } = await axiosInstance.delete(
       `/rooms/${roomId}/deleteImages/${imageId}`

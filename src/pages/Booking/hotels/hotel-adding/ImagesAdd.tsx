@@ -1,7 +1,11 @@
 import ImageItem from "@/components/common/ImageItem"
 import { Hotel } from "@/interfaces/hotel"
 import { getHotel } from "@/service/api/hotel"
-import { updateLocationAPI } from "@/service/api/location/createLocation.api"
+import {
+  removeLocationImageAPI,
+  updateLocationAPI,
+  uploadLocationImageAPI,
+} from "@/service/api/location/createLocation.api"
 import { LoadingOutlined } from "@ant-design/icons"
 import { Button, Spin, message } from "antd"
 import Dragger from "antd/es/upload/Dragger"
@@ -45,6 +49,8 @@ const ImagesAdd = () => {
     fetchHotel()
   }, [])
 
+  console.log(currentHotel)
+
   const handleUploadImage = async () => {
     if (files.length === 0) {
       message.info("Please choose at least one image!")
@@ -53,11 +59,10 @@ const ImagesAdd = () => {
     try {
       setUploading(true)
       const formData = new FormData()
-      formData.append("isHotel", "true")
       files.forEach((file) => {
         formData.append("images", file.originFileObj)
       })
-      await updateLocationAPI(formData, String(currentHotel?.location?.id))
+      await uploadLocationImageAPI(String(currentHotel?.location?.id), formData)
       setUploading(false)
       setFiles([])
       fetchHotel()
@@ -68,21 +73,9 @@ const ImagesAdd = () => {
     }
   }
 
-  const handleRemoveImage = async (imageUrl: string) => {
+  const handleRemoveImage = async (imageId: string) => {
     try {
-      const formData = new FormData()
-      if (currentHotel?.location?.locationImages) {
-        const currentImagesFiltered =
-          currentHotel?.location?.locationImages?.filter(
-            (image) => image.imageUrl !== imageUrl
-          )
-        const currentImagesFilteredString = currentImagesFiltered
-          .map((item) => String(item.imageUrl))
-          .join(",")
-        formData.append("currentImages", currentImagesFilteredString)
-      }
-      formData.append("isHotel", "true")
-      await updateLocationAPI(formData, String(currentHotel?.location?.id))
+      await removeLocationImageAPI(String(currentHotel?.location?.id), imageId)
       fetchHotel()
       message.success("Remove image successfully")
     } catch (error: any) {
@@ -124,7 +117,7 @@ const ImagesAdd = () => {
         onClick={handleUploadImage}
         disabled={uploading}
       >
-        Submit
+        Upload
         {uploading && (
           <Spin
             indicator={
@@ -144,13 +137,13 @@ const ImagesAdd = () => {
               key={image.id}
               src={image.imageUrl}
               onRemoveImage={() => {
-                handleRemoveImage(image.imageUrl)
+                handleRemoveImage(image.id)
               }}
             />
           )
         })}
       </div>
-      {currentHotel?.location?.locationImages && (
+      {Number(currentHotel?.location?.locationImages?.length) > 0 && (
         <Button
           className="w-fit ml-auto border-base text-base hover:bg-base hover:text-white"
           onClick={() => {

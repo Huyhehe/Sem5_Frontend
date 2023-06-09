@@ -56,7 +56,7 @@ const ConfirmPublish = () => {
       navigator("/profile/business")
     } catch (error: any) {
       setLoading(false)
-      message.success(error.message)
+      message.error(error.message)
     }
   }
 
