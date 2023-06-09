@@ -13,6 +13,7 @@ import { useContext, useEffect, useState } from "react"
 import { BsCloudUploadFill } from "react-icons/bs"
 import { useParams } from "react-router-dom"
 import Fallback from "../Fallback"
+import { CreateReviewRequestType } from "@/types/requests"
 
 export interface ReviewFormValues {
   locationId: string
@@ -56,14 +57,16 @@ export default function LocationReviewPage() {
     try {
       setLoading(true)
       const { images, tripTime, ...rest } = values
-      const data: { [key: string]: any } = {
+      const data: CreateReviewRequestType = {
         ...rest,
         locationId: String(id),
         tripTime: tripTime.toISOString(),
       }
       const formData = new FormData()
-      for (const file of images?.fileList) {
-        formData.append("images", file.originFileObj)
+      if (images) {
+        for (const file of images?.fileList) {
+          formData.append("images", file.originFileObj)
+        }
       }
       Object.keys(data).forEach((key) => {
         formData.append(key, data[key])

@@ -56,7 +56,7 @@ const ConfirmPublish = () => {
       navigator("/profile/business")
     } catch (error: any) {
       setLoading(false)
-      message.success(error.message)
+      message.error(error.message)
     }
   }
 
@@ -172,7 +172,7 @@ const ConfirmPublish = () => {
         >
           {`This Hotel Owner-Web Admin Agreement ("Agreement") is entered into
           between `}
-          <strong>{hotel?.location.name}</strong>, hereinafter referred to as
+          <strong>{hotel?.location?.name}</strong>, hereinafter referred to as
           the <strong>Hotel Owner</strong>, and <strong>Web Admin</strong>,
           hereinafter referred to as the <strong>Web Admin</strong> collectively
           referred to as the <strong className="text-base">Parties</strong>. The

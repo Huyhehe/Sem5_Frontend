@@ -5,6 +5,7 @@ import { wordTransformByQuantity } from "@/utils/reusable"
 import { Button, Divider, Image, Rate, Space } from "antd"
 import { FaStar } from "react-icons/fa"
 import { shortenAmenities } from "../utils"
+import ImageIcon from "@/components/common/ImageIcon"
 
 type HotelCardProps = {
   hotel: Hotel
@@ -69,26 +70,9 @@ const HotelCard = ({
               {shortenAmenities(propertyAmenities, 5)?.map(
                 (propertyAmenity) => {
                   const { id, name, icon } = propertyAmenity
-                  // return Website && label === "Website" ? (
-                  //   <a
-                  //     href={Website}
-                  //     target="_blank"
-                  //     key={index}
-                  //     className="flex gap-1 items-center"
-                  //     rel="noreferrer"
-                  //   >
-                  //     <Icon />
-                  //     <TypographyText text={label} className="text-gray-500" />
-                  //   </a>
-                  // ) : (
-                  //   <div key={index} className="flex gap-1 items-center">
-                  //     <Icon />
-                  //     <TypographyText text={label} className="text-gray-500" />
-                  //   </div>
-                  // )
                   return (
                     <div key={id} className="flex gap-1 items-center">
-                      {icon && <img src={icon} />}
+                      {icon && <ImageIcon icon={icon} className="w-4" />}
                       <TypographyText text={name} className="text-gray-500" />
                     </div>
                   )

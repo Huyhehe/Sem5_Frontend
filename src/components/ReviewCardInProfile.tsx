@@ -1,11 +1,13 @@
 import { UserReview } from "@/interfaces/review"
-import { deleteReviewAPI } from "@/utils/http"
 import { getDateTimeFormatted } from "@/utils/reusable"
 import message from "antd/es/message"
 import { AiFillEdit } from "react-icons/ai"
 import { MdDelete } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
 import RatePoint from "./common/RatePoint"
+import { deleteLocationReview } from "@/service/api/review"
+import Modal from "antd/es/modal/Modal"
+import { useState } from "react"
 
 interface ReviewCardInProfileProps {
   review: UserReview
@@ -17,15 +19,19 @@ export const ReviewCardInProfile = ({
   updateReviews,
 }: ReviewCardInProfileProps) => {
   const navigator = useNavigate()
+  const [isOpen, setIsOpen] = useState(false)
   const handleEditButtonClick = () => {
     navigator(`/review/edit/${review.id}`)
   }
-  const handleDeleteButtonClick = async () => {
+
+  const handleDeleteReview = async () => {
     try {
-      await deleteReviewAPI(review.id)
+      await deleteLocationReview(review.id)
       updateReviews(review.id)
+      setIsOpen(false)
       message.success("Delete review successfully")
     } catch (error: any) {
+      setIsOpen(false)
       message.error(error.message)
       console.log(error)
     }
@@ -52,7 +58,7 @@ export const ReviewCardInProfile = ({
           <MdDelete
             size={20}
             className="text-gray-400 hover:text-primary cursor-pointer"
-            onClick={handleDeleteButtonClick}
+            onClick={() => setIsOpen(true)}
           />
         </div>
       </div>
@@ -73,6 +79,15 @@ export const ReviewCardInProfile = ({
         </div>
         <RatePoint point={review.rating} />
       </div>
+      <Modal
+        open={isOpen}
+        onCancel={() => setIsOpen(false)}
+        onOk={handleDeleteReview}
+        okText="Delete"
+        centered
+      >
+        <div>Are you sure you want to delete this review?</div>
+      </Modal>
     </div>
   )
 }

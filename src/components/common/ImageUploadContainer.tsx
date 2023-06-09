@@ -14,6 +14,7 @@ interface ImageUploadContainerProps {
     imageUrl: string
     imageKey: string
   }[]
+  submitText?: string
 }
 
 const ImageUploadContainer = ({
@@ -21,6 +22,7 @@ const ImageUploadContainer = ({
   upload,
   removeImage,
   currentImages,
+  submitText = "Submit",
 }: ImageUploadContainerProps) => {
   const [files, setFiles] = useState<any[]>([])
   const [uploading, setUploading] = useState(false)
@@ -90,7 +92,7 @@ const ImageUploadContainer = ({
         onClick={handleUploadImage}
         disabled={uploading}
       >
-        Submit
+        {submitText}
         {uploading && (
           <Spin
             indicator={
