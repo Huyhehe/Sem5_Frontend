@@ -35,6 +35,11 @@ export const REVIEW_PATH = {
   },
 }
 
+export const HOTEL_BOOKING_PATH = {
+  DEFAULT: "hotel-booking",
+  DETAIL: ":id",
+}
+
 export const HOTEL_PATH = {
   DEFAULT: "/hotels",
   HOTEL_PAGE: ":id",
