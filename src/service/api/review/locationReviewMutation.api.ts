@@ -34,3 +34,14 @@ export const deleteImageReviewAPI = async (
     throw new Error(error.response.data.error)
   }
 }
+
+export const deleteLocationReview = async (reviewId: string) => {
+  try {
+    const { data } = await axiosInstance.delete(
+      `/review/delete-review/${reviewId}`
+    )
+    return data
+  } catch (error: any) {
+    throw new Error(error.response.data.message)
+  }
+}
