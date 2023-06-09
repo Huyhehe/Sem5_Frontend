@@ -6,7 +6,7 @@ import {
   Ward,
 } from "@/interfaces/location"
 
-interface ReviewImage {
+export interface ReviewImage {
   id: string
   imageUrl: string
   imageKey: string

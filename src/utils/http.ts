@@ -209,14 +209,7 @@ export const getAllUserReviewsByLocationId = async (id: string) => {
     throw new Error(error.response.data.error)
   }
 }
-export const getReviewByReviewId = async (id: string) => {
-  try {
-    const res = await axiosInstance.get(`${API_URL}/reviews/get-review/${id}`)
-    return res.data
-  } catch (error: any) {
-    throw new Error(error.response.data.error)
-  }
-}
+
 export const getAllReviewByUserIdAPI = async (id: string) => {
   try {
     const res = await axiosInstance.get(
@@ -261,19 +254,8 @@ export const createImageReviewAPI = async (data: any) => {
 export const updateReviewAPI = async (data: any) => {
   try {
     const res = await axiosInstance.patch(
-      `${API_URL}/reviews/update-review/`,
+      `${API_URL}/review/update-review/`,
       data
-    )
-    return res.data
-  } catch (error: any) {
-    throw new Error(error.response.data.error)
-  }
-}
-
-export const deleteImageReviewAPI = async (id: string) => {
-  try {
-    const res = await axiosInstance.delete(
-      `${API_URL}/reviews/delete-image/${id}`
     )
     return res.data
   } catch (error: any) {
