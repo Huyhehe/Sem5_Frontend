@@ -78,19 +78,14 @@ const UserReviewArticle = ({
     })
   }
   const handleEditButtonClick = () => {
-    // if (userReview.user.accountId !== user?.accountId) {
-    //   openNotification("warning", {
-    //     message: "Warning",
-    //     description: "You cannot edit this review",
-    //   })
-    // } else {
-    //   navigator(`/review/edit/${userReview.id}`)
-    // }
-    openNotification("warning", {
-      message: "Warning",
-      description:
-        "This feature is not available yet, we're trying to bring it to you as soon as possible",
-    })
+    if (userReview.user.accountId !== user?.accountId) {
+      openNotification("warning", {
+        message: "Warning",
+        description: "You cannot edit this review",
+      })
+    } else {
+      navigator(`/review/edit/${userReview.id}`)
+    }
   }
   return (
     <div className="UserReviewArticle flex flex-col gap-3">

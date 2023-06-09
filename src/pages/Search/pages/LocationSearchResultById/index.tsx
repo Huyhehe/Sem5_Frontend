@@ -116,7 +116,7 @@ const SearchResultById = () => {
                   Rated by{" "}
                   <span className="font-bold">{location.reviewCount}</span>
                   {` ${wordTransformByQuantity(
-                    "person",
+                    "review",
                     location.reviewCount || 0
                   )}`}
                 </span>
