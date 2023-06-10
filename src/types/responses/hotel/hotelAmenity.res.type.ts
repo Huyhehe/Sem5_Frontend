@@ -1,5 +1,3 @@
 import { SelectType } from "../common"
 
-export type HotelAmenity = SelectType & {
-  iconUrl?: string
-}
+export type HotelAmenity = SelectType

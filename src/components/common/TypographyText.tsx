@@ -1,9 +1,10 @@
 import { Typography } from "antd"
 import { TextProps } from "antd/es/typography/Text"
+import { ReactNode } from "react"
 
 const { Text } = Typography
 export interface TypographyTextProps extends TextProps {
-  text: string
+  text: ReactNode
 }
 
 const TypographyText = ({ text, ...props }: TypographyTextProps) => {

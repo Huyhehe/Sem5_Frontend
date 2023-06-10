@@ -64,6 +64,10 @@ const links = [
     name: "Business",
     to: "/business",
   },
+  {
+    name: "My Bookings",
+    to: "/my-bookings",
+  },
 ]
 
 const initialUserInfo: UserInfoResponse = {
@@ -316,7 +320,7 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        <div className="detail-info-right flex-grow">
+        <div className="detail-info-right flex-grow max-w-[72%]">
           <Suspense
             fallback={
               <div className="flex justify-center items-center w-full h-full">

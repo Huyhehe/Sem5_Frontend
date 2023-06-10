@@ -1,7 +1,7 @@
-import { Hotel } from "@/interfaces/hotel"
 import axiosInstance from "@/service/axiosInstance"
+import { HotelResponse } from "@/types/responses/hotel"
 
-export const getHotel = async (hotelId: string): Promise<Hotel> => {
+export const getHotel = async (hotelId: string): Promise<HotelResponse> => {
   try {
     const res = await axiosInstance.get(`/hotels/${hotelId}`)
     return res.data

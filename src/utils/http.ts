@@ -3,6 +3,7 @@ import axiosInstance, { setTokenInterceptor } from "@/service/axiosInstance"
 import { setAccessTokenToLocal, setRefreshTokenToLocal } from "./localStorage"
 import { autofillAPI } from "./constant"
 import { GeocodeAutocompleteResponse } from "@/types/responses"
+import { IHotelBooking } from "@/types/responses/hotel/hotelBooking.res.type"
 
 const API_URL = import.meta.env.VITE_API
 // AUTH
@@ -209,14 +210,7 @@ export const getAllUserReviewsByLocationId = async (id: string) => {
     throw new Error(error.response.data.error)
   }
 }
-export const getReviewByReviewId = async (id: string) => {
-  try {
-    const res = await axiosInstance.get(`${API_URL}/reviews/get-review/${id}`)
-    return res.data
-  } catch (error: any) {
-    throw new Error(error.response.data.error)
-  }
-}
+
 export const getAllReviewByUserIdAPI = async (id: string) => {
   try {
     const res = await axiosInstance.get(
@@ -261,19 +255,8 @@ export const createImageReviewAPI = async (data: any) => {
 export const updateReviewAPI = async (data: any) => {
   try {
     const res = await axiosInstance.patch(
-      `${API_URL}/reviews/update-review/`,
+      `${API_URL}/review/update-review/`,
       data
-    )
-    return res.data
-  } catch (error: any) {
-    throw new Error(error.response.data.error)
-  }
-}
-
-export const deleteImageReviewAPI = async (id: string) => {
-  try {
-    const res = await axiosInstance.delete(
-      `${API_URL}/reviews/delete-image/${id}`
     )
     return res.data
   } catch (error: any) {
@@ -301,6 +284,17 @@ export const getGeocodeAutoCompleteAPI = async (
         location
       )}&format=json&apiKey=${autofillAPI}&lang=vi`
     )
+    return res.data
+  } catch (error: any) {
+    throw new Error(error)
+  }
+}
+
+export const getHotelBookingById = async (
+  id: string
+): Promise<IHotelBooking> => {
+  try {
+    const res = await axios.get(`${API_URL}/hotels/${id}`)
     return res.data
   } catch (error: any) {
     throw new Error(error)

@@ -8,6 +8,8 @@ export const autofillAPI = import.meta.env.VITE_AUTOFILL_KEY
 
 export const API_URL = import.meta.env.VITE_API
 
+export const PAYPAL_CLIENT = import.meta.env.VITE_PAYPAL_CLIENT_ID
+
 export const navItems = [
   {
     title: "Home",

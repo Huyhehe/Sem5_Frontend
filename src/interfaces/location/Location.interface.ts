@@ -2,7 +2,7 @@ import { Category } from "@/types/responses"
 import { Country, Province, District, Ward } from "../location"
 import { Hotel } from "../hotel"
 
-interface LocationImage {
+export interface LocationImage {
   id: string
   imageKey: string
   imageUrl: string

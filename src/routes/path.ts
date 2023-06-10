@@ -25,6 +25,7 @@ export const PROFILE_PATH = {
   FOLLOWERS: "followers",
   FOLLOWING: "following",
   BUSINESS: "business",
+  MY_BOOKINGS: "my-bookings",
 }
 export const REVIEW_PATH = {
   DEFAULT: "/review",
@@ -35,6 +36,11 @@ export const REVIEW_PATH = {
   },
 }
 
+export const HOTEL_BOOKING_PATH = {
+  DEFAULT: "hotel-booking",
+  DETAIL: ":id",
+}
+
 export const HOTEL_PATH = {
   DEFAULT: "/hotels",
   HOTEL_PAGE: ":id",
@@ -42,9 +48,14 @@ export const HOTEL_PATH = {
     DEFAULT: "create-hotel",
     GENERAL_INFO: "general-info",
     ROOMS: "create-rooms",
-    AMENITIES: "amenities",
-    PHOTOS: "photos",
+    IMAGES: "images",
+    CONFIRM: "confirm",
   },
+}
+
+export const BOOKING_PATH = {
+  DEFAULT: "/booking",
+  PAYMENT: "checkout",
 }
 
 export const ACCEPT_ALL_PATH = "*"

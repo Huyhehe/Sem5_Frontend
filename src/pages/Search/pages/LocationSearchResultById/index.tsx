@@ -13,6 +13,7 @@ import { HiOutlineChevronDown } from "react-icons/hi"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import UserReviewContainer from "./components/UserReviewContainer"
 import "./styles/styles.css"
+import TypographyText from "@/components/common/TypographyText"
 
 const SearchResultById = () => {
   const { id } = useParams()
@@ -115,7 +116,7 @@ const SearchResultById = () => {
                   Rated by{" "}
                   <span className="font-bold">{location.reviewCount}</span>
                   {` ${wordTransformByQuantity(
-                    "person",
+                    "review",
                     location.reviewCount || 0
                   )}`}
                 </span>
@@ -125,7 +126,7 @@ const SearchResultById = () => {
               <div className="main-about">
                 <h1 className="text-[1.5rem] font-bold mb-4">About</h1>
                 <div className="about-paragraph">
-                  <p>{location?.description}</p>
+                  <TypographyText text={location?.description || ""} />
                   <div className="paragraph-more">
                     <span>Read more</span>
                     <HiOutlineChevronDown />

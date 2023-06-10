@@ -1,3 +1,5 @@
+import { Bed } from "@/types/responses/hotel"
+
 interface RoomImage {
   id: string
   imageKey: string
@@ -9,11 +11,19 @@ export interface RoomType {
   name: string
   numberOfBeds: number
   typeOfBed: string
+  icon?: string
 }
 
 export interface RoomFeature {
   id: string
   name: string
+  icon: string
+}
+
+export interface RoomBed {
+  id: string
+  numberOfBeds: number
+  bed: Bed
 }
 
 export interface HotelRoom {
@@ -27,4 +37,7 @@ export interface HotelRoom {
   roomTypes: RoomType[]
   roomFeatures: RoomFeature[]
   roomImages: RoomImage[]
+  roomBeds: RoomBed[]
+  isFreeCancellation: boolean
+  freeCancellationPeriod: number | null
 }

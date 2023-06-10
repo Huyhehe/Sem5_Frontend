@@ -1,12 +1,37 @@
+import { HotelRoom } from "@/interfaces/hotel"
 import axiosInstance from "@/service/axiosInstance"
 import { HotelRoomsResponse } from "@/types/responses/hotel"
 
+interface HotelRoomFilters {
+  checkIn: string
+  checkout: string
+  sleeps: number
+  numberOfRooms: number
+}
+
 export const getRoomsOfHotel = async (
-  hotelId: string
+  hotelId: string,
+  filters?: HotelRoomFilters
 ): Promise<HotelRoomsResponse> => {
+  if (!filters) {
+    const { data } = await axiosInstance.get(`/hotels/${hotelId}/rooms`)
+    return data
+  }
+  const { checkIn, checkout, sleeps, numberOfRooms } = filters
   try {
-    const res = await axiosInstance.get(`/hotels/${hotelId}/rooms`)
-    return res.data
+    const { data } = await axiosInstance.get(
+      `/hotels/${hotelId}/rooms?checkIn=${checkIn}&checkout=${checkout}&sleeps=${sleeps}&numberOfRooms=${numberOfRooms}`
+    )
+    return data
+  } catch (error: any) {
+    throw new Error(error.response.data.message)
+  }
+}
+
+export const getRoom = async (roomId: string): Promise<HotelRoom> => {
+  try {
+    const { data } = await axiosInstance.get(`/rooms/${roomId}`)
+    return data
   } catch (error: any) {
     throw new Error(error.response.data.message)
   }
