@@ -4,7 +4,7 @@ import FormItem from "@/components/common/FormItem"
 import InputField from "@/components/common/InputField"
 import SelectorField from "@/components/common/SelectorField"
 import { Hotel } from "@/interfaces/hotel"
-import { checkValidParamForUpdateHotelGeneralInfo } from "@/pages/Booking/utils"
+import { checkValidParamForUpdateHotelGeneralInfo } from "@/pages/Hotel/utils"
 import {
   getHotelAmenities,
   getHotelStyles,

@@ -76,7 +76,7 @@ const Home = () => {
         <Search />
         <img src={searchBg} alt="search-background" />
       </div>
-      <div>
+      {/* <div>
         <PlaceSection
           data={DUMMY_PLACE}
           title="Where to go, right now"
@@ -85,11 +85,31 @@ const Home = () => {
       </div>
       <div>
         <RecentSearch />
-      </div>
+      </div> */}
       <LocationSlide />
 
-      {/* section next trip */}
       <div className="mt-6 flex items-stretch h-[10rem]">
+        <div className="w-[60%] bg-[#faf1ed] px-4 pt-7 pb-4 flex flex-col ">
+          <h3 className="font-bold tracking-wide text-black text-2xl">
+            Your next trip starts here
+          </h3>
+          <span className="block text-sm font-normal tracking-wide text-gray-500">
+            Top-rated hotels that have earned the Best of the Best crown
+          </span>
+          <button className="mt-auto rounded-[2rem] px-2 py-3 w-[7rem] bg-black font-bold text-sm text-white">
+            See the list
+          </button>
+        </div>
+        <div className="flex-1 ">
+          <img
+            className="w-full h-full object-cover"
+            src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/21/f7/1d/a0/caption.jpg?w=1000&h=-1&s=1"
+          />
+        </div>
+      </div>
+
+      {/* section next trip */}
+      {/* <div className="mt-6 flex items-stretch h-[10rem]">
         <div className="w-[60%] bg-[#faf1ed] px-4 pt-7 pb-4 flex flex-col ">
           <h3 className="font-bold tracking-wide text-black text-2xl">
             Your next trip starts here
@@ -119,7 +139,7 @@ const Home = () => {
           title="Top destinations for your next vacation"
           data={DUMMY_LOCATION}
         />
-      </div>
+      </div> */}
     </div>
   )
 }

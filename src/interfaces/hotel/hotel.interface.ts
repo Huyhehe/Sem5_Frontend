@@ -13,4 +13,5 @@ export interface Hotel {
   hotelStyles: HotelStyle[]
   propertyAmenities: HotelAmenity[]
   rooms: HotelRoom[]
+  isRegistered: boolean
 }
