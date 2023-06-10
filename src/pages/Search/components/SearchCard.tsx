@@ -1,13 +1,19 @@
 import { LocationTypo } from "@/components/common/LocationTypo"
 import { Location } from "@/interfaces/location"
-import { getRatingString } from "@/utils/reusable"
+import { getRatingString, wordTransformByQuantity } from "@/utils/reusable"
 import { AiFillStar } from "react-icons/ai"
 import { RiMoneyDollarCircleFill } from "react-icons/ri"
 
 interface SearchCardProps {
   item: Pick<
     Location,
-    "id" | "name" | "description" | "rating" | "address" | "locationImages"
+    | "id"
+    | "name"
+    | "description"
+    | "rating"
+    | "address"
+    | "locationImages"
+    | "reviewCount"
   >
   onClickFunc?: () => void
 }
@@ -40,11 +46,11 @@ const SearchCard = ({ item, onClickFunc }: SearchCardProps) => {
         </div>
         <i className="content-description italic">{item.description}</i>
         <div className="mt-auto">
-          <div className="content-price flex items-center">
-            <RiMoneyDollarCircleFill size={20} className="text-primary" />
-            <span>0</span>
+          <div className="content-price flex items-center font-medium">
+            {item.reviewCount}
+            {wordTransformByQuantity(" review", item.reviewCount)}
           </div>
-          <div className="content-rate flex gap-1 items-center">
+          <div className="content-rate flex gap-1 items-center font-bold">
             <span>{item.rating}</span>
             <AiFillStar className="text-gold" />
             <span className="w-[2px] self-stretch bg-gray-300"></span>

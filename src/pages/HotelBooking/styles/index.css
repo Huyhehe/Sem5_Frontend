@@ -1,0 +1,4 @@
+.ant-modal .ant-modal-footer .ant-btn {
+  @apply text-white bg-black hover:bg-primary;
+  border: none;
+}

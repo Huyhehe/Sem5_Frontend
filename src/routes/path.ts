@@ -25,6 +25,7 @@ export const PROFILE_PATH = {
   FOLLOWERS: "followers",
   FOLLOWING: "following",
   BUSINESS: "business",
+  MY_BOOKINGS: "my-bookings",
 }
 export const REVIEW_PATH = {
   DEFAULT: "/review",
@@ -50,6 +51,11 @@ export const HOTEL_PATH = {
     IMAGES: "images",
     CONFIRM: "confirm",
   },
+}
+
+export const BOOKING_PATH = {
+  DEFAULT: "/booking",
+  PAYMENT: "checkout",
 }
 
 export const ACCEPT_ALL_PATH = "*"

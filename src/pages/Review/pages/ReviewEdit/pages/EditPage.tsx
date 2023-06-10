@@ -15,12 +15,13 @@ import {
   updateLocationReview,
 } from "@/service/api/review"
 import { UpdateReviewRequestType } from "@/types/requests"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { LocationTypo } from "@/components/common/LocationTypo"
 import Fallback from "../../Fallback"
 
 export default function EditPage() {
   const { id } = useParams()
+  const navigator = useNavigate()
   const { setLoading } = useContext(AppContext)
   const [userReview, setUserReview] = useState<UserReview | null>(null)
   const [imageList, setImageList] = useState<ReviewImage[]>([])
@@ -80,10 +81,10 @@ export default function EditPage() {
       Object.keys(data).forEach((key) => {
         formData.append(key, data[key])
       })
-      const res = await updateLocationReview(formData)
+      await updateLocationReview(formData)
       setLoading(false)
       message.success("Review updated successfully!")
-      window.location.href = `/search/${res.location.id}`
+      navigator(-1)
     } catch (error: any) {
       setLoading(false)
       message.error(error)

@@ -1,4 +1,4 @@
-import GuessQuantity from "@/components/common/GuessQuantity"
+import GuestQuantity from "@/components/common/GuestQuantity"
 import ImageIcon from "@/components/common/ImageIcon"
 import { LocationTypo } from "@/components/common/LocationTypo"
 import TypographyText from "@/components/common/TypographyText"
@@ -112,7 +112,7 @@ const ConfirmPublish = () => {
                       )
                     })}
                     <Divider type="vertical" className="bg-black" />
-                    <GuessQuantity quantity={room?.sleeps} />
+                    <GuestQuantity quantity={room?.sleeps} />
                   </div>
                 </div>
                 <div className="flex flex-col items-end">

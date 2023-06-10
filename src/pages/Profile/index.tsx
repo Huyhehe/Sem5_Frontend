@@ -64,6 +64,10 @@ const links = [
     name: "Business",
     to: "/business",
   },
+  {
+    name: "My Bookings",
+    to: "/my-bookings",
+  },
 ]
 
 const initialUserInfo: UserInfoResponse = {
