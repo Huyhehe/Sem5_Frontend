@@ -5,7 +5,6 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { HotelRoom, RoomFeature, RoomType } from "@/interfaces/hotel"
 import { getRoomsOfHotel } from "@/service/api/hotel"
 import { addToWishlist, removeFromWishlist } from "@/service/api/location"
-import { getWishlist } from "@/service/api/user/getWishlist.api"
 import {
   IHotelBooking,
   ILocation,
@@ -50,7 +49,6 @@ function HotelBooking() {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [hotelBooking, setHotelBooking] = useState<IHotelBooking>()
 
-  const [wishlist, setWishlist] = useState<IWishlist[]>([])
   const [listRoom, setListRoom] = useState<HotelRoom[]>([])
   const [listRoomType, setListRoomType] = useState<RoomType[]>([])
   const [listRoomFeature, setListRoomFeature] = useState<RoomFeature[]>([])
@@ -58,8 +56,7 @@ function HotelBooking() {
     searchParams.entries()
   )
 
-  const activeWishlist = getActiveWishlist(wishlist, hotelBooking?.location?.id as string)
-  const isActiveWishlist = activeWishlist ? true : false
+  const isActiveWishlist = getActiveWishlist(hotelBooking?.location?.wishList as any[])
 
   const [roomDetail, setRoomDetail] = useState<HotelRoom>()
   const [paramsRoomDetail, setParamsRoomDetail] = useState<any>()
@@ -96,10 +93,7 @@ function HotelBooking() {
   const onClickWishlist = async () => {
     try {
       if (!isActiveWishlist) await addToWishlist(hotelBooking?.location?.id as string)
-      else {
-        const idWishlist = activeWishlist?.id
-        await removeFromWishlist(idWishlist as string)
-      }
+      else await removeFromWishlist(hotelBooking?.location?.wishList?.[0]?.id as string)
       setIsRefetch(prev => !prev)
     } catch (error) {
       console.log({ error })
@@ -127,11 +121,9 @@ function HotelBooking() {
       sleeps: Number(person),
       numberOfRooms: Number(room),
     })
-    promises[2] = getWishlist()
     Promise.all(promises).then((res) => {
       const hotelBooking = res[0]
       const hotelRoom: HotelRoom[] = res[1]
-      const wishlist: IWishlist[] = res[2]
 
       setListRoom(hotelRoom)
 
@@ -147,7 +139,6 @@ function HotelBooking() {
         []
       )
 
-      setWishlist(wishlist)
       setListRoom(uniqBy(hotelRoom, "id"))
       setListRoomType(uniqBy(roomTypes, "id"))
       setListRoomFeature(uniqBy(roomFeatures, "id"))

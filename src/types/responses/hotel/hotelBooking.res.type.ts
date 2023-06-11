@@ -11,6 +11,7 @@ export interface ILocation {
   address: IAddress
   imageUrlLocations: string[]
   hotel: IHotelBooking
+  wishList: { id: string }[]
 }
 
 export interface ILocationImage {
