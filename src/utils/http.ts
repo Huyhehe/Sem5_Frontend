@@ -294,7 +294,7 @@ export const getHotelBookingById = async (
   id: string
 ): Promise<IHotelBooking> => {
   try {
-    const res = await axios.get(`${API_URL}/hotels/${id}`)
+    const res = await axiosInstance.get(`${API_URL}/hotels/${id}`)
     return res.data
   } catch (error: any) {
     throw new Error(error)
