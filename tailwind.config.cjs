@@ -14,6 +14,7 @@ module.exports = {
         base: "#1890ff",
         dollar: "#009111",
         error: "#ff4d4f",
+        border: "#e5e7eb",
       },
       screens: {
         mobile: { max: "480px" },

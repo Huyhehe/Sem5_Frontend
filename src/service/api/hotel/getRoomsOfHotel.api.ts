@@ -4,7 +4,7 @@ import { HotelRoomsResponse } from "@/types/responses/hotel"
 
 interface HotelRoomFilters {
   checkIn: string
-  checkout: string
+  checkOut: string
   sleeps: number
   numberOfRooms: number
 }
@@ -17,10 +17,10 @@ export const getRoomsOfHotel = async (
     const { data } = await axiosInstance.get(`/hotels/${hotelId}/rooms`)
     return data
   }
-  const { checkIn, checkout, sleeps, numberOfRooms } = filters
+  const { checkIn, checkOut, sleeps, numberOfRooms } = filters
   try {
     const { data } = await axiosInstance.get(
-      `/hotels/${hotelId}/rooms?checkIn=${checkIn}&checkout=${checkout}&sleeps=${sleeps}&numberOfRooms=${numberOfRooms}`
+      `/hotels/${hotelId}/rooms?checkIn=${checkIn}&checkOut=${checkOut}&sleeps=${sleeps}&numberOfRooms=${numberOfRooms}`
     )
     return data
   } catch (error: any) {

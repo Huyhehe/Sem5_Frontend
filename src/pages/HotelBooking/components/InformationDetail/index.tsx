@@ -11,10 +11,12 @@ interface IInformationDetailProps {
   email: string
   phoneNumber: string
   imageUrlLocations: string[]
+  isActiveWishlist: boolean
+  onClickWishlist: () => any
 }
 function InformationDetail(props: IInformationDetailProps) {
   const navigator = useNavigate()
-  const { location, email, phoneNumber, imageUrlLocations } = props
+  const { location, email, phoneNumber, imageUrlLocations, isActiveWishlist, onClickWishlist } = props
 
   return (
     <div>
@@ -24,8 +26,18 @@ function InformationDetail(props: IInformationDetailProps) {
           <button className="border border-black rounded-[50%] p-1 group hover:bg-black">
             <BiUpload size={20} className="group-hover:text-white" />
           </button>
-          <button className="border border-black rounded-[50%] p-1 group hover:bg-black">
-            <AiOutlineHeart size={20} className="group-hover:text-white" />
+          <button
+            className='rounded-[50%] p-1'>
+            <div
+              className={`bookmark p-2 border-[2px] cursor-pointer ${isActiveWishlist
+                ? 'bg-love border-white text-white hover:border-love hover:bg-white hover:text-love'
+                : ' text-love border-love hover:text-white hover:border-white hover:bg-love'}
+                    rounded-full`}
+              onClick={onClickWishlist}
+            >
+              <AiOutlineHeart size={30} />
+            </div>
+
           </button>
         </div>
       </div>

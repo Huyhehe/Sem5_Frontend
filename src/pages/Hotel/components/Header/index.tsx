@@ -68,7 +68,6 @@ const Header = () => {
     const timeout = setTimeout(async () => {
       try {
         const res = await getGeocodeAutoCompleteAPI(values.location)
-        console.log(res)
         const options = res.results?.map((result) => ({
           value: result.city,
           label: result.city,
