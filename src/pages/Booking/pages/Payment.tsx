@@ -4,7 +4,7 @@ import useUser from "@/hooks/useUser"
 import { Hotel, HotelRoom } from "@/interfaces/hotel"
 import { getHotel, getRoom } from "@/service/api/hotel"
 import { currencyFormatter, wordTransformByQuantity } from "@/utils/reusable"
-import { Divider, Form, Input, Spin, message } from "antd"
+import { Button, Divider, Form, Input, Spin, message } from "antd"
 import dayjs, { Dayjs } from "dayjs"
 import { useEffect, useState } from "react"
 import { TiWarning } from "react-icons/ti"
@@ -16,6 +16,10 @@ import { Tb24Hours } from "react-icons/tb"
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
 import { captureOrder, requestCreateOrder } from "@/service/api/paypal"
 import { PAYPAL_CLIENT } from "@/utils/constant"
+import {
+  BookingRoomNoPaymentRequest,
+  bookingWithoutPayment,
+} from "@/service/api/booking"
 
 interface DayRange {
   startDate: Dayjs
@@ -49,6 +53,27 @@ const Payment = () => {
     try {
       const room = await getRoom(String(queryString.get("roomId")))
       setRoom(room)
+    } catch (error: any) {
+      message.error(error.message)
+    }
+  }
+
+  const handleBookingNoPrepay = async () => {
+    try {
+      const requestBody: BookingRoomNoPaymentRequest = {
+        rooms: [
+          {
+            roomId: String(room?.id),
+            numberOfRooms: Number(queryString.get("room")),
+          },
+        ],
+        checkIn: startDate.add(7, "hours").toISOString(),
+        checkOut: endDate.add(7, "hours").toISOString(),
+        customerName: `${userInfo?.firstName} ${userInfo?.lastName}` || "",
+      }
+      await bookingWithoutPayment(requestBody)
+      message.success("Booking successfully!")
+      navigator("/profile/my-bookings")
     } catch (error: any) {
       message.error(error.message)
     }
@@ -89,7 +114,10 @@ const Payment = () => {
           <div className="flex items-center gap-2 text-gold">
             <TiWarning size={20} />
             <span className="text-sm">
-              {startDate.diff(today, "day") > 0
+              {startDate.diff(today, "day") > 2
+                ? `${startDate.diff(today, "day")} day away`
+                : startDate.diff(today, "day") > 0 &&
+                  startDate.diff(today, "day") <= 2
                 ? `Just ${startDate.diff(today, "day")} day away!`
                 : "Today!"}
             </span>
@@ -163,53 +191,75 @@ const Payment = () => {
         <div className="w-full flex flex-col p-4 gap-2 rounded-lg border">
           <TypographyTitle level={5} text="Payment schedule" />
           <span className="text-[0.85rem] text-dollar">
-            {"No payment today. You'll pay when you stay."}
+            {room?.isPrepay
+              ? "Finish payment today."
+              : "No payment today. You'll pay when you stay."}
           </span>
         </div>
         <div className="w-full flex flex-col p-4 gap-2 rounded-lg border">
           <TypographyTitle level={5} text="How much will it cost to cancel?" />
-          {room?.isFreeCancellation && (
+          {room?.isFreeCancellation && room?.isPrepay && (
             <span className="text-[0.85rem] text-dollar">
               {`Free cancellation anytime before 13:00 ${startDate.format(
                 "ddd, D MMMM YYYY"
               )}`}
             </span>
           )}
+          {!room?.isFreeCancellation && room?.isPrepay && (
+            <span className="text-[0.85rem] text-dollar">
+              {"No refund cancelling"}
+            </span>
+          )}
+          {!room?.isPrepay && (
+            <span className="text-[0.85rem] text-dollar">
+              {"Free cancelling"}
+            </span>
+          )}
         </div>
         <div>
-          <PayPalScriptProvider
-            options={{
-              "client-id": String(PAYPAL_CLIENT),
-            }}
-          >
-            <PayPalButtons
-              className="w-full"
-              createOrder={() => {
-                return requestCreateOrder({
-                  rooms: [
-                    {
-                      roomId: room?.id,
-                      numberOfRooms: Number(queryString.get("room")),
-                    },
-                  ],
-                  checkIn: startDate.add(7, "hours").toISOString(),
-                  checkOut: endDate.add(7, "hours").toISOString(),
-                  customerName:
-                    `${userInfo?.firstName} ${userInfo?.lastName}` || "",
-                }).then((res) => res.id)
+          {room?.isPrepay ? (
+            <PayPalScriptProvider
+              options={{
+                "client-id": String(PAYPAL_CLIENT),
               }}
-              onApprove={(data) => {
-                return captureOrder(data.orderID)
-                  .then((res) => {
-                    message.success("Payment success!")
-                    navigator("/profile/my-bookings")
-                  })
-                  .catch((err) => {
-                    message.error("Payment failed!")
-                  })
-              }}
-            />
-          </PayPalScriptProvider>
+            >
+              <PayPalButtons
+                className="w-full"
+                createOrder={() => {
+                  return requestCreateOrder({
+                    rooms: [
+                      {
+                        roomId: room?.id,
+                        numberOfRooms: Number(queryString.get("room")),
+                      },
+                    ],
+                    checkIn: startDate.add(7, "hours").toISOString(),
+                    checkOut: endDate.add(7, "hours").toISOString(),
+                    customerName:
+                      `${userInfo?.firstName} ${userInfo?.lastName}` || "",
+                  }).then((res) => res.id)
+                }}
+                onApprove={(data) => {
+                  return captureOrder(data.orderID)
+                    .then((res) => {
+                      message.success("Payment success!")
+                      navigator("/profile/my-bookings")
+                    })
+                    .catch((err) => {
+                      message.error("Payment failed!")
+                    })
+                }}
+              />
+            </PayPalScriptProvider>
+          ) : (
+            <Button
+              type="primary"
+              className="w-full h-10 bg-base text-lg text-white hover:bg-base/80"
+              onClick={handleBookingNoPrepay}
+            >
+              Book this room
+            </Button>
+          )}
         </div>
       </div>
       <div className="basis-2/3 flex flex-col gap-4">

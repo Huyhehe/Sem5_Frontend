@@ -56,6 +56,10 @@ export const HOTEL_PATH = {
 export const BOOKING_PATH = {
   DEFAULT: "/booking",
   PAYMENT: "checkout",
+  HISTORY: {
+    INDEX: "history",
+    DETAIL: ":id",
+  },
 }
 
 export const ACCEPT_ALL_PATH = "*"

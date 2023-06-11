@@ -20,6 +20,7 @@ export const getPrivateHotels = async (): Promise<PrivateHotel[]> => {
     const { data } = await axiosInstance.get("/user/hotels")
     return data
   } catch (error: any) {
+    console.log(error)
     throw new Error(error.response.data.message)
   }
 }
