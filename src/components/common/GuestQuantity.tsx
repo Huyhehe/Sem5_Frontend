@@ -1,11 +1,11 @@
 import { FaUserAlt } from "react-icons/fa"
 import { TiTimes } from "react-icons/ti"
 
-interface GuessQuantityProps {
+interface GuestQuantityProps {
   quantity: number
 }
 
-const GuessQuantity = ({ quantity }: GuessQuantityProps) => {
+const GuestQuantity = ({ quantity }: GuestQuantityProps) => {
   const conditionalRender = () => {
     switch (quantity) {
       case 1:
@@ -44,4 +44,4 @@ const GuessQuantity = ({ quantity }: GuessQuantityProps) => {
   return <div>{conditionalRender()}</div>
 }
 
-export default GuessQuantity
+export default GuestQuantity

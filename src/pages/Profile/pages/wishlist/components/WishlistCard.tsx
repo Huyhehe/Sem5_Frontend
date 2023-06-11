@@ -15,7 +15,7 @@ import { ILocation } from "@/types/responses/hotel/hotelBooking.res.type"
 import { Rate } from "antd"
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai"
 import { useNavigate } from "react-router-dom"
-
+import dayjs from "dayjs"
 interface IWishlistCardProps {
     location: ILocation
 }
@@ -26,7 +26,9 @@ function WishlistCard({ location }: IWishlistCardProps) {
     const navigationNextRef = useRef(null)
 
     const onNavigateToLocationSearch = () => {
-        const route = location?.isHotel ? `/${HOTEL_BOOKING_PATH.DEFAULT}/${location.hotel.id}` : `${SEARCH_PATH.DEFAULT}/${location.id}`
+        const startDate = dayjs().add(1, 'day').add(7, 'hour').format("YYYY-MM-DD")
+        const endDate = dayjs().add(2, 'day').add(7, 'hour').format("YYYY-MM-DD")
+        const route = location?.isHotel ? `/${HOTEL_BOOKING_PATH.DEFAULT}/${location.hotel.id}?start=${startDate}&end=${endDate}&room=1&person=2` : `${SEARCH_PATH.DEFAULT}/${location.id}`
         navigate(route)
     }
 

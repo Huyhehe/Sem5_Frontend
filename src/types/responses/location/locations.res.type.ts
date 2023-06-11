@@ -1,10 +1,7 @@
 import { Pagination } from "@/interfaces/common"
 import { Location } from "@/interfaces/location"
 
-export type LocationsResponseData = Pick<
-  Location,
-  "id" | "name" | "description" | "rating" | "address" | "locationImages"
->[]
+export type LocationsResponseData = Location[]
 
 export type LocationsResponse = {
   data: LocationsResponseData

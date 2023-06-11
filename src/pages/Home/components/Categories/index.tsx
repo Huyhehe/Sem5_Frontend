@@ -36,8 +36,8 @@ const categories: CategoryItemProps[] = [
         url: "/location-add",
       },
       {
-        text: "Airlines",
-        url: "",
+        text: "Start you business",
+        url: "/profile/business",
       },
       {
         text: "Cruises",

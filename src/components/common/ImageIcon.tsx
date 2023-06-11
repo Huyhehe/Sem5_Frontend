@@ -1,7 +1,7 @@
 import { Tooltip } from "antd"
 
 interface ImageIconProps {
-  icon: string
+  icon?: string
   name?: string
   className?: string
 }

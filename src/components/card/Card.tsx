@@ -1,15 +1,18 @@
 import { LogoDark } from "@/assets/images"
 import { useState } from "react"
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai"
-import { RiMoneyDollarCircleFill } from "react-icons/ri"
-import { getRatingString, toDouble } from "../../utils/reusable"
+import {
+  getRatingString,
+  toDouble,
+  wordTransformByQuantity,
+} from "../../utils/reusable"
 
 interface CardProps {
   img?: string
   title: string
   description: string
-  price: number
   rate: string
+  reviewCount: number
   onClickFunc?: () => void
 }
 
@@ -17,8 +20,8 @@ const Card = ({
   img,
   title,
   description,
-  price,
   rate,
+  reviewCount = 0,
   onClickFunc,
 }: CardProps) => {
   const [isFavourite, setIsFavourite] = useState<boolean>(false)
@@ -51,8 +54,8 @@ const Card = ({
             {getRatingString(rate)}
           </span>
           <span className="flex items-center text-primary font-bold ml-auto">
-            <RiMoneyDollarCircleFill size={20} />
-            {price}
+            {reviewCount}
+            {wordTransformByQuantity(" review", reviewCount)}
           </span>
         </div>
       </div>

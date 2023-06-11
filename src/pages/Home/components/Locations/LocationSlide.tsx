@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { getAllLocation } from "@/service/api/location"
 import { useNavigate } from "react-router-dom"
 import SkeletonCard from "@/components/card/SkeletonCard"
+import dayjs from "dayjs"
 
 const LocationSlide = () => {
   const [locations, setLocations] = useState<LocationsResponseData>([])
@@ -29,10 +30,22 @@ const LocationSlide = () => {
               key={item.id}
               title={item.name}
               description={item.description || ""}
-              price={0}
               rate={item.rating}
               img={item.locationImages?.[0]?.imageUrl}
-              onClickFunc={() => navigator(`/search/${item.id}`)}
+              reviewCount={item.reviewCount}
+              onClickFunc={() => {
+                if (item.isHotel) {
+                  navigator(
+                    `/hotel-booking/${item.hotel?.id}?start=${dayjs()
+                      .add(1, "day")
+                      .format("YYYY-MM-DD")}&end=${dayjs()
+                      .add(2, "day")
+                      .format("YYYY-MM-DD")}&room=1&person=2`
+                  )
+                } else {
+                  navigator(`/search/${item.id}`)
+                }
+              }}
             />
           ))
         : [1, 2, 3, 4].map((item) => {

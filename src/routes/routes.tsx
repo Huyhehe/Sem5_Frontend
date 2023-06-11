@@ -13,9 +13,10 @@ import {
   PROFILE_PATH,
   REVIEW_PATH,
   SEARCH_PATH,
+  BOOKING_PATH,
 } from "./path"
-import ImagesAdd from "@/pages/Booking/hotels/hotel-adding/ImagesAdd"
 import MyWishlist from "@/pages/Profile/pages/wishlist"
+import ImagesAdd from "@/pages/Hotel/hotels/hotel-adding/ImagesAdd"
 
 const NotFoundPage = lazy(() => import("../pages/404"))
 
@@ -48,6 +49,9 @@ const ActivityFeedPage = lazy(
 )
 const MyReviewsPage = lazy(() => import("../pages/Profile/pages/my-reviews"))
 const Business = lazy(() => import("../pages/Profile/pages/business"))
+const MyBooking = lazy(
+  () => import("../pages/Profile/pages/my-booking/MyBooking")
+)
 
 const AddLocationPage = lazy(() => import("../pages/Location"))
 
@@ -60,24 +64,31 @@ const EditPage = lazy(
   () => import("../pages/Review/pages/ReviewEdit/pages/EditPage")
 )
 
-const BookingPage = lazy(() => import("../pages/Booking"))
+const BookingPage = lazy(() => import("../pages/Hotel"))
 
-const HotelAddingPage = lazy(
-  () => import("../pages/Booking/hotels/hotel-adding")
-)
+const HotelAddingPage = lazy(() => import("../pages/Hotel/hotels/hotel-adding"))
 const GeneralInfo = lazy(
-  () => import("../pages/Booking/hotels/hotel-adding/GeneralInfo")
+  () => import("../pages/Hotel/hotels/hotel-adding/GeneralInfo")
 )
 const CreateHotelRooms = lazy(
-  () => import("../pages/Booking/hotels/hotel-adding/CreateHotelRooms")
+  () => import("../pages/Hotel/hotels/hotel-adding/CreateHotelRooms")
 )
 const ConfirmPublish = lazy(
-  () => import("../pages/Booking/hotels/hotel-adding/ConfirmPublish")
+  () => import("../pages/Hotel/hotels/hotel-adding/ConfirmPublish")
 )
 
 const HotelBookingPage = lazy(() => import("../pages/HotelBooking"))
 
-const routes = [
+const Booking = lazy(() => import("../pages/Booking/Booking"))
+const Payment = lazy(() => import("../pages/Booking/pages/Payment"))
+const BookingHistory = lazy(
+  () => import("../pages/Booking/pages/BookingHistory")
+)
+const BookingHistoryDetail = lazy(
+  () => import("../pages/Booking/pages/BookingHistory/BookingHistoryDetail")
+)
+
+const routes: RouteObject[] = [
   {
     path: HOME_PATH,
     element: (
@@ -101,7 +112,7 @@ const routes = [
     path: ABOUT_PATH,
     element: (
       <AuthLayout>
-        {/* <AboutPage /> */}
+        <AboutPage />
       </AuthLayout>
     ),
   },
@@ -184,6 +195,10 @@ const routes = [
         path: PROFILE_PATH.BUSINESS,
         element: <Business />,
       },
+      {
+        path: PROFILE_PATH.MY_BOOKINGS,
+        element: <MyBooking />,
+      },
     ],
   },
   {
@@ -259,10 +274,38 @@ const routes = [
 
   {
     path: HOTEL_BOOKING_PATH.DEFAULT + "/:id",
-    element: <AuthLayout>
-      <HotelBookingPage />
-    </AuthLayout>,
+    element: (
+      <AuthLayout>
+        <HotelBookingPage />
+      </AuthLayout>
+    ),
   },
+
+  {
+    path: BOOKING_PATH.DEFAULT,
+    element: (
+      <AuthLayout>
+        <Booking />
+      </AuthLayout>
+    ),
+    children: [
+      {
+        path: BOOKING_PATH.PAYMENT,
+        element: <Payment />,
+      },
+      {
+        path: BOOKING_PATH.HISTORY.INDEX,
+        element: <BookingHistory />,
+        children: [
+          {
+            path: BOOKING_PATH.HISTORY.DETAIL,
+            element: <BookingHistoryDetail />,
+          },
+        ],
+      },
+    ],
+  },
+
   {
     path: ACCEPT_ALL_PATH,
     element: <NotFoundPage />,

@@ -25,6 +25,7 @@ export const PROFILE_PATH = {
   FOLLOWERS: "followers",
   FOLLOWING: "following",
   BUSINESS: "business",
+  MY_BOOKINGS: "my-bookings",
 }
 export const REVIEW_PATH = {
   DEFAULT: "/review",
@@ -49,6 +50,15 @@ export const HOTEL_PATH = {
     ROOMS: "create-rooms",
     IMAGES: "images",
     CONFIRM: "confirm",
+  },
+}
+
+export const BOOKING_PATH = {
+  DEFAULT: "/booking",
+  PAYMENT: "checkout",
+  HISTORY: {
+    INDEX: "history",
+    DETAIL: ":id",
   },
 }
 
