@@ -68,6 +68,10 @@ const links = [
     name: "My Bookings",
     to: "/my-bookings",
   },
+  {
+    name: "Manage Bookings",
+    to: "/manage-booking",
+  },
 ]
 
 const initialUserInfo: UserInfoResponse = {

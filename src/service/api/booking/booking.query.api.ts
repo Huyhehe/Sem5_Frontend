@@ -22,3 +22,12 @@ export const getBookingDetail = async (
     throw new Error(error.response.data.message)
   }
 }
+
+export const getBookingForOwner = async (): Promise<BookingResponse[]> => {
+  try {
+    const { data } = await axiosInstance.get("/booking/get-for-owner-hotel")
+    return data
+  } catch (error: any) {
+    throw new Error(error.response.data.message)
+  }
+}
