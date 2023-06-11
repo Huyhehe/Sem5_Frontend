@@ -52,6 +52,9 @@ const Business = lazy(() => import("../pages/Profile/pages/business"))
 const MyBooking = lazy(
   () => import("../pages/Profile/pages/my-booking/MyBooking")
 )
+const ManageBooking = lazy(
+  () => import("../pages/Profile/pages/manage-booking/ManageBooking")
+)
 
 const AddLocationPage = lazy(() => import("../pages/Location"))
 
@@ -198,6 +201,10 @@ const routes: RouteObject[] = [
       {
         path: PROFILE_PATH.MY_BOOKINGS,
         element: <MyBooking />,
+      },
+      {
+        path: PROFILE_PATH.OWNER_BOOKING_LIST,
+        element: <ManageBooking />,
       },
     ],
   },

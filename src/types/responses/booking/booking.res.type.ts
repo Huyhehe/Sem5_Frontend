@@ -26,6 +26,7 @@ export type BookingResponse = {
       id: string
       username: string
     }
+    profileImageUrl: string
   }
   bookingRooms: {
     id: string
