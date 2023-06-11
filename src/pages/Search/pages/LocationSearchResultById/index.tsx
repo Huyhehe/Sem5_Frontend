@@ -4,6 +4,7 @@ import Slide from "@/components/common/Slide"
 import TypographyText from "@/components/common/TypographyText"
 import { addToWishlist, getLocation, removeFromWishlist } from "@/service/api/location"
 import { SingleLocationResponse } from "@/types/responses/location"
+import { IWishlist } from "@/types/responses/user/wishlist.res.type"
 import { getAccessTokenFromLocal } from "@/utils/localStorage"
 import { toDouble, wordTransformByQuantity } from "@/utils/reusable"
 import { Image, Tabs, notification } from "antd"
@@ -14,32 +15,26 @@ import { HiOutlineChevronDown } from "react-icons/hi"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import UserReviewContainer from "./components/UserReviewContainer"
 import "./styles/styles.css"
-import { getWishlist } from "@/service/api/user/getWishlist.api"
-import { IWishlist } from "@/types/responses/user/wishlist.res.type"
 
-export const getActiveWishlist = (wishlist: IWishlist[], idLocation: string) => {
-  return wishlist.find(w => w.location.id === idLocation)
+export const getActiveWishlist = (wishlist: IWishlist[]) => {
+  return wishlist?.length > 0
 }
 
 const SearchResultById = () => {
   const { id } = useParams()
   const [isRefetch, setIsRefetch] = useState(false)
   const [location, setLocation] = useState<SingleLocationResponse | null>(null)
-  const [wishlist, setWishlist] = useState<IWishlist[]>([])
+
   const { openNotification, setCurrentRoute } = useContext(AppContext)
   const navigator = useNavigate()
   const currentLocation = useLocation()
 
-  const activeWishlist = getActiveWishlist(wishlist, id as string)
-  const isActiveWishlsit = activeWishlist ? true : false
+  const isActiveWishlist = getActiveWishlist(location?.wishList as IWishlist[])
 
   const onClickWishlist = async (idLocation: string) => {
     try {
-      if (!isActiveWishlsit) await addToWishlist(idLocation)
-      else {
-        const idWishlist = activeWishlist?.id
-        await removeFromWishlist(idWishlist as string)
-      }
+      if (!isActiveWishlist) await addToWishlist(idLocation)
+      else await removeFromWishlist(location?.wishList?.[0]?.id as string)
       setIsRefetch(prev => !prev)
     } catch (error) {
       console.log({ error })
@@ -49,11 +44,8 @@ const SearchResultById = () => {
   useEffect(() => {
     const promises: Promise<any>[] = []
     promises[0] = getLocation(String(id))
-    promises[1] = getWishlist()
     Promise.all(promises).then(res => {
       setLocation(res[0])
-      document.title = res[0].name
-      setWishlist(res[1])
     })
   }, [id, isRefetch])
 
@@ -109,7 +101,7 @@ const SearchResultById = () => {
               </div>
               <div className="header-icons flex items-center">
                 <div
-                  className={`bookmark p-2 border-[2px] cursor-pointer ${isActiveWishlsit
+                  className={`bookmark p-2 border-[2px] cursor-pointer ${isActiveWishlist
                     ? 'bg-love border-white text-white hover:border-love hover:bg-white hover:text-love'
                     : ' text-love border-love hover:text-white hover:border-white hover:bg-love'}
                     rounded-full`}

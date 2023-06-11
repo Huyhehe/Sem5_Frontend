@@ -1,6 +1,7 @@
 import { Category } from "@/types/responses"
 import { Country, Province, District, Ward } from "../location"
 import { Hotel } from "../hotel"
+import { IWishlist } from "@/types/responses/user/wishlist.res.type"
 
 export interface LocationImage {
   id: string
@@ -30,4 +31,5 @@ export interface Location {
   address: Address
   reviews: string[]
   hotel: Omit<Hotel, "location"> | null
+  wishList?: { id: string }[]
 }
