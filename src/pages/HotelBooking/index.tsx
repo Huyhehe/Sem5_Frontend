@@ -16,6 +16,10 @@ import ViewPrice from './components/ViewPrice'
 import { Modal } from "antd"
 import PopupRoomDetail from "./components/PopupRoomDetail"
 import type { Dayjs as DayjsType } from "dayjs"
+import { IWishlist } from "@/types/responses/user/wishlist.res.type"
+import { getWishlist } from "@/service/api/user/getWishlist.api"
+import { getActiveWishlist } from "../Search/pages/LocationSearchResultById"
+import { addToWishlist, removeFromWishlist } from "@/service/api/location"
 
 const DUMMY_BREADCRUM: IBreadcrumbItem[] = [
     {
@@ -48,15 +52,20 @@ function HotelBooking() {
     const navigate = useNavigate()
     const params = useParams()
 
+    const [isRefetch, setIsRefetch] = useState(false)
     const [isOpenModal, setIsOpenModal] = useState(false)
     const [hotelBooking, setHotelBooking] = useState<IHotelBooking>()
 
+    const [wishlist, setWishlist] = useState<IWishlist[]>([])
     const [listRoom, setListRoom] = useState<HotelRoom[]>([])
     const [listRoomType, setListRoomType] = useState<RoomType[]>([])
     const [listRoomFeature, setListRoomFeature] = useState<RoomFeature[]>([])
 
     const [roomDetail, setRoomDetail] = useState<HotelRoom>()
     const [paramsRoomDetail, setParamsRoomDetail] = useState<any>()
+
+    const activeWishlist = getActiveWishlist(wishlist, hotelBooking?.location?.id as string)
+    const isActiveWishlist = activeWishlist ? true : false
 
     const onOpenModal = () => {
         setIsOpenModal(true)
@@ -75,6 +84,19 @@ function HotelBooking() {
         onOpenModal()
     }
 
+    const onClickWishlist = async () => {
+        try {
+            if (!isActiveWishlist) await addToWishlist(hotelBooking?.location?.id as string)
+            else {
+                const idWishlist = activeWishlist?.id
+                await removeFromWishlist(idWishlist as string)
+            }
+            setIsRefetch(prev => !prev)
+        } catch (error) {
+            console.log({ error })
+        }
+    }
+
     const createHotelBooking = () => {
         navigate(`/booking/checkout/${params?.id}&roomId=${paramsRoomDetail?.roomId}&startDate=${paramsRoomDetail?.startDate?.format("YYYY-MM-DD")}&endDate=${paramsRoomDetail?.endDate?.format("YYYY-MM-DD")}&roomNumber=${paramsRoomDetail?.roomNumber}&personNumber=${paramsRoomDetail?.personNumber}`)
     }
@@ -85,23 +107,25 @@ function HotelBooking() {
         const promises: Promise<any>[] = []
         promises[0] = getHotelBookingById(params?.id as string)
         promises[1] = getRoomsOfHotel(params?.id as string)
+        promises[2] = getWishlist()
         Promise.all(promises).then(res => {
             const hotelBooking = res[0]
             const hotelRoom: HotelRoom[] = res[1]
-
+            const wishlist: IWishlist[] = res[2]
             setHotelBooking(hotelBooking)
 
             const roomTypes: RoomType[] = hotelRoom?.map((hotelRoom: HotelRoom) => hotelRoom.roomTypes[0])
 
             const roomFeatures: RoomFeature[] = hotelRoom?.reduce((result: RoomFeature[], current: HotelRoom) => result.concat(current.roomFeatures), [])
 
+            setWishlist(wishlist)
             setListRoom(uniqBy(hotelRoom, 'id'))
             setListRoomType(uniqBy(roomTypes, 'id'))
             setListRoomFeature(uniqBy(roomFeatures, 'id'))
         })
 
         setLoading(false)
-    }, [])
+    }, [isRefetch])
 
     return (
 
@@ -114,6 +138,8 @@ function HotelBooking() {
                         email={hotelBooking?.email as string}
                         phoneNumber={hotelBooking?.phoneNumber as string}
                         imageUrlLocations={hotelBooking?.location?.imageUrlLocations as string[]}
+                        isActiveWishlist={isActiveWishlist}
+                        onClickWishlist={onClickWishlist}
                     />
                 </div>
                 <div className='mt-4'>

@@ -1,11 +1,12 @@
 import { AppContext } from "@/App"
 import { LocationTypo } from "@/components/common/LocationTypo"
 import Slide from "@/components/common/Slide"
-import { getLocation } from "@/service/api/location"
+import TypographyText from "@/components/common/TypographyText"
+import { addToWishlist, getLocation, removeFromWishlist } from "@/service/api/location"
 import { SingleLocationResponse } from "@/types/responses/location"
 import { getAccessTokenFromLocal } from "@/utils/localStorage"
 import { toDouble, wordTransformByQuantity } from "@/utils/reusable"
-import { Image, Tabs, message, notification } from "antd"
+import { Image, Tabs, notification } from "antd"
 import { useContext, useEffect, useState } from "react"
 import { AiFillStar, AiOutlineHeart } from "react-icons/ai"
 import { BsDot } from "react-icons/bs"
@@ -13,27 +14,48 @@ import { HiOutlineChevronDown } from "react-icons/hi"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import UserReviewContainer from "./components/UserReviewContainer"
 import "./styles/styles.css"
-import TypographyText from "@/components/common/TypographyText"
+import { getWishlist } from "@/service/api/user/getWishlist.api"
+import { IWishlist } from "@/types/responses/user/wishlist.res.type"
+
+export const getActiveWishlist = (wishlist: IWishlist[], idLocation: string) => {
+  return wishlist.find(w => w.location.id === idLocation)
+}
 
 const SearchResultById = () => {
   const { id } = useParams()
+  const [isRefetch, setIsRefetch] = useState(false)
   const [location, setLocation] = useState<SingleLocationResponse | null>(null)
+  const [wishlist, setWishlist] = useState<IWishlist[]>([])
   const { openNotification, setCurrentRoute } = useContext(AppContext)
   const navigator = useNavigate()
   const currentLocation = useLocation()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const location = await getLocation(String(id))
-        setLocation(location)
-        document.title = location.name
-      } catch (error) {
-        console.log(error)
+  const activeWishlist = getActiveWishlist(wishlist, id as string)
+  const isActiveWishlsit = activeWishlist ? true : false
+
+  const onClickWishlist = async (idLocation: string) => {
+    try {
+      if (!isActiveWishlsit) await addToWishlist(idLocation)
+      else {
+        const idWishlist = activeWishlist?.id
+        await removeFromWishlist(idWishlist as string)
       }
+      setIsRefetch(prev => !prev)
+    } catch (error) {
+      console.log({ error })
     }
-    fetchData()
-  }, [id])
+  }
+
+  useEffect(() => {
+    const promises: Promise<any>[] = []
+    promises[0] = getLocation(String(id))
+    promises[1] = getWishlist()
+    Promise.all(promises).then(res => {
+      setLocation(res[0])
+      document.title = res[0].name
+      setWishlist(res[1])
+    })
+  }, [id, isRefetch])
 
   const validateValidUser = (
     helperText = "Something has to be checked again"
@@ -87,10 +109,11 @@ const SearchResultById = () => {
               </div>
               <div className="header-icons flex items-center">
                 <div
-                  className="bookmark p-2 border-[2px] text-love border-love rounded-full hover:text-white hover:border-white hover:bg-love cursor-pointer"
-                  onClick={() => {
-                    message.warning("This feature is not available yet")
-                  }}
+                  className={`bookmark p-2 border-[2px] cursor-pointer ${isActiveWishlsit
+                    ? 'bg-love border-white text-white hover:border-love hover:bg-white hover:text-love'
+                    : ' text-love border-love hover:text-white hover:border-white hover:bg-love'}
+                    rounded-full`}
+                  onClick={() => onClickWishlist(location?.id)}
                 >
                   <AiOutlineHeart size={30} />
                 </div>
