@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import "../../styles.css"
 import HotelFilterDropdown from "./components/HotelFilterDropdown"
+import { uniq, uniqBy } from "lodash"
 
 const Header = () => {
   const navigator = useNavigate()
@@ -68,11 +69,19 @@ const Header = () => {
     const timeout = setTimeout(async () => {
       try {
         const res = await getGeocodeAutoCompleteAPI(values.location)
-        const options = res.results?.map((result) => ({
-          value: result.city,
-          label: result.city,
-        }))
-        setLocationOptions(options || [])
+        const options = res.results?.map((result) => {
+          if (!result?.city) {
+            return {
+              value: result.state,
+              label: result.state,
+            }
+          }
+          return {
+            value: result.city,
+            label: result.city,
+          }
+        })
+        setLocationOptions(uniqBy(options, "state") || [])
       } catch (error) {
         console.log(error)
       }

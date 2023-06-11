@@ -7,7 +7,7 @@ import { Button, Divider, Image, Rate, Space } from "antd"
 import { FaStar } from "react-icons/fa"
 import { shortenAmenities } from "../utils"
 import ImageIcon from "@/components/common/ImageIcon"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 
 type HotelCardProps = {
   hotel: Hotel
@@ -21,6 +21,8 @@ const HotelCard = ({
     propertyAmenities,
   },
 }: HotelCardProps) => {
+  const [queryString] = useSearchParams()
+  const { start, end, room, person } = Object.fromEntries(queryString.entries())
   const navigator = useNavigate()
   return (
     <Space.Compact
@@ -44,11 +46,11 @@ const HotelCard = ({
               className="w-full rounded-md bg-secondary hover:bg-secondary/80"
               onClick={() => {
                 navigator(
-                  `/hotel-booking/${id}?start=${dayjs()
-                    .add(1, "day")
-                    .format("YYYY-MM-DD")}&end=${dayjs()
-                    .add(2, "day")
-                    .format("YYYY-MM-DD")}&room=1&person=2`
+                  `/hotel-booking/${id}?start=${
+                    start || dayjs().add(1, "day").format("YYYY-MM-DD")
+                  }&end=${
+                    end || dayjs().add(2, "day").format("YYYY-MM-DD")
+                  }&room=${room || "1"}&person=${person || "2"}`
                 )
               }}
             >
