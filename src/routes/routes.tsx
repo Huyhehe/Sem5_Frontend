@@ -80,6 +80,12 @@ const HotelBookingPage = lazy(() => import("../pages/HotelBooking"))
 
 const Booking = lazy(() => import("../pages/Booking/Booking"))
 const Payment = lazy(() => import("../pages/Booking/pages/Payment"))
+const BookingHistory = lazy(
+  () => import("../pages/Booking/pages/BookingHistory")
+)
+const BookingHistoryDetail = lazy(
+  () => import("../pages/Booking/pages/BookingHistory/BookingHistoryDetail")
+)
 
 const routes: RouteObject[] = [
   {
@@ -103,7 +109,11 @@ const routes: RouteObject[] = [
   },
   {
     path: ABOUT_PATH,
-    element: <AuthLayout>{/* <AboutPage /> */}</AuthLayout>,
+    element: (
+      <AuthLayout>
+        <AboutPage />
+      </AuthLayout>
+    ),
   },
   {
     path: AUTHEN_PATH.DEFAULT,
@@ -281,6 +291,16 @@ const routes: RouteObject[] = [
       {
         path: BOOKING_PATH.PAYMENT,
         element: <Payment />,
+      },
+      {
+        path: BOOKING_PATH.HISTORY.INDEX,
+        element: <BookingHistory />,
+        children: [
+          {
+            path: BOOKING_PATH.HISTORY.DETAIL,
+            element: <BookingHistoryDetail />,
+          },
+        ],
       },
     ],
   },

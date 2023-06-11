@@ -44,3 +44,14 @@ export const captureOrder = async (orderId: string) => {
     throw new Error(error.response.data.message)
   }
 }
+
+export const cancelOrder = async (captureId: string) => {
+  try {
+    const { data } = await axiosInstance.post(
+      `/paypal/refund-captured-payment/${captureId}`
+    )
+    return data
+  } catch (error: any) {
+    throw new Error(error.response.data.message)
+  }
+}
