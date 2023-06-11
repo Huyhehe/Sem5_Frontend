@@ -1,19 +1,16 @@
+import { Hotel } from "@/interfaces/hotel"
+import { getPagingHotel } from "@/service/api/hotel"
 import Space from "antd/es/space"
+import { useEffect, useState } from "react"
 import HotelCard from "./components/HotelCard"
 import SkeletonHotelCard from "./components/SkeletonHotelCard"
-import { useEffect, useState } from "react"
-import { getPagingHotel } from "@/service/api/hotel"
-import { Hotel } from "@/interfaces/hotel"
-import { useSearchParams } from "react-router-dom"
 
 const MainContainer = () => {
   const [hotels, setHotels] = useState<Hotel[]>([])
-  const [queryString] = useSearchParams()
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await getPagingHotel()
-        console.log(queryString)
         setHotels(data)
       } catch (error) {
         console.log(error)

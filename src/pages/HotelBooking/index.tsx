@@ -14,7 +14,7 @@ import {
 } from "@/types/responses/hotel/hotelBooking.res.type"
 import { getHotelBookingById } from "@/utils/http"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import About from "../About"
+import About from "./components/About"
 import Breadcrumbs from "./components/Breadcrumbs"
 import InformationDetail from "./components/InformationDetail"
 import PopularNeaby from "./components/PopularNearBy"
@@ -127,13 +127,14 @@ function HotelBooking() {
     promises[0] = getHotelBookingById(params?.id as string)
     promises[1] = getRoomsOfHotel(params?.id as string, {
       checkIn: dayjs(start).format("YYYY-MM-DD"),
-      checkout: dayjs(end).format("YYYY-MM-DD"),
+      checkOut: dayjs(end).format("YYYY-MM-DD"),
       sleeps: Number(person),
       numberOfRooms: Number(room),
     })
     Promise.all(promises).then((res) => {
       const hotelBooking = res[0]
       const hotelRoom: HotelRoom[] = res[1]
+      setListRoom(hotelRoom)
 
       setHotelBooking(hotelBooking)
 
@@ -169,7 +170,7 @@ function HotelBooking() {
           />
         </div>
         <div className="mt-4">
-          <ViewPrice rooms={hotelBooking?.rooms as IRoom[]} />
+          <ViewPrice rooms={listRoom} />
         </div>
         <div className="mt-4">
           <About
