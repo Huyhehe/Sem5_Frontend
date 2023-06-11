@@ -2,47 +2,28 @@ import { AppContext } from "@/App"
 import { uniqBy } from "lodash"
 import { createContext, useContext, useEffect, useState } from "react"
 
-import dayjs from "dayjs"
 import { HotelRoom, RoomFeature, RoomType } from "@/interfaces/hotel"
 import { getRoomsOfHotel } from "@/service/api/hotel"
-import { IBreadcrumbItem } from "@/types/hotel-booking"
+import { addToWishlist, removeFromWishlist } from "@/service/api/location"
+import { getWishlist } from "@/service/api/user/getWishlist.api"
 import {
   IHotelBooking,
   ILocation,
-  IPropertyAmenity,
-  IRoom,
+  IPropertyAmenity
 } from "@/types/responses/hotel/hotelBooking.res.type"
+import { IWishlist } from "@/types/responses/user/wishlist.res.type"
 import { getHotelBookingById } from "@/utils/http"
-import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import About from "./components/About"
-import Breadcrumbs from "./components/Breadcrumbs"
-import InformationDetail from "./components/InformationDetail"
-import PopularNeaby from "./components/PopularNearBy"
-import ViewPrice from "./components/ViewPrice"
 import { Modal } from "antd"
-import PopupRoomDetail from "./components/PopupRoomDetail"
 import type { Dayjs as DayjsType } from "dayjs"
+import dayjs from "dayjs"
+import { useNavigate, useParams, useSearchParams } from "react-router-dom"
+import InformationDetail from '../HotelBooking/components/InformationDetail'
+import { getActiveWishlist } from "../Search/pages/LocationSearchResultById"
 import UserReviewContainer from "../Search/pages/LocationSearchResultById/components/UserReviewContainer"
+import About from "./components/About"
+import PopupRoomDetail from "./components/PopupRoomDetail"
+import ViewPrice from "./components/ViewPrice"
 import "./styles/index.css"
-
-const DUMMY_BREADCRUM: IBreadcrumbItem[] = [
-  {
-    href: "",
-    name: "Asia",
-  },
-  {
-    href: "",
-    name: "Quang Nam Province",
-  },
-  {
-    href: "",
-    name: "Duy Hai",
-  },
-  {
-    href: "",
-    name: "Duy Hai Hotels",
-  },
-]
 
 interface IHotelBookingContext {
   onViewDetailDeal: (
@@ -65,16 +46,20 @@ function HotelBooking() {
   const params = useParams()
   const [searchParams] = useSearchParams()
 
+  const [isRefetch, setIsRefetch] = useState(false)
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [hotelBooking, setHotelBooking] = useState<IHotelBooking>()
+
+  const [wishlist, setWishlist] = useState<IWishlist[]>([])
+  const [listRoom, setListRoom] = useState<HotelRoom[]>([])
+  const [listRoomType, setListRoomType] = useState<RoomType[]>([])
+  const [listRoomFeature, setListRoomFeature] = useState<RoomFeature[]>([])
   const { start, end, room, person } = Object.fromEntries(
     searchParams.entries()
   )
 
-  const [isOpenModal, setIsOpenModal] = useState(false)
-  const [hotelBooking, setHotelBooking] = useState<IHotelBooking>()
-
-  const [listRoom, setListRoom] = useState<HotelRoom[]>([])
-  const [listRoomType, setListRoomType] = useState<RoomType[]>([])
-  const [listRoomFeature, setListRoomFeature] = useState<RoomFeature[]>([])
+  const activeWishlist = getActiveWishlist(wishlist, hotelBooking?.location?.id as string)
+  const isActiveWishlist = activeWishlist ? true : false
 
   const [roomDetail, setRoomDetail] = useState<HotelRoom>()
   const [paramsRoomDetail, setParamsRoomDetail] = useState<any>()
@@ -108,14 +93,25 @@ function HotelBooking() {
     onOpenModal()
   }
 
+  const onClickWishlist = async () => {
+    try {
+      if (!isActiveWishlist) await addToWishlist(hotelBooking?.location?.id as string)
+      else {
+        const idWishlist = activeWishlist?.id
+        await removeFromWishlist(idWishlist as string)
+      }
+      setIsRefetch(prev => !prev)
+    } catch (error) {
+      console.log({ error })
+    }
+  }
+
   const createHotelBooking = () => {
     navigate(
-      `/booking/checkout?hotelId=${params?.id}&roomId=${
-        paramsRoomDetail?.roomId
+      `/booking/checkout?hotelId=${params?.id}&roomId=${paramsRoomDetail?.roomId
       }&startDate=${paramsRoomDetail?.startDate?.format(
         "YYYY-MM-DD"
-      )}&endDate=${paramsRoomDetail?.endDate?.format("YYYY-MM-DD")}&room=${
-        paramsRoomDetail?.roomNumber
+      )}&endDate=${paramsRoomDetail?.endDate?.format("YYYY-MM-DD")}&room=${paramsRoomDetail?.roomNumber
       }&person=${paramsRoomDetail?.personNumber}`
     )
   }
@@ -131,9 +127,12 @@ function HotelBooking() {
       sleeps: Number(person),
       numberOfRooms: Number(room),
     })
+    promises[2] = getWishlist()
     Promise.all(promises).then((res) => {
       const hotelBooking = res[0]
       const hotelRoom: HotelRoom[] = res[1]
+      const wishlist: IWishlist[] = res[2]
+
       setListRoom(hotelRoom)
 
       setHotelBooking(hotelBooking)
@@ -148,13 +147,14 @@ function HotelBooking() {
         []
       )
 
+      setWishlist(wishlist)
       setListRoom(uniqBy(hotelRoom, "id"))
       setListRoomType(uniqBy(roomTypes, "id"))
       setListRoomFeature(uniqBy(roomFeatures, "id"))
     })
 
     setLoading(false)
-  }, [searchParams])
+  }, [searchParams, isRefetch])
 
   return (
     <HotelBookingContext.Provider value={{ onViewDetailDeal }}>
@@ -167,6 +167,8 @@ function HotelBooking() {
             imageUrlLocations={
               hotelBooking?.location?.imageUrlLocations as string[]
             }
+            isActiveWishlist={isActiveWishlist}
+            onClickWishlist={onClickWishlist}
           />
         </div>
         <div className="mt-4">

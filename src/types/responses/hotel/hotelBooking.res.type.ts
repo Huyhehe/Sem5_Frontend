@@ -10,6 +10,7 @@ export interface ILocation {
   categories: ICategory[]
   address: IAddress
   imageUrlLocations: string[]
+  hotel: IHotelBooking
 }
 
 export interface ILocationImage {

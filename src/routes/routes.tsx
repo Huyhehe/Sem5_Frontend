@@ -15,6 +15,7 @@ import {
   SEARCH_PATH,
   BOOKING_PATH,
 } from "./path"
+import MyWishlist from "@/pages/Profile/pages/wishlist"
 import ImagesAdd from "@/pages/Hotel/hotels/hotel-adding/ImagesAdd"
 
 const NotFoundPage = lazy(() => import("../pages/404"))
@@ -180,7 +181,7 @@ const routes: RouteObject[] = [
       },
       {
         path: PROFILE_PATH.BOOKMARKS,
-        element: <div>Bookmarks</div>,
+        element: <MyWishlist />,
       },
       {
         path: PROFILE_PATH.FOLLOWERS,
